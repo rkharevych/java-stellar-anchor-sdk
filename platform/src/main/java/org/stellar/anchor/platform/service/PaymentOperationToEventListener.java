@@ -18,10 +18,10 @@ import org.stellar.anchor.api.sep.SepTransactionStatus;
 import org.stellar.anchor.api.shared.Amount;
 import org.stellar.anchor.event.EventPublishService;
 import org.stellar.anchor.event.models.*;
-import org.stellar.anchor.platform.data.JdbcSep31TransactionStore;
 import org.stellar.anchor.platform.paymentobserver.ObservedPayment;
 import org.stellar.anchor.platform.paymentobserver.PaymentListener;
 import org.stellar.anchor.sep31.Sep31Transaction;
+import org.stellar.anchor.sep31.Sep31TransactionStore;
 import org.stellar.anchor.util.GsonUtils;
 import org.stellar.anchor.util.Log;
 import org.stellar.anchor.util.MemoHelper;
@@ -29,11 +29,11 @@ import org.stellar.sdk.xdr.MemoType;
 
 @Component
 public class PaymentOperationToEventListener implements PaymentListener {
-  final JdbcSep31TransactionStore transactionStore;
+  final Sep31TransactionStore transactionStore;
   final EventPublishService eventService;
 
   PaymentOperationToEventListener(
-      JdbcSep31TransactionStore transactionStore, EventPublishService eventService) {
+      Sep31TransactionStore transactionStore, EventPublishService eventService) {
     this.transactionStore = transactionStore;
     this.eventService = eventService;
   }
@@ -148,14 +148,8 @@ public class PaymentOperationToEventListener implements PaymentListener {
     TransactionEvent.StatusChange statusChange =
         new TransactionEvent.StatusChange(oldStatus, newStatus);
 
-    StellarId senderStellarId =
-        StellarId.builder()
-            .account(payment.getFrom())
-            .memo(txn.getStellarMemo())
-            .memoType(txn.getStellarMemoType())
-            .build();
-    StellarId receiverStellarId = StellarId.builder().account(payment.getTo()).build();
-
+    StellarId senderStellarId = StellarId.builder().id(txn.getSenderId()).build();
+    StellarId receiverStellarId = StellarId.builder().id(txn.getReceiverId()).build();
     TransactionEvent event =
         TransactionEvent.builder()
             .eventId(UUID.randomUUID().toString())
@@ -198,10 +192,10 @@ public class PaymentOperationToEventListener implements PaymentListener {
                 })
             .externalTransactionId(payment.getExternalTransactionId())
             .custodialTransactionId(null)
-            .sourceAccount(txn.getSenderId())
-            .destinationAccount(txn.getReceiverId())
+            .sourceAccount(payment.getFrom())
+            .destinationAccount(payment.getTo())
             .customers(new Customers(senderStellarId, receiverStellarId))
-            .creator(senderStellarId)
+            .creator(txn.getCreator())
             .build();
     return event;
   }
