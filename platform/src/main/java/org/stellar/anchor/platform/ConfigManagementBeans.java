@@ -7,7 +7,6 @@ import org.stellar.anchor.auth.JwtService;
 import org.stellar.anchor.config.*;
 import org.stellar.anchor.platform.config.*;
 import org.stellar.anchor.platform.configurator.ConfigManager;
-import org.stellar.anchor.platform.payment.config.CirclePaymentConfig;
 
 @Configuration
 public class ConfigManagementBeans {
@@ -17,7 +16,7 @@ public class ConfigManagementBeans {
   }
 
   @Bean
-  @ConfigurationProperties(prefix = "")
+  @ConfigurationProperties()
   AppConfig appConfig() {
     return new PropertyAppConfig();
   }
@@ -66,8 +65,9 @@ public class ConfigManagementBeans {
 
   @Bean
   @ConfigurationProperties(prefix = "sep31")
-  Sep31Config sep31Config(CircleConfig circleConfig, CallbackApiConfig callbackApiConfig) {
-    return new PropertySep31Config(circleConfig, callbackApiConfig);
+  Sep31Config sep31Config(
+      PaymentObserverConfig paymentObserverConfig, CallbackApiConfig callbackApiConfig) {
+    return new PropertySep31Config(callbackApiConfig, paymentObserverConfig);
   }
 
   @Bean
@@ -76,50 +76,35 @@ public class ConfigManagementBeans {
     return new PropertySep38Config();
   }
 
-  @Bean
-  @ConfigurationProperties(prefix = "circle")
-  CircleConfig circleConfig() {
-    return new PropertyCircleConfig();
-  }
-
-  @Bean
-  @ConfigurationProperties
-  PropertySecretConfig secretConfig() {
-    return new PropertySecretConfig();
-  }
+  /**********************************
+   * Payment observer configurations
+   */
 
   @Bean
   @ConfigurationProperties(prefix = "payment-observer")
-  PaymentObserverConfig paymentObserverConfig() {
-    return new PropertyPaymentObserverConfig();
+  PaymentObserverConfig paymentObserverConfig(SecretConfig secretConfig) {
+    return new PropertyPaymentObserverConfig(secretConfig);
   }
 
-  @Bean
-  CirclePaymentConfig circlePaymentConfig() {
-    return new CirclePaymentConfig();
-  }
+  /**********************************
+   * Event configurations
+   */
 
   @Bean
   @ConfigurationProperties(prefix = "events")
-  EventConfig eventConfig(PublisherConfig publisherConfig) {
-    return new PropertyEventConfig(publisherConfig);
-  }
-
-  @Bean
-  @ConfigurationProperties(prefix = "events.options")
-  PublisherConfig publisherConfig(EventTypeToQueueConfig eventTypeToQueueConfig) {
-    return new PropertyPublisherConfig(eventTypeToQueueConfig);
-  }
-
-  @Bean
-  @ConfigurationProperties(prefix = "events.options.event-type-to-queue")
-  EventTypeToQueueConfig eventTypeToQueueConfig() {
-    return new PropertyEventTypeToQueueConfig();
+  PropertyEventConfig eventConfig() {
+    return new PropertyEventConfig();
   }
 
   @Bean
   @ConfigurationProperties(prefix = "metrics")
   MetricConfig metricConfig() {
     return new PropertyMetricConfig();
+  }
+
+  @Bean
+  @ConfigurationProperties
+  PropertySecretConfig secretConfig() {
+    return new PropertySecretConfig();
   }
 }
