@@ -225,7 +225,7 @@ public class TransactionService {
         }
 
         txn24Store.save(sep24Txn);
-        Log.infoF( "!!! SEP24 PATCH called." );
+        Log.infoF("!!! SEP24 PATCH called.");
         eventSession.publish(
             AnchorEvent.builder()
                 .id(UUID.randomUUID().toString())
@@ -237,7 +237,7 @@ public class TransactionService {
       case "31":
         JdbcSep31Transaction sep31Txn = (JdbcSep31Transaction) txn;
         txn31Store.save(sep31Txn);
-        Log.infoF( "!!! SEP31 PATCH called." );
+        Log.infoF("!!! SEP31 PATCH called.");
         eventSession.publish(
             AnchorEvent.builder()
                 .id(UUID.randomUUID().toString())
