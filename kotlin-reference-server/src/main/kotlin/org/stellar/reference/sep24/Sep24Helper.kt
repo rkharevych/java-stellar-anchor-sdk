@@ -35,6 +35,7 @@ class Sep24Helper(private val cfg: Config) {
   internal suspend fun patchTransaction(
     patchRecord: org.stellar.reference.data.PatchTransactionTransaction
   ) {
+    log.info { "!!! PATCH Base URL: $baseUrl." }
     val resp =
       client.patch("$baseUrl/transactions") {
         contentType(ContentType.Application.Json)
@@ -59,6 +60,7 @@ class Sep24Helper(private val cfg: Config) {
   }
 
   internal suspend fun rpcAction(method: String, params: RpcActionParamsRequest) {
+    log.info { "!!! RPC Base URL: $baseUrl" }
     val resp =
       client.post("$baseUrl/actions") {
         contentType(ContentType.Application.Json)

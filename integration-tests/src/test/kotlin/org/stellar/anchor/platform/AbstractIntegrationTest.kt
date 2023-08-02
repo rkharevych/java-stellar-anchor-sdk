@@ -1,6 +1,7 @@
 package org.stellar.anchor.platform
 
 import org.stellar.anchor.platform.test.*
+import org.stellar.anchor.util.Log
 import org.stellar.anchor.util.Sep1Helper
 
 open class AbstractIntegrationTest(private val config: TestConfig) {
@@ -39,6 +40,7 @@ open class AbstractIntegrationTest(private val config: TestConfig) {
 
   fun setUp(envMap: Map<String, String>) {
     envMap.forEach { (key, value) -> config.env[key] = value }
+    config.env.forEach {(key, value) -> Log.infoF("!!! key: [{}], value: [{}]", key, value)}
     testProfileRunner.start()
     setupTests()
   }

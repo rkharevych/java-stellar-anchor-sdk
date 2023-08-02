@@ -68,7 +68,7 @@ class DepositService(private val cfg: Config) {
   private suspend fun initiateTransfer(transactionId: String, amount: BigDecimal, asset: String) {
     val fee = calculateFee(amount)
     val stellarAsset = "stellar:$asset"
-
+    log.info { "!!! RPC Actions Enabled: $cfg.sep24.rpcActionsEnabled" }
     if (cfg.sep24.rpcActionsEnabled) {
       sep24.rpcAction2(
         "request_offchain_funds",
@@ -97,6 +97,7 @@ class DepositService(private val cfg: Config) {
 
   private suspend fun notifyTransactionProcessed(transactionId: String) {
     if (cfg.sep24.rpcActionsEnabled) {
+
       sep24.rpcAction(
         "notify_offchain_funds_received",
         NotifyOffchainFundsReceivedRequest(
