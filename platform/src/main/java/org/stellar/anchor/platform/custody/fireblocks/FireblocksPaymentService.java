@@ -117,16 +117,6 @@ public class FireblocksPaymentService implements CustodyPaymentService<Transacti
         .build();
   }
 
-  private CreateTransactionRequest getCreateTransactionRefundRequest(JdbcCustodyTransaction txn)
-      throws InvalidConfigException {
-    return CreateTransactionRequest.builder()
-        .assetId(fireblocksConfig.getFireblocksAssetCode(txn.getAsset()))
-        .amount(txn.getAmount())
-        // TODO: set source and destination
-        // TODO: what to do with amountFee?
-        .build();
-  }
-
   @Override
   public TransactionDetails getTransactionById(String txnId) throws FireblocksException {
     return gson.fromJson(
