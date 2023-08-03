@@ -60,7 +60,7 @@ class Sep24Helper(private val cfg: Config) {
 
   internal suspend fun rpcAction(method: String, params: RpcActionParamsRequest) {
     val resp =
-      client.post("$baseUrl/actions") {
+      client.post("$baseUrl") {
         contentType(ContentType.Application.Json)
         setBody(listOf(RpcRequest(UUID.randomUUID().toString(), "2.0", method, params)))
       }
