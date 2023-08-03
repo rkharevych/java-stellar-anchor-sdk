@@ -54,10 +54,6 @@ class Sep24Helper(private val cfg: Config) {
     }
   }
 
-  internal suspend fun rpcAction2(method: String, params: RequestOffchainFundsRequest) {
-    rpcAction(method, params)
-  }
-
   internal suspend fun rpcAction(method: String, params: RpcActionParamsRequest) {
     val resp =
       client.post("$baseUrl") {
