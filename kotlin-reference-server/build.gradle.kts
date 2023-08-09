@@ -21,6 +21,7 @@ dependencies {
   implementation(libs.kotlin.logging)
 
   implementation(project(mapOf("path" to ":api-schema")))
+  implementation(project(":core"))
 }
 
 tasks {

@@ -6,6 +6,7 @@ data class LocationConfig(val ktReferenceServerConfig: String)
 
 data class Config(
   val sep24: Sep24,
+  val sep31: Sep31,
 )
 
 data class Sep24(
@@ -20,3 +21,9 @@ data class Sep24(
 ) {
   val keyPair: KeyPair? = if (custodyEnabled) null else KeyPair.fromSecretSeed(secret)
 }
+
+data class Sep31(
+  val distributionWallet: String,
+  val distributionWalletMemo: String,
+  val distributionWalletMemoType: String
+)
