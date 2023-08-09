@@ -37,7 +37,6 @@ import org.stellar.anchor.api.exception.SepException;
 import org.stellar.anchor.api.exception.SepNotAuthorizedException;
 import org.stellar.anchor.api.exception.SepNotFoundException;
 import org.stellar.anchor.api.exception.SepValidationException;
-import org.stellar.anchor.api.exception.rpc.InvalidParamsException;
 import org.stellar.anchor.api.sep.AssetInfo;
 import org.stellar.anchor.api.sep.sep24.DepositTransactionResponse;
 import org.stellar.anchor.api.sep.sep24.GetTransactionRequest;
@@ -203,7 +202,7 @@ public class Sep24Service {
 
       if (!CustodyUtils.isMemoTypeSupported(
           custodyConfig.getType(), memoTypeString(memoType(memo)))) {
-        throw new InvalidParamsException(
+        throw new SepValidationException(
             String.format(
                 "Memo type[%s] is not supported for custody type[%s]",
                 memoTypeString(memoType(memo)), custodyConfig.getType()));
@@ -218,7 +217,7 @@ public class Sep24Service {
 
       if (!CustodyUtils.isMemoTypeSupported(
           custodyConfig.getType(), memoTypeString(memoType(refundMemo)))) {
-        throw new InvalidParamsException(
+        throw new SepValidationException(
             String.format(
                 "Refund memo type[%s] is not supported for custody type[%s]",
                 memoTypeString(memoType(refundMemo)), custodyConfig.getType()));
