@@ -67,4 +67,22 @@ class AnchorReferenceServerClient(val endpoint: Url) {
       }
     }
   }
+
+  /**
+   * ATTENTION: this function is used for testing purposes only.
+   *
+   * <p>This endpoint is used to simulate SEP-31 flow
+   */
+  suspend fun sep31Receive(transactionId: String) {
+    val response =
+      client.post {
+        url {
+          this.protocol = endpoint.protocol
+          host = endpoint.host
+          port = endpoint.port
+          encodedPath = "/sep31/submit/$transactionId"
+        }
+      }
+    System.out.println("Response: " + response)
+  }
 }

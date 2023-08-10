@@ -1,4 +1,4 @@
-package org.stellar.reference.sep31
+package org.stellar.reference.service.sep31
 
 import java.math.BigDecimal
 import java.math.RoundingMode.HALF_DOWN
@@ -145,7 +145,7 @@ class RateService(private val quoteRepo: QuoteRepo) {
         "stellar:JPYC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP"
 
       private val hardcodedPrices =
-        mapOf<Pair<String, String>, String>(
+        mapOf(
           Pair(fiatUSD, stellarUSDCtest) to "1.02",
           Pair(stellarUSDCtest, fiatUSD) to "1.05",
           Pair(fiatUSD, stellarCircleUSDCtest) to "1.02",

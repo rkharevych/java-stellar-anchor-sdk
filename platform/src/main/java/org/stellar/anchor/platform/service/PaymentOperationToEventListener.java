@@ -13,7 +13,6 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Objects;
 import org.apache.commons.codec.DecoderException;
 import org.stellar.anchor.api.exception.AnchorException;
 import org.stellar.anchor.api.sep.SepTransactionStatus;
@@ -47,11 +46,11 @@ public class PaymentOperationToEventListener implements PaymentListener {
   @Override
   public void onReceived(ObservedPayment payment) throws IOException {
     // Check if payment is connected to a transaction
-    if (Objects.toString(payment.getTransactionHash(), "").isEmpty()
-        || Objects.toString(payment.getTransactionMemo(), "").isEmpty()) {
-      traceF("Ignore the payment {} is not connected to a transaction.", payment.getId());
-      return;
-    }
+    //    if (Objects.toString(payment.getTransactionHash(), "").isEmpty()
+    //        || Objects.toString(payment.getTransactionMemo(), "").isEmpty()) {
+    //      traceF("Ignore the payment {} is not connected to a transaction.", payment.getId());
+    //      return;
+    //    }
 
     // Check if the payment contains the expected asset type
     if (!List.of("credit_alphanum4", "credit_alphanum12", "native")
@@ -76,8 +75,7 @@ public class PaymentOperationToEventListener implements PaymentListener {
     // Find a transaction matching the memo, assumes transactions are unique to account+memo
     JdbcSep31Transaction sep31Txn = null;
     try {
-      sep31Txn =
-          sep31TransactionStore.findByStellarAccountIdAndMemo(payment.getSourceAccount(), memo);
+      sep31Txn = sep31TransactionStore.findByStellarAccountIdAndMemo(payment.getTo(), memo);
     } catch (Exception ex) {
       errorEx(ex);
     }

@@ -70,7 +70,7 @@ open class AbstractIntegrationTest(private val config: TestConfig) {
     custodyApiTests = CustodyApiTests(config, toml, jwt)
     sep24E2eTests = Sep24End2EndTest(config, jwt)
     sep24CustodyE2eTests = Sep24CustodyEnd2EndTests(config, jwt)
-    sep24ActionsE2eTests = Sep24ActionsEnd2EndTests(config, jwt)
+    sep24ActionsE2eTests = Sep24ActionsEnd2EndTests(config, toml, jwt)
     sep24CustodyActionsE2eTests = Sep24CustodyActionsEnd2EndTests(config, jwt)
     eventProcessingServerTests = EventProcessingServerTests(config, toml, jwt)
   }

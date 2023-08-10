@@ -344,6 +344,8 @@ public class Sep31Service {
     }
 
     txn.setStellarAccountId(depositInfo.getStellarAddress());
+    System.out.println("Deposit info: " + txn.getStellarAccountId());
+    System.out.println("Deposit info: " + depositInfo.getMemo());
     txn.setStellarMemo(depositInfo.getMemo());
     txn.setStellarMemoType(isEmpty(depositInfo.getMemoType()) ? "none" : depositInfo.getMemoType());
   }

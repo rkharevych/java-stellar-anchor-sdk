@@ -1,4 +1,4 @@
-package org.stellar.reference.sep31
+package org.stellar.reference.service.sep31
 
 import java.util.*
 import mu.KotlinLogging

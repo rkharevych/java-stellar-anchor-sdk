@@ -1,15 +1,16 @@
-package org.stellar.reference.sep24
+package org.stellar.reference.service.sep24
 
 import java.math.BigDecimal
 import java.math.RoundingMode
 import mu.KotlinLogging
 import org.stellar.reference.data.*
+import org.stellar.reference.service.SepHelper
 import org.stellar.sdk.responses.operations.PaymentOperationResponse
 
 private val log = KotlinLogging.logger {}
 
 class DepositService(private val cfg: Config) {
-  val sep24 = Sep24Helper(cfg)
+  private val sepHelper = SepHelper(cfg)
 
   suspend fun processDeposit(
     transactionId: String,
@@ -20,19 +21,19 @@ class DepositService(private val cfg: Config) {
     memoType: String?
   ) {
     try {
-      var transaction = sep24.getTransaction(transactionId)
+      var transaction = sepHelper.getTransaction(transactionId)
       log.info { "Transaction found $transaction" }
 
       // 2. Wait for user to submit a transfer (e.g. Bank transfer)
       initiateTransfer(transactionId, amount, asset)
 
-      transaction = sep24.getTransaction(transactionId)
+      transaction = sepHelper.getTransaction(transactionId)
       log.info { "Transaction status changed: $transaction" }
 
       // 4. Notify user transaction is being processed
       notifyTransactionProcessed(transactionId)
 
-      transaction = sep24.getTransaction(transactionId)
+      transaction = sepHelper.getTransaction(transactionId)
       log.info { "Transaction status changed: $transaction" }
 
       if (cfg.sep24.custodyEnabled) {
@@ -40,13 +41,13 @@ class DepositService(private val cfg: Config) {
         sendCustodyStellarTransaction(transactionId)
 
         // 6. Wait for Stellar transaction
-        sep24.waitStellarTransaction(transactionId, "completed")
+        sepHelper.waitStellarTransaction(transactionId, "completed")
 
         // 7. Finalize custody Stellar anchor transaction
         finalizeCustodyStellarTransaction(transactionId)
       } else {
         // 5. Sign and send transaction
-        val txHash = sep24.sendStellarTransaction(account, asset, amount, memo, memoType)
+        val txHash = sepHelper.sendStellarTransaction(account, asset, amount, memo, memoType)
 
         // 6. Finalize Stellar anchor transaction
         finalizeStellarTransaction(transactionId, txHash, asset, amount)
@@ -70,7 +71,7 @@ class DepositService(private val cfg: Config) {
     val stellarAsset = "stellar:$asset"
 
     if (cfg.sep24.rpcActionsEnabled) {
-      sep24.rpcAction(
+      sepHelper.rpcAction(
         "request_offchain_funds",
         RequestOffchainFundsRequest(
           transactionId = transactionId,
@@ -82,7 +83,7 @@ class DepositService(private val cfg: Config) {
         )
       )
     } else {
-      sep24.patchTransaction(
+      sepHelper.patchTransaction(
         PatchTransactionTransaction(
           transactionId,
           status = "pending_user_transfer_start",
@@ -97,7 +98,7 @@ class DepositService(private val cfg: Config) {
 
   private suspend fun notifyTransactionProcessed(transactionId: String) {
     if (cfg.sep24.rpcActionsEnabled) {
-      sep24.rpcAction(
+      sepHelper.rpcAction(
         "notify_offchain_funds_received",
         NotifyOffchainFundsReceivedRequest(
           transactionId = transactionId,
@@ -105,12 +106,12 @@ class DepositService(private val cfg: Config) {
         )
       )
     } else {
-      sep24.patchTransaction(
+      sepHelper.patchTransaction(
         transactionId,
         "pending_anchor",
         "funds received, transaction is being processed"
       )
-      sep24.patchTransaction(
+      sepHelper.patchTransaction(
         transactionId,
         "pending_stellar",
         "funds received, transaction is being processed"
@@ -120,15 +121,18 @@ class DepositService(private val cfg: Config) {
 
   private suspend fun sendCustodyStellarTransaction(transactionId: String) {
     if (cfg.sep24.rpcActionsEnabled) {
-      sep24.rpcAction("do_stellar_payment", DoStellarPaymentRequest(transactionId = transactionId))
+      sepHelper.rpcAction(
+        "do_stellar_payment",
+        DoStellarPaymentRequest(transactionId = transactionId)
+      )
     } else {
-      sep24.sendCustodyStellarTransaction(transactionId)
+      sepHelper.sendCustodyStellarTransaction(transactionId)
     }
   }
 
   private suspend fun finalizeCustodyStellarTransaction(transactionId: String) {
     if (!cfg.sep24.rpcActionsEnabled) {
-      sep24.patchTransaction(
+      sepHelper.patchTransaction(
         PatchTransactionTransaction(transactionId, "completed", message = "completed")
       )
     }
@@ -141,7 +145,7 @@ class DepositService(private val cfg: Config) {
     amount: BigDecimal
   ) {
     if (cfg.sep24.rpcActionsEnabled) {
-      sep24.rpcAction(
+      sepHelper.rpcAction(
         "notify_onchain_funds_sent",
         NotifyOnchainFundsSentRequest(
           transactionId = transactionId,
@@ -150,7 +154,7 @@ class DepositService(private val cfg: Config) {
       )
     } else {
       val operationId: Long =
-        sep24.server
+        sepHelper.server
           .operations()
           .forTransaction(stellarTransactionId)
           .execute()
@@ -159,7 +163,7 @@ class DepositService(private val cfg: Config) {
           .first()
           .id
 
-      sep24.patchTransaction(
+      sepHelper.patchTransaction(
         PatchTransactionTransaction(
           transactionId,
           "completed",
@@ -184,12 +188,12 @@ class DepositService(private val cfg: Config) {
 
   private suspend fun failTransaction(transactionId: String, message: String?) {
     if (cfg.sep24.rpcActionsEnabled) {
-      sep24.rpcAction(
+      sepHelper.rpcAction(
         "notify_transaction_error",
         NotifyTransactionErrorRequest(transactionId = transactionId, message = message)
       )
     } else {
-      sep24.patchTransaction(transactionId, "error", message)
+      sepHelper.patchTransaction(transactionId, "error", message)
     }
   }
 

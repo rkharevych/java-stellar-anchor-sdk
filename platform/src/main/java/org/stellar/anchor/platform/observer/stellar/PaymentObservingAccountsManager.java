@@ -34,6 +34,7 @@ public class PaymentObservingAccountsManager {
       ObservingAccount oa =
           new ObservingAccount(
               account.getAccount(), account.getLastObserved(), AccountType.TRANSIENT);
+      System.out.println("Inserting: " + oa.account + " " + oa.type);
       upsert(oa);
     }
 

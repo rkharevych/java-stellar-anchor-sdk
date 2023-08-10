@@ -1,4 +1,4 @@
-package org.stellar.reference.sep31
+package org.stellar.reference.service.sep31
 
 import org.stellar.anchor.util.MathHelper.decimal
 import org.stellar.reference.ClientException

@@ -13,10 +13,10 @@ import mu.KotlinLogging
 import org.stellar.reference.ClientException
 import org.stellar.reference.NotFoundException
 import org.stellar.reference.data.ErrorResponse
-import org.stellar.reference.sep31.CustomerService
-import org.stellar.reference.sep31.FeeService
-import org.stellar.reference.sep31.RateService
-import org.stellar.reference.sep31.UniqueAddressService
+import org.stellar.reference.service.sep31.CustomerService
+import org.stellar.reference.service.sep31.FeeService
+import org.stellar.reference.service.sep31.RateService
+import org.stellar.reference.service.sep31.UniqueAddressService
 
 private val log = KotlinLogging.logger {}
 
