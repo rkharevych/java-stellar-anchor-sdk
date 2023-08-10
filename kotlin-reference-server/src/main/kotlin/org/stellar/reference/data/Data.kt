@@ -181,16 +181,16 @@ data class Customer(
 
 @Serializable
 data class GetFeeRequest(
-  @SerialName("send_asset") val sendAsset: String?,
-  @SerialName("receive_asset") val receiveAsset: String?,
-  @SerialName("send_amount") val sendAmount: String?,
-  @SerialName("receive_amount") val receiveAmount: String?,
-  @SerialName("client_id") val clientId: String?,
-  @SerialName("sender_id") val senderId: String?,
-  @SerialName("receiver_id") val receiverId: String?,
+  @SerialName("send_asset") val sendAsset: String? = null,
+  @SerialName("receive_asset") val receiveAsset: String? = null,
+  @SerialName("send_amount") val sendAmount: String? = null,
+  @SerialName("receive_amount") val receiveAmount: String? = null,
+  @SerialName("client_id") val clientId: String? = null,
+  @SerialName("sender_id") val senderId: String? = null,
+  @SerialName("receiver_id") val receiverId: String? = null
 )
 
-@Serializable data class GetFeeResponse(val amount: Amount)
+@Serializable data class GetFeeResponse(val fee: Amount)
 
 @Serializable
 data class GetUniqueAddressResponse(@SerialName("unique_address") val uniqueAddress: UniqueAddress)
@@ -204,12 +204,12 @@ data class UniqueAddress(
 
 @Serializable
 data class GetCustomerRequest(
-  val id: String?,
-  val account: String,
-  val memo: String,
-  @SerialName("memo_type") val memoType: String,
-  val type: String,
-  val lang: String,
+  val id: String? = null,
+  val account: String? = null,
+  val memo: String? = null,
+  @SerialName("memo_type") val memoType: String? = null,
+  val type: String? = null,
+  val lang: String? = null
 )
 
 @Serializable
@@ -241,62 +241,62 @@ data class ProvidedCustomerField(
 
 @Serializable
 data class PutCustomerRequest(
-  val id: String?,
-  val account: String,
-  val memo: String,
-  @SerialName("memo_type") val memoType: String,
-  val type: String,
-  @SerialName("first_name") val firstName: String?,
-  @SerialName("last_name") val lastName: String?,
-  @SerialName("additional_name") val additionalName: String,
-  @SerialName("address_country_code") val addressCountryCode: String,
-  @SerialName("state_or_province") val stateOrProvince: String,
-  val city: String,
-  @SerialName("postal_code") val postalCode: String,
-  val address: String,
-  @SerialName("mobile_number") val mobileNumber: String,
-  @SerialName("email_address") val emailAddress: String?,
-  @SerialName("birth_date") val birthDate: String,
-  @SerialName("birth_place") val birthPlace: String,
-  @SerialName("birth_country_code") val birthCountryCode: String,
-  @SerialName("bank_account_number") val bankAccountNumber: String?,
-  @SerialName("bank_account_type") val bankAccountType: String?,
-  @SerialName("bank_number") val bankNumber: String?,
-  @SerialName("bank_phone_number") val bankPhoneNumber: String,
-  @SerialName("bank_branch_number") val bankBranchNumber: String,
-  @SerialName("clabe_number") val clabeNumber: String?,
-  @SerialName("cbu_number") val cbuNumber: String,
-  @SerialName("cbu_alias") val cbuAlias: String,
-  @SerialName("tax_id") val taxId: String,
-  @SerialName("tax_id_name") val taxIdName: String,
-  val occupation: String,
-  @SerialName("employer_name") val employerName: String,
-  @SerialName("employer_address") val employerAddress: String,
-  @SerialName("language_code") val languageCode: String,
-  @SerialName("id_type") val idType: String,
-  @SerialName("id_country_code") val idCountryCode: String,
-  @Contextual @SerialName("id_issue_date") val idIssueDate: Instant,
-  @Contextual @SerialName("id_expiration_date") val idExpirationDate: Instant,
-  @SerialName("id_number") val idNumber: String,
-  @SerialName("ip_address") val ip_address: String,
-  val sex: String
+  val id: String? = null,
+  val account: String? = null,
+  val memo: String? = null,
+  @SerialName("memo_type") val memoType: String? = null,
+  val type: String? = null,
+  @SerialName("first_name") val firstName: String? = null,
+  @SerialName("last_name") val lastName: String? = null,
+  @SerialName("additional_name") val additionalName: String? = null,
+  @SerialName("address_country_code") val addressCountryCode: String? = null,
+  @SerialName("state_or_province") val stateOrProvince: String? = null,
+  val city: String? = null,
+  @SerialName("postal_code") val postalCode: String? = null,
+  val address: String? = null,
+  @SerialName("mobile_number") val mobileNumber: String? = null,
+  @SerialName("email_address") val emailAddress: String? = null,
+  @SerialName("birth_date") val birthDate: String? = null,
+  @SerialName("birth_place") val birthPlace: String? = null,
+  @SerialName("birth_country_code") val birthCountryCode: String? = null,
+  @SerialName("bank_account_number") val bankAccountNumber: String? = null,
+  @SerialName("bank_account_type") val bankAccountType: String? = null,
+  @SerialName("bank_number") val bankNumber: String? = null,
+  @SerialName("bank_phone_number") val bankPhoneNumber: String? = null,
+  @SerialName("bank_branch_number") val bankBranchNumber: String? = null,
+  @SerialName("clabe_number") val clabeNumber: String? = null,
+  @SerialName("cbu_number") val cbuNumber: String? = null,
+  @SerialName("cbu_alias") val cbuAlias: String? = null,
+  @SerialName("tax_id") val taxId: String? = null,
+  @SerialName("tax_id_name") val taxIdName: String? = null,
+  val occupation: String? = null,
+  @SerialName("employer_name") val employerName: String? = null,
+  @SerialName("employer_address") val employerAddress: String? = null,
+  @SerialName("language_code") val languageCode: String? = null,
+  @SerialName("id_type") val idType: String? = null,
+  @SerialName("id_country_code") val idCountryCode: String? = null,
+  @Contextual @SerialName("id_issue_date") val idIssueDate: Instant? = null,
+  @Contextual @SerialName("id_expiration_date") val idExpirationDate: Instant? = null,
+  @SerialName("id_number") val idNumber: String? = null,
+  @SerialName("ip_address") val ip_address: String? = null,
+  val sex: String? = null
 )
 
 @Serializable data class PutCustomerResponse(val id: String)
 
 @Serializable
 data class GetRateRequest(
-  val type: RateType?,
-  @SerialName("sell_asset") val sellAsset: String?,
-  @SerialName("sell_amount") val sellAmount: String?,
-  @SerialName("sell_delivery_method") val sellDeliveryMethod: String,
-  @SerialName("buy_asset") val buyAsset: String?,
-  @SerialName("buy_amount") val buyAmount: String?,
-  @SerialName("buy_delivery_method") val buyDeliveryMethod: String,
-  @SerialName("country_code") val countryCode: String,
-  @SerialName("expire_after") val expireAfter: String?,
-  @SerialName("client_id") val clientId: String,
-  val id: String?
+  val type: RateType? = null,
+  @SerialName("sell_asset") val sellAsset: String? = null,
+  @SerialName("sell_amount") val sellAmount: String? = null,
+  @SerialName("sell_delivery_method") val sellDeliveryMethod: String? = null,
+  @SerialName("buy_asset") val buyAsset: String? = null,
+  @SerialName("buy_amount") val buyAmount: String? = null,
+  @SerialName("buy_delivery_method") val buyDeliveryMethod: String? = null,
+  @SerialName("country_code") val countryCode: String? = null,
+  @SerialName("expire_after") val expireAfter: String? = null,
+  @SerialName("client_id") val clientId: String? = null,
+  val id: String? = null
 )
 
 @Serializable
@@ -331,7 +331,7 @@ data class Rate(
   val price: String?,
   @SerialName("sell_amount") val sellAmount: String?,
   @SerialName("buy_amount") val buyAmount: String?,
-  @Contextual @SerialName("expires_at") val expiresAt: Instant?,
+  @SerialName("expires_at") val expiresAt: String?,
   val fee: RateFee?,
 )
 
@@ -358,7 +358,7 @@ data class RateFee(
     details!!.add(feeDetail)
   }
 
-  private suspend fun formatAmount(amount: BigDecimal): String? {
+  private fun formatAmount(amount: BigDecimal): String? {
     val decimals = 4
     val newAmount = amount.setScale(decimals, RoundingMode.HALF_DOWN)
     val df = DecimalFormat()
@@ -381,20 +381,20 @@ data class Quote(
   @Contextual val createdAt: Instant,
   val sellAsset: String?,
   var sellAmount: String?,
-  val sellDeliveryMethod: String,
+  val sellDeliveryMethod: String?,
   val buyAsset: String?,
   var buyAmount: String?,
-  val buyDeliveryMethod: String,
-  val countryCode: String,
+  val buyDeliveryMethod: String?,
+  val countryCode: String?,
 
   // used to store the stellar account
-  val clientId: String,
+  val clientId: String?,
   val transactionId: String?,
   var fee: RateFee?
 ) {
 
   companion object {
-    suspend fun of(request: GetRateRequest): Quote {
+    fun of(request: GetRateRequest): Quote {
       return Quote(
         UUID.randomUUID().toString(),
         null,
@@ -415,8 +415,8 @@ data class Quote(
     }
   }
 
-  suspend fun toGetRateResponse(): GetRateResponse {
-    return GetRateResponse(Rate(id, price, sellAmount, buyAmount, expiresAt, fee))
+  fun toGetRateResponse(): GetRateResponse {
+    return GetRateResponse(Rate(id, price, sellAmount, buyAmount, expiresAt?.toString(), fee))
   }
 }
 

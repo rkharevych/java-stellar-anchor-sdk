@@ -1,5 +1,6 @@
 package org.stellar.reference.plugins
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -11,7 +12,7 @@ import kotlinx.coroutines.launch
 import mu.KotlinLogging
 import org.stellar.reference.ClientException
 import org.stellar.reference.data.DepositRequest
-import org.stellar.reference.data.ErrorResponse
+import org.stellar.reference.data.MessageResponse
 import org.stellar.reference.data.Success
 import org.stellar.reference.data.WithdrawalRequest
 import org.stellar.reference.jwt.JwtDecoder
@@ -52,11 +53,12 @@ fun Route.sep24(
         call.respond(Success(transactionId))
       } catch (e: ClientException) {
         log.error(e)
-        call.respond(ErrorResponse(e.message!!))
+        call.respond(HttpStatusCode.BadRequest, MessageResponse(e.message!!))
       } catch (e: Exception) {
         log.error(e)
         call.respond(
-          ErrorResponse("Error occurred: ${e.message}"),
+          HttpStatusCode.InternalServerError,
+          MessageResponse("Error occurred: ${e.message}"),
         )
       }
     }
@@ -136,16 +138,17 @@ fun Route.sep24(
           }
           else ->
             call.respond(
-              ErrorResponse("The only supported operations are \"deposit\" or \"withdrawal\""),
+              MessageResponse("The only supported operations are \"deposit\" or \"withdrawal\""),
             )
         }
       } catch (e: ClientException) {
         log.error(e)
-        call.respond(ErrorResponse(e.message!!))
+        call.respond(HttpStatusCode.BadRequest, MessageResponse(e.message!!))
       } catch (e: Exception) {
         log.error(e)
         call.respond(
-          ErrorResponse("Error occurred: ${e.message}"),
+          HttpStatusCode.InternalServerError,
+          MessageResponse("Error occurred: ${e.message}"),
         )
       }
     }
@@ -170,11 +173,12 @@ fun Route.sep24(
         call.respond(transaction)
       } catch (e: ClientException) {
         log.error(e)
-        call.respond(ErrorResponse(e.message!!))
+        call.respond(HttpStatusCode.BadRequest, MessageResponse(e.message!!))
       } catch (e: Exception) {
         log.error(e)
         call.respond(
-          ErrorResponse("Error occurred: ${e.message}"),
+          HttpStatusCode.InternalServerError,
+          MessageResponse("Error occurred: ${e.message}"),
         )
       }
     }

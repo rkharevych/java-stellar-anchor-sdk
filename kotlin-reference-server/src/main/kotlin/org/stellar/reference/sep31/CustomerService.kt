@@ -1,21 +1,25 @@
 package org.stellar.reference.sep31
 
 import java.util.*
+import mu.KotlinLogging
 import org.stellar.reference.ClientException
+import org.stellar.reference.NotFoundException
 import org.stellar.reference.data.*
 import org.stellar.reference.data.Sep31Type.SEP31_RECEIVER
 import org.stellar.reference.data.Status.ACCEPTED
 import org.stellar.reference.data.Status.NEEDS_INFO
 import org.stellar.reference.repo.CustomerRepo
 
+private val log = KotlinLogging.logger {}
+
 class CustomerService(private val customerRepo: CustomerRepo) {
 
-  suspend fun getCustomer(request: PutCustomerRequest): GetCustomerResponse {
+  fun getCustomer(request: GetCustomerRequest): GetCustomerResponse {
     val maybeCustomer: Customer?
     if (request.id != null) {
       maybeCustomer = customerRepo.findById(request.id)
       if (maybeCustomer == null) {
-        throw ClientException(String.format("customer for 'id' '%s' not found", request.id))
+        throw NotFoundException(String.format("customer for 'id' '%s' not found", request.id))
       }
     } else {
       maybeCustomer =
@@ -28,6 +32,7 @@ class CustomerService(private val customerRepo: CustomerRepo) {
         return createNewCustomerResponse(request.type)
       }
     }
+    log.info { "Getting $maybeCustomer" }
     return createExistingCustomerResponse(maybeCustomer, request.type)
   }
 
@@ -37,7 +42,7 @@ class CustomerService(private val customerRepo: CustomerRepo) {
    * @param request the PUT customer request.
    * @return the PUT Customer response.
    */
-  suspend fun upsertCustomer(request: PutCustomerRequest): PutCustomerResponse {
+  fun upsertCustomer(request: PutCustomerRequest): PutCustomerResponse {
     val customer: Customer
     if (request.id != null) {
       customer = getCustomerByRequestId(request.id)
@@ -59,7 +64,7 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     return PutCustomerResponse(customer.id!!)
   }
 
-  suspend fun delete(customerId: String) {
+  fun delete(customerId: String) {
     customerRepo.deleteById(customerId)
   }
 
@@ -72,25 +77,25 @@ class CustomerService(private val customerRepo: CustomerRepo) {
    * @param customerId is the id of the customer whose `clabe_number` will be deleted.
    * @throws ClientException if the user was not found.
    */
-  suspend fun invalidateCustomerClabe(customerId: String) {
+  fun invalidateCustomerClabe(customerId: String) {
     val maybeCustomer =
       customerRepo.findById(customerId)
-        ?: throw ClientException(String.format("customer for 'id' '%s' not found", customerId))
+        ?: throw NotFoundException(String.format("customer for 'id' '%s' not found", customerId))
 
     maybeCustomer.clabeNumber = null
     customerRepo.save(maybeCustomer)
   }
 
-  private suspend fun getCustomerByRequestId(id: String): Customer {
+  private fun getCustomerByRequestId(id: String): Customer {
     val maybeCustomer = customerRepo.findById(id)
     val notFoundMessage = String.format("customer for 'id' '%s' not found", id)
     if (maybeCustomer == null) {
-      throw ClientException(notFoundMessage)
+      throw NotFoundException(notFoundMessage)
     }
     return maybeCustomer
   }
 
-  private suspend fun createNewCustomerResponse(type: String): GetCustomerResponse {
+  private fun createNewCustomerResponse(type: String?): GetCustomerResponse {
     val fields: MutableMap<String, CustomerField> = getBasicFields()
     // type can be null.
     if (SEP31_RECEIVER.toString() == type) {
@@ -99,9 +104,9 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     return GetCustomerResponse(null, NEEDS_INFO.toString(), fields, null, null)
   }
 
-  private suspend fun createExistingCustomerResponse(
+  private fun createExistingCustomerResponse(
     customer: Customer,
-    type: String
+    type: String?
   ): GetCustomerResponse {
     val providedFields = mutableMapOf<String, ProvidedCustomerField>()
     val fields = mutableMapOf<String, CustomerField>()
@@ -147,14 +152,14 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     return GetCustomerResponse(customer.id, status.toString(), fields, providedFields, null)
   }
 
-  private suspend fun createCustomer(request: PutCustomerRequest): Customer {
+  private fun createCustomer(request: PutCustomerRequest): Customer {
     val customer = Customer(null, null, null, null, null, null, null, null, null, null, null)
     customer.id = UUID.randomUUID().toString()
     updateCustomer(customer, request)
     return customer
   }
 
-  private suspend fun updateCustomer(customer: Customer, request: PutCustomerRequest) {
+  private fun updateCustomer(customer: Customer, request: PutCustomerRequest) {
     customer.stellarAccount = request.account
     customer.memo = request.memo
     customer.memoType = request.memoType
@@ -183,7 +188,7 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     customerRepo.save(customer)
   }
 
-  private suspend fun getBasicFields(): MutableMap<String, CustomerField> {
+  private fun getBasicFields(): MutableMap<String, CustomerField> {
     val map = mutableMapOf<String, CustomerField>()
     map["first_name"] = createFirstNameField()
     map["last_name"] = createLastNameField()
@@ -191,7 +196,7 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     return map
   }
 
-  private suspend fun getSep31ReceiverFields(type: String): Map<String, CustomerField> {
+  private fun getSep31ReceiverFields(type: String): Map<String, CustomerField> {
     val map = mutableMapOf<String, CustomerField>()
     map["bank_account_number"] = createBankAccountNumberField(type)
     map["bank_account_type"] = createBankAccountTypeField(type)

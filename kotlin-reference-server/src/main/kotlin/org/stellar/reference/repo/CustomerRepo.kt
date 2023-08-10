@@ -20,9 +20,9 @@ class CustomerRepo {
   }
 
   fun findByStellarAccountAndMemoAndMemoType(
-    stellarAccount: String,
-    memo: String,
-    memoType: String
+    stellarAccount: String?,
+    memo: String?,
+    memoType: String?
   ): Customer? {
     return data.values
       .stream()

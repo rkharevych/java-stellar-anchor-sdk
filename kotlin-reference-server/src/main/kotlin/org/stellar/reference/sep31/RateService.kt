@@ -10,6 +10,7 @@ import org.stellar.anchor.util.MathHelper.decimal
 import org.stellar.anchor.util.MathHelper.formatAmount
 import org.stellar.anchor.util.SepHelper.validateAmount
 import org.stellar.reference.ClientException
+import org.stellar.reference.NotFoundException
 import org.stellar.reference.data.*
 import org.stellar.reference.data.RateType.FIRM
 import org.stellar.reference.data.RateType.INDICATIVE
@@ -20,7 +21,7 @@ class RateService(private val quoteRepo: QuoteRepo) {
 
   suspend fun getRate(request: GetRateRequest): GetRateResponse {
     if (request.id != null) {
-      val quote = quoteRepo.findById(request.id) ?: throw ClientException("Quote not found.")
+      val quote = quoteRepo.findById(request.id) ?: throw NotFoundException("Quote not found.")
       return quote.toGetRateResponse()
     }
 

@@ -16,3 +16,8 @@ sep24:
   custodyEnabled: false
   # Indicates, that RPC actions should be used instead of PATCH /transactions endpoint
   rpcActionsEnabled: true
+sep31:
+  # The Stellar wallet to which the customer will send the Stellar assets.
+  distributionWallet: GBN4NNCDGJO4XW4KQU3CBIESUJWFVBUZPOKUZHT7W7WRB7CWOA7BXVQF
+  distributionWalletMemo:
+  distributionWalletMemoType:

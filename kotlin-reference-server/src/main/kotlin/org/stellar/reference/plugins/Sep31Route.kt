@@ -1,17 +1,18 @@
 package org.stellar.reference.plugins
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.logging.*
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import mu.KotlinLogging
-import org.stellar.anchor.util.GsonUtils
 import org.stellar.reference.ClientException
+import org.stellar.reference.NotFoundException
 import org.stellar.reference.data.ErrorResponse
-import org.stellar.reference.data.GetFeeRequest
-import org.stellar.reference.data.GetRateRequest
-import org.stellar.reference.data.PutCustomerRequest
 import org.stellar.reference.sep31.CustomerService
 import org.stellar.reference.sep31.FeeService
 import org.stellar.reference.sep31.RateService
@@ -25,20 +26,26 @@ fun Route.sep31(
   customerService: CustomerService,
   rateService: RateService
 ) {
-  val gson = GsonUtils.getInstance()
 
   route("/fee") {
     get {
       try {
         call.respond(
-          feeService.getFee(gson.fromJson(call.receive<String>(), GetFeeRequest::class.java))
+          feeService.getFee(
+            Json.decodeFromString(
+              Json.encodeToString(
+                call.request.queryParameters.entries().associate { it.key to it.value.first() }
+              )
+            )
+          )
         )
       } catch (e: ClientException) {
         log.error(e)
-        call.respond(ErrorResponse(e.message!!))
+        call.respond(HttpStatusCode.BadRequest, ErrorResponse(e.message!!))
       } catch (e: Exception) {
         log.error(e)
         call.respond(
+          HttpStatusCode.InternalServerError,
           ErrorResponse("Error occurred: ${e.message}"),
         )
       }
@@ -53,10 +60,11 @@ fun Route.sep31(
         )
       } catch (e: ClientException) {
         log.error(e)
-        call.respond(ErrorResponse(e.message!!))
+        call.respond(HttpStatusCode.BadRequest, ErrorResponse(e.message!!))
       } catch (e: Exception) {
         log.error(e)
         call.respond(
+          HttpStatusCode.InternalServerError,
           ErrorResponse("Error occurred: ${e.message}"),
         )
       }
@@ -67,16 +75,24 @@ fun Route.sep31(
     get {
       try {
         call.respond(
-          customerService.upsertCustomer(
-            gson.fromJson(call.receive<String>(), PutCustomerRequest::class.java)
+          customerService.getCustomer(
+            Json.decodeFromString(
+              Json.encodeToString(
+                call.request.queryParameters.entries().associate { it.key to it.value.first() }
+              )
+            )
           )
         )
       } catch (e: ClientException) {
         log.error(e)
-        call.respond(ErrorResponse(e.message!!))
+        call.respond(HttpStatusCode.BadRequest, ErrorResponse(e.message!!))
+      } catch (e: NotFoundException) {
+        log.error(e)
+        call.respond(HttpStatusCode.NotFound, ErrorResponse(e.message!!))
       } catch (e: Exception) {
         log.error(e)
         call.respond(
+          HttpStatusCode.InternalServerError,
           ErrorResponse("Error occurred: ${e.message}"),
         )
       }
@@ -86,17 +102,17 @@ fun Route.sep31(
   route("/customer") {
     put {
       try {
-        call.respond(
-          customerService.getCustomer(
-            gson.fromJson(call.receive<String>(), PutCustomerRequest::class.java)
-          )
-        )
+        call.respond(customerService.upsertCustomer(call.receive()))
       } catch (e: ClientException) {
         log.error(e)
-        call.respond(ErrorResponse(e.message!!))
+        call.respond(HttpStatusCode.BadRequest, ErrorResponse(e.message!!))
+      } catch (e: NotFoundException) {
+        log.error(e)
+        call.respond(HttpStatusCode.NotFound, ErrorResponse(e.message!!))
       } catch (e: Exception) {
         log.error(e)
         call.respond(
+          HttpStatusCode.InternalServerError,
           ErrorResponse("Error occurred: ${e.message}"),
         )
       }
@@ -107,12 +123,14 @@ fun Route.sep31(
     delete {
       try {
         customerService.delete(call.parameters["id"]!!)
+        call.respond(HttpStatusCode.OK)
       } catch (e: ClientException) {
         log.error(e)
-        call.respond(ErrorResponse(e.message!!))
+        call.respond(HttpStatusCode.BadRequest, ErrorResponse(e.message!!))
       } catch (e: Exception) {
         log.error(e)
         call.respond(
+          HttpStatusCode.InternalServerError,
           ErrorResponse("Error occurred: ${e.message}"),
         )
       }
@@ -123,14 +141,24 @@ fun Route.sep31(
     get {
       try {
         call.respond(
-          rateService.getRate(gson.fromJson(call.receive<String>(), GetRateRequest::class.java))
+          rateService.getRate(
+            Json.decodeFromString(
+              Json.encodeToString(
+                call.request.queryParameters.entries().associate { it.key to it.value.first() }
+              )
+            )
+          )
         )
       } catch (e: ClientException) {
         log.error(e)
-        call.respond(ErrorResponse(e.message!!))
+        call.respond(HttpStatusCode.BadRequest, ErrorResponse(e.message!!))
+      } catch (e: NotFoundException) {
+        log.error(e)
+        call.respond(HttpStatusCode.NotFound, ErrorResponse(e.message!!))
       } catch (e: Exception) {
         log.error(e)
         call.respond(
+          HttpStatusCode.InternalServerError,
           ErrorResponse("Error occurred: ${e.message}"),
         )
       }
