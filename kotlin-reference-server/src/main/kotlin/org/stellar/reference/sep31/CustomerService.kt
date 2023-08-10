@@ -3,9 +3,9 @@ package org.stellar.reference.sep31
 import java.util.*
 import org.stellar.reference.ClientException
 import org.stellar.reference.data.*
+import org.stellar.reference.data.Sep31Type.SEP31_RECEIVER
 import org.stellar.reference.data.Status.ACCEPTED
 import org.stellar.reference.data.Status.NEEDS_INFO
-import org.stellar.reference.data.Type.SEP31_RECEIVER
 import org.stellar.reference.repo.CustomerRepo
 
 class CustomerService(private val customerRepo: CustomerRepo) {
@@ -200,19 +200,19 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     return map
   }
 
-  private suspend fun createFirstNameField(): CustomerField {
+  private fun createFirstNameField(): CustomerField {
     return CustomerField("string", "first name of the customer", null, false)
   }
 
-  private suspend fun createLastNameField(): CustomerField {
+  private fun createLastNameField(): CustomerField {
     return CustomerField("string", "last name of the customer", null, false)
   }
 
-  private suspend fun createEmailField(): CustomerField {
+  private fun createEmailField(): CustomerField {
     return CustomerField("string", "email of the customer", null, false)
   }
 
-  private suspend fun createBankAccountNumberField(type: String): CustomerField {
+  private fun createBankAccountNumberField(type: String): CustomerField {
     return CustomerField(
       "string",
       "bank account number of the customer",
@@ -221,7 +221,7 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     )
   }
 
-  private suspend fun createBankAccountTypeField(type: String): CustomerField {
+  private fun createBankAccountTypeField(type: String): CustomerField {
     return CustomerField(
       "string",
       "bank account type of the customer",
@@ -230,7 +230,7 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     )
   }
 
-  private suspend fun createBankNumberField(type: String): CustomerField {
+  private fun createBankNumberField(type: String): CustomerField {
     return CustomerField(
       "string",
       "bank routing number of the customer",
@@ -239,7 +239,7 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     )
   }
 
-  private suspend fun createClabeNumberField(type: String): CustomerField {
+  private fun createClabeNumberField(type: String): CustomerField {
     return CustomerField(
       "string",
       "Bank account number for Mexico",
@@ -248,7 +248,7 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     )
   }
 
-  private suspend fun createFirstNameProvidedField(): ProvidedCustomerField {
+  private fun createFirstNameProvidedField(): ProvidedCustomerField {
     return ProvidedCustomerField(
       "string",
       "first name of the customer",
@@ -259,7 +259,7 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     )
   }
 
-  private suspend fun createLastNameProvidedField(): ProvidedCustomerField {
+  private fun createLastNameProvidedField(): ProvidedCustomerField {
     return ProvidedCustomerField(
       "string",
       "last name of the customer",
@@ -270,7 +270,7 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     )
   }
 
-  public suspend fun createEmailProvidedField(): ProvidedCustomerField {
+  private fun createEmailProvidedField(): ProvidedCustomerField {
     return ProvidedCustomerField(
       "string",
       "email of the customer",
@@ -281,7 +281,7 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     )
   }
 
-  public suspend fun createBankAccountNumberProvidedField(): ProvidedCustomerField {
+  private fun createBankAccountNumberProvidedField(): ProvidedCustomerField {
     return ProvidedCustomerField(
       "string",
       "bank account number of the customer",
@@ -292,7 +292,7 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     )
   }
 
-  public suspend fun createBankAccountTypeProvidedField(): ProvidedCustomerField {
+  private fun createBankAccountTypeProvidedField(): ProvidedCustomerField {
     return ProvidedCustomerField(
       "string",
       "bank account type of the customer",
@@ -303,7 +303,7 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     )
   }
 
-  public suspend fun createBankNumberProvidedField(): ProvidedCustomerField {
+  private fun createBankNumberProvidedField(): ProvidedCustomerField {
     return ProvidedCustomerField(
       "string",
       "bank routing number of the customer",
@@ -314,7 +314,7 @@ class CustomerService(private val customerRepo: CustomerRepo) {
     )
   }
 
-  public suspend fun createClabeNumberProvidedField(): ProvidedCustomerField {
+  private fun createClabeNumberProvidedField(): ProvidedCustomerField {
     return ProvidedCustomerField(
       "string",
       "bank account number for Mexico",

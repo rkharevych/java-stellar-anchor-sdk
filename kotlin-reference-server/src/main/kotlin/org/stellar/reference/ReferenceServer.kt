@@ -13,12 +13,16 @@ import mu.KotlinLogging
 import org.stellar.reference.data.Config
 import org.stellar.reference.data.LocationConfig
 import org.stellar.reference.event.EventService
-import org.stellar.reference.plugins.event
-import org.stellar.reference.plugins.sep24
-import org.stellar.reference.plugins.testSep24
+import org.stellar.reference.plugins.*
+import org.stellar.reference.repo.CustomerRepo
+import org.stellar.reference.repo.QuoteRepo
 import org.stellar.reference.sep24.DepositService
 import org.stellar.reference.sep24.Sep24Helper
 import org.stellar.reference.sep24.WithdrawalService
+import org.stellar.reference.sep31.CustomerService
+import org.stellar.reference.sep31.FeeService
+import org.stellar.reference.sep31.RateService
+import org.stellar.reference.sep31.UniqueAddressService
 
 val log = KotlinLogging.logger {}
 lateinit var referenceKotlinSever: NettyApplicationEngine
@@ -77,12 +81,20 @@ fun Application.configureRouting(cfg: Config) {
     val depositService = DepositService(cfg)
     val withdrawalService = WithdrawalService(cfg)
     val eventService = EventService()
+    val customerRepo = CustomerRepo()
+    val quoteRepo = QuoteRepo()
+    val feeService = FeeService(customerRepo)
+    val uniqueAddressService = UniqueAddressService(cfg)
+    val customerService = CustomerService(customerRepo)
+    val rateService = RateService(quoteRepo)
 
     sep24(helper, depositService, withdrawalService, cfg.sep24.interactiveJwtKey)
+    sep31(feeService, uniqueAddressService, customerService, rateService)
     event(eventService)
 
     if (cfg.sep24.enableTest) {
       testSep24(helper, depositService, withdrawalService, cfg.sep24.interactiveJwtKey)
+      testSep31(customerService)
     }
   }
 }

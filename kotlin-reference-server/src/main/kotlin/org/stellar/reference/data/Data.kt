@@ -1,7 +1,11 @@
 package org.stellar.reference.data
 
 import io.ktor.server.application.*
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.time.Instant
+import java.util.*
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -280,9 +284,154 @@ data class PutCustomerRequest(
 
 @Serializable data class PutCustomerResponse(val id: String)
 
-enum class Type(private val type: String) {
+@Serializable
+data class GetRateRequest(
+  val type: RateType?,
+  @SerialName("sell_asset") val sellAsset: String?,
+  @SerialName("sell_amount") val sellAmount: String?,
+  @SerialName("sell_delivery_method") val sellDeliveryMethod: String,
+  @SerialName("buy_asset") val buyAsset: String?,
+  @SerialName("buy_amount") val buyAmount: String?,
+  @SerialName("buy_delivery_method") val buyDeliveryMethod: String,
+  @SerialName("country_code") val countryCode: String,
+  @SerialName("expire_after") val expireAfter: String?,
+  @SerialName("client_id") val clientId: String,
+  val id: String?
+)
+
+@Serializable
+data class GetRateResponse(val rate: Rate) {
+  companion object {
+    /**
+     * Builds the response expected for the INDICATIVE_PRICE type.
+     *
+     * @param price the price between sell asset and buy asset, without including fees, where
+     *   `sell_amount - fee = price * buy_amount` or `sell_amount = price * (buy_amount + fee)` must
+     *   be true.
+     * @param sellAmount the amount of sell_asset the anchor would expect to receive.
+     * @param buyAmount the amount of buy_asset the anchor would trade for the sell_amount of
+     *   sell_asset.
+     * @param fee an object describing the fee used to calculate the conversion price.
+     * @return a GET /rate response with price, total_price, sell_amount, buy_amount and fee.
+     */
+    fun indicativePrice(
+      price: String?,
+      sellAmount: String?,
+      buyAmount: String?,
+      fee: RateFee?
+    ): GetRateResponse {
+      return GetRateResponse(Rate(null, price, sellAmount, buyAmount, null, fee))
+    }
+  }
+}
+
+@Serializable
+data class Rate(
+  val id: String?,
+  val price: String?,
+  @SerialName("sell_amount") val sellAmount: String?,
+  @SerialName("buy_amount") val buyAmount: String?,
+  @Contextual @SerialName("expires_at") val expiresAt: Instant?,
+  val fee: RateFee?,
+)
+
+@Serializable
+data class RateFee(
+  var total: String?,
+  val asset: String,
+  var details: MutableList<RateFeeDetail>?
+) {
+  suspend fun addFeeDetail(feeDetail: RateFeeDetail?) {
+    if (feeDetail?.amount == null) {
+      return
+    }
+    val detailAmount = BigDecimal(feeDetail.amount)
+    if (detailAmount.compareTo(BigDecimal.ZERO) == 0) {
+      return
+    }
+    var total = BigDecimal(total)
+    total = total.add(detailAmount)
+    this.total = formatAmount(total)
+    if (details == null) {
+      details = mutableListOf()
+    }
+    details!!.add(feeDetail)
+  }
+
+  private suspend fun formatAmount(amount: BigDecimal): String? {
+    val decimals = 4
+    val newAmount = amount.setScale(decimals, RoundingMode.HALF_DOWN)
+    val df = DecimalFormat()
+    df.maximumFractionDigits = decimals
+    df.minimumFractionDigits = 2
+    df.isGroupingUsed = false
+    return df.format(newAmount)
+  }
+}
+
+@Serializable
+data class RateFeeDetail(val name: String, val description: String, val amount: String?)
+
+@Serializable
+data class Quote(
+  val id: String,
+  var price: String?,
+  var totalPrice: String?,
+  @Contextual var expiresAt: Instant?,
+  @Contextual val createdAt: Instant,
+  val sellAsset: String?,
+  var sellAmount: String?,
+  val sellDeliveryMethod: String,
+  val buyAsset: String?,
+  var buyAmount: String?,
+  val buyDeliveryMethod: String,
+  val countryCode: String,
+
+  // used to store the stellar account
+  val clientId: String,
+  val transactionId: String?,
+  var fee: RateFee?
+) {
+
+  companion object {
+    suspend fun of(request: GetRateRequest): Quote {
+      return Quote(
+        UUID.randomUUID().toString(),
+        null,
+        null,
+        null,
+        Instant.now(),
+        request.sellAsset,
+        request.sellAmount,
+        request.sellDeliveryMethod,
+        request.buyAsset,
+        request.buyAmount,
+        request.buyDeliveryMethod,
+        request.countryCode,
+        request.clientId,
+        null,
+        null
+      )
+    }
+  }
+
+  suspend fun toGetRateResponse(): GetRateResponse {
+    return GetRateResponse(Rate(id, price, sellAmount, buyAmount, expiresAt, fee))
+  }
+}
+
+enum class Sep31Type(private val type: String) {
   SEP31_SENDER("sep31-sender"),
   SEP31_RECEIVER("sep31-receiver");
+
+  override fun toString(): String {
+    return type
+  }
+}
+
+enum class RateType(private val type: String) {
+  @SerialName("indicative") INDICATIVE("indicative"),
+  @SerialName("firm") FIRM("firm");
 
   override fun toString(): String {
     return type

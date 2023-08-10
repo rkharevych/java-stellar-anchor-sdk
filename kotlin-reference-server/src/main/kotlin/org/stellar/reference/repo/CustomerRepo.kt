@@ -1,19 +1,25 @@
 package org.stellar.reference.repo
 
+import org.stellar.anchor.util.GsonUtils
 import org.stellar.reference.data.Customer
 
-class CustomerRepo() {
-  val data = mutableMapOf<String, Customer>()
+class CustomerRepo {
+  private val data = mutableMapOf<String, Customer>()
+  private val gson = GsonUtils.getInstance()
 
-  suspend fun save(customer: Customer) {
-    data[customer.id!!] = customer
+  fun save(customer: Customer) {
+    data[customer.id!!] = gson.fromJson(gson.toJson(customer), Customer::class.java)
   }
 
-  suspend fun findById(id: String): Customer? {
-    return data[id]
+  fun findById(id: String): Customer? {
+    return if (data[id] != null) {
+      gson.fromJson(gson.toJson(data[id]), Customer::class.java)
+    } else {
+      null
+    }
   }
 
-  suspend fun findByStellarAccountAndMemoAndMemoType(
+  fun findByStellarAccountAndMemoAndMemoType(
     stellarAccount: String,
     memo: String,
     memoType: String
@@ -22,10 +28,11 @@ class CustomerRepo() {
       .stream()
       .filter { it.stellarAccount == stellarAccount && it.memo == memo && it.memoType == memoType }
       .findFirst()
+      .map { gson.fromJson(gson.toJson(it), Customer::class.java) }
       .orElse(null)
   }
 
-  suspend fun deleteById(id: String) {
+  fun deleteById(id: String) {
     data.remove(id)
   }
 }

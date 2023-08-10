@@ -10,9 +10,11 @@ import org.stellar.anchor.util.GsonUtils
 import org.stellar.reference.ClientException
 import org.stellar.reference.data.ErrorResponse
 import org.stellar.reference.data.GetFeeRequest
+import org.stellar.reference.data.GetRateRequest
 import org.stellar.reference.data.PutCustomerRequest
 import org.stellar.reference.sep31.CustomerService
 import org.stellar.reference.sep31.FeeService
+import org.stellar.reference.sep31.RateService
 import org.stellar.reference.sep31.UniqueAddressService
 
 private val log = KotlinLogging.logger {}
@@ -20,7 +22,8 @@ private val log = KotlinLogging.logger {}
 fun Route.sep31(
   feeService: FeeService,
   uniqueAddressService: UniqueAddressService,
-  customerService: CustomerService
+  customerService: CustomerService,
+  rateService: RateService
 ) {
   val gson = GsonUtils.getInstance()
 
@@ -104,6 +107,24 @@ fun Route.sep31(
     delete {
       try {
         customerService.delete(call.parameters["id"]!!)
+      } catch (e: ClientException) {
+        log.error(e)
+        call.respond(ErrorResponse(e.message!!))
+      } catch (e: Exception) {
+        log.error(e)
+        call.respond(
+          ErrorResponse("Error occurred: ${e.message}"),
+        )
+      }
+    }
+  }
+
+  route("/rate") {
+    get {
+      try {
+        call.respond(
+          rateService.getRate(gson.fromJson(call.receive<String>(), GetRateRequest::class.java))
+        )
       } catch (e: ClientException) {
         log.error(e)
         call.respond(ErrorResponse(e.message!!))

@@ -11,7 +11,7 @@ class FeeService(private val customerRepo: CustomerRepo) {
   private val feePercent = decimal("0.02") // fixed 2% fee.
   private val feeFixed = decimal("0.1")
 
-  suspend fun getFee(request: GetFeeRequest): GetFeeResponse {
+  fun getFee(request: GetFeeRequest): GetFeeResponse {
     if (request.sendAsset == null) {
       throw ClientException("send_asset cannot be empty.")
     }
