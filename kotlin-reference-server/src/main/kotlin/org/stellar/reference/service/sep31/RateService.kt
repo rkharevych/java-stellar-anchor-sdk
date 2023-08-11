@@ -143,6 +143,7 @@ class RateService(private val quoteRepo: QuoteRepo) {
         "stellar:USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN"
       private const val stellarJPYC =
         "stellar:JPYC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP"
+      private const val stellarNative = "stellar:native"
 
       private val hardcodedPrices =
         mapOf(
@@ -159,7 +160,9 @@ class RateService(private val quoteRepo: QuoteRepo) {
           Pair(stellarCircleUSDCtest, stellarJPYC) to "0.0084",
           Pair(stellarJPYC, stellarCircleUSDCtest) to "120",
           Pair(stellarUSDCprod, stellarJPYC) to "0.0084",
-          Pair(stellarJPYC, stellarUSDCprod) to "120"
+          Pair(stellarJPYC, stellarUSDCprod) to "120",
+          Pair(fiatUSD, stellarNative) to "1.02",
+          Pair(stellarNative, fiatUSD) to "1.05",
         )
 
       /*

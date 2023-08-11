@@ -46,8 +46,8 @@ fun Route.testSep31(
     }
   }
 
-  // Starts SEP-31 transaction receive flow
-  route("/sep31/submit/{transactionId}") {
+  // Starts processing of SEP-31 transaction receive flow
+  route("/sep31/transactions/{transactionId}/process") {
     post {
       try {
         val transactionId =

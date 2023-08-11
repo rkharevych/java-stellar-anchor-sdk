@@ -113,7 +113,6 @@ public class RestCustomerIntegration implements CustomerIntegration {
     String responseContent = getContent(response);
 
     if (!List.of(HttpStatus.OK.value(), HttpStatus.NO_CONTENT.value()).contains(response.code())) {
-      System.out.println("Error: " + responseContent + " . Url: " + url);
       throw httpError(responseContent, response.code(), gson);
     }
   }

@@ -28,6 +28,7 @@ class AnchorReferenceServerClient(val endpoint: Url) {
 
     return gson.fromJson(response.body<String>(), SendEventResponse::class.java)
   }
+
   suspend fun getEvents(txnId: String? = null): List<AnchorEvent> {
     val response =
       client.get {
@@ -73,16 +74,14 @@ class AnchorReferenceServerClient(val endpoint: Url) {
    *
    * <p>This endpoint is used to simulate SEP-31 flow
    */
-  suspend fun sep31Receive(transactionId: String) {
-    val response =
-      client.post {
-        url {
-          this.protocol = endpoint.protocol
-          host = endpoint.host
-          port = endpoint.port
-          encodedPath = "/sep31/submit/$transactionId"
-        }
+  suspend fun processSep31Receive(transactionId: String) {
+    client.post {
+      url {
+        this.protocol = endpoint.protocol
+        host = endpoint.host
+        port = endpoint.port
+        encodedPath = "/sep31/transactions/$transactionId/process"
       }
-    System.out.println("Response: " + response)
+    }
   }
 }

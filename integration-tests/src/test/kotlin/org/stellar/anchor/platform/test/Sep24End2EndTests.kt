@@ -113,7 +113,6 @@ class Sep24End2EndTest(config: TestConfig, val jwt: String) {
         expectedEvent.transaction.updatedAt = actualEvent.transaction.updatedAt
         expectedEvent.transaction.stellarTransactions = actualEvent.transaction.stellarTransactions
         expectedEvent.transaction.memo = actualEvent.transaction.memo
-        expectedEvent.transaction.amountExpected.asset = asset.id
         actualEvent.transaction.amountIn?.let {
           expectedEvent.transaction.amountIn.amount = actualEvent.transaction.amountIn.amount
           expectedEvent.transaction.amountIn.asset = asset.sep38
