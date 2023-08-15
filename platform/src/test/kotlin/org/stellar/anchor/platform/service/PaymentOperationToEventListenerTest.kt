@@ -85,13 +85,12 @@ class PaymentOperationToEventListenerTest {
     p.transactionMemo = "my_memo_2"
     p.assetType = "credit_alphanum4"
     p.sourceAccount = "GBT7YF22QEVUDUTBUIS2OWLTZMP7Z4J4ON6DCSHR3JXYTZRKCPXVV5J5"
+    p.to = "GBZ4HPSEHKEEJ6MOZBSVV2B3LE27EZLV6LJY55G47V7BGBODWUXQM364"
     p.amount = "1"
     p.assetName = "FOO:GBZ4HPSEHKEEJ6MOZBSVV2B3LE27EZLV6LJY55G47V7BGBODWUXQM364"
     var slotMemo = slot<String>()
-    val slotAccount = slot<String>()
-    every {
-      sep31TransactionStore.findByStellarAccountIdAndMemo(capture(slotAccount), capture(slotMemo))
-    } returns null
+    var slotAccount = slot<String>()
+    every { sep31TransactionStore.findByStellarAccountIdAndMemo(any(), any()) } returns null
     val sep24Txn = JdbcSep24Transaction()
     sep24Txn.amountIn = "1"
     every {
@@ -100,7 +99,7 @@ class PaymentOperationToEventListenerTest {
     paymentOperationToEventListener.onReceived(p)
     verify(exactly = 1) {
       sep31TransactionStore.findByStellarAccountIdAndMemo(
-        "GBT7YF22QEVUDUTBUIS2OWLTZMP7Z4J4ON6DCSHR3JXYTZRKCPXVV5J5",
+        "GBZ4HPSEHKEEJ6MOZBSVV2B3LE27EZLV6LJY55G47V7BGBODWUXQM364",
         "my_memo_2"
       )
     }
@@ -109,6 +108,7 @@ class PaymentOperationToEventListenerTest {
 
     // If findByStellarAccountIdAndMemo throws an exception, we shouldn't trigger an event
     slotMemo = slot()
+    slotAccount = slot()
     p.transactionMemo = "my_memo_3"
     every {
       sep31TransactionStore.findByStellarAccountIdAndMemo(capture(slotAccount), capture(slotMemo))
@@ -116,15 +116,16 @@ class PaymentOperationToEventListenerTest {
     paymentOperationToEventListener.onReceived(p)
     verify(exactly = 1) {
       sep31TransactionStore.findByStellarAccountIdAndMemo(
-        "GBT7YF22QEVUDUTBUIS2OWLTZMP7Z4J4ON6DCSHR3JXYTZRKCPXVV5J5",
+        "GBZ4HPSEHKEEJ6MOZBSVV2B3LE27EZLV6LJY55G47V7BGBODWUXQM364",
         "my_memo_3"
       )
     }
     assertEquals("my_memo_3", slotMemo.captured)
-    assertEquals("GBT7YF22QEVUDUTBUIS2OWLTZMP7Z4J4ON6DCSHR3JXYTZRKCPXVV5J5", slotAccount.captured)
+    assertEquals("GBZ4HPSEHKEEJ6MOZBSVV2B3LE27EZLV6LJY55G47V7BGBODWUXQM364", slotAccount.captured)
 
     // If asset code from the fetched tx is different, don't trigger event
     slotMemo = slot()
+    slotAccount = slot()
     p.transactionMemo = "my_memo_4"
     p.assetCode = "FOO"
     val sep31TxMock = JdbcSep31Transaction()
@@ -136,12 +137,12 @@ class PaymentOperationToEventListenerTest {
     paymentOperationToEventListener.onReceived(p)
     verify(exactly = 1) {
       sep31TransactionStore.findByStellarAccountIdAndMemo(
-        "GBT7YF22QEVUDUTBUIS2OWLTZMP7Z4J4ON6DCSHR3JXYTZRKCPXVV5J5",
+        "GBZ4HPSEHKEEJ6MOZBSVV2B3LE27EZLV6LJY55G47V7BGBODWUXQM364",
         "my_memo_4"
       )
     }
     assertEquals("my_memo_4", slotMemo.captured)
-    assertEquals("GBT7YF22QEVUDUTBUIS2OWLTZMP7Z4J4ON6DCSHR3JXYTZRKCPXVV5J5", slotAccount.captured)
+    assertEquals("GBZ4HPSEHKEEJ6MOZBSVV2B3LE27EZLV6LJY55G47V7BGBODWUXQM364", slotAccount.captured)
   }
 
   @ParameterizedTest
@@ -238,7 +239,7 @@ class PaymentOperationToEventListenerTest {
     paymentOperationToEventListener.onReceived(p)
     verify(exactly = 1) {
       sep31TransactionStore.findByStellarAccountIdAndMemo(
-        "GCJKWN7ELKOXLDHJTOU4TZOEJQL7TYVVTQFR676MPHHUIUDAHUA7QGJ4",
+        "GBZ4HPSEHKEEJ6MOZBSVV2B3LE27EZLV6LJY55G47V7BGBODWUXQM364",
         "OWI3OGYwZmEtOTNmOS00MTk4LThkOTMtZTc2ZmQwODQ="
       )
     }
@@ -308,7 +309,7 @@ class PaymentOperationToEventListenerTest {
     val sep31TxCopy = gson.fromJson(gson.toJson(sep31TxMock), JdbcSep31Transaction::class.java)
     every {
       sep31TransactionStore.findByStellarAccountIdAndMemo(
-        "GCJKWN7ELKOXLDHJTOU4TZOEJQL7TYVVTQFR676MPHHUIUDAHUA7QGJ4",
+        "GBZ4HPSEHKEEJ6MOZBSVV2B3LE27EZLV6LJY55G47V7BGBODWUXQM364",
         capture(slotMemo)
       )
     } returns sep31TxCopy
@@ -331,7 +332,7 @@ class PaymentOperationToEventListenerTest {
     paymentOperationToEventListener.onReceived(p)
     verify(exactly = 1) {
       sep31TransactionStore.findByStellarAccountIdAndMemo(
-        "GCJKWN7ELKOXLDHJTOU4TZOEJQL7TYVVTQFR676MPHHUIUDAHUA7QGJ4",
+        "GBZ4HPSEHKEEJ6MOZBSVV2B3LE27EZLV6LJY55G47V7BGBODWUXQM364",
         "OWI3OGYwZmEtOTNmOS00MTk4LThkOTMtZTc2ZmQwODQ="
       )
     }
