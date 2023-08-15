@@ -35,7 +35,7 @@ import org.stellar.walletsdk.asset.StellarAssetId
 import org.stellar.walletsdk.horizon.SigningKeyPair
 import org.stellar.walletsdk.horizon.sign
 
-class Sep31CustodyActionsEnd2EndTests(
+class Sep31ActionsEnd2EndTests(
   config: TestConfig,
   val toml: Sep1Helper.TomlContent,
   val jwt: String
@@ -218,7 +218,7 @@ class Sep31CustodyActionsEnd2EndTests(
 
   companion object {
     private val USDC =
-      IssuedAssetId("USDC", "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5")
+      IssuedAssetId("USDC", "GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP")
     private const val FIAT_USD = "iso4217:USD"
   }
 
@@ -406,7 +406,7 @@ class Sep31CustodyActionsEnd2EndTests(
     """{
     "amount": "5",
     "asset_code": "USDC",
-    "asset_issuer": "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+    "asset_issuer": "GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
     "receiver_id": "MOCK_RECEIVER_ID",
     "sender_id": "MOCK_SENDER_ID",
     "fields": {

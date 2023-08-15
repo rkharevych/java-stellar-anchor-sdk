@@ -370,10 +370,8 @@ public class StellarPaymentObserver implements HealthCheckable {
       savePagingToken(operationResponse.getPagingToken());
     } else {
       try {
-        info("Here1: " + observedPayment.getTo());
         if (paymentObservingAccountsManager.lookupAndUpdate(observedPayment.getTo())) {
           for (PaymentListener listener : paymentListeners) {
-            info("Here2: " + observedPayment.getTo());
             listener.onReceived(observedPayment);
           }
         }

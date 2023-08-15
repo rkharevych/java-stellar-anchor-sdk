@@ -27,4 +27,10 @@ class AnchorPlatformActionsEnd2EndTest :
   fun runSep24Test() {
     singleton.sep24ActionsE2eTests.testAll()
   }
+
+  @Test
+  @Order(11)
+  fun runSep31Test() {
+    singleton.sep31ActionsE2eTests.testAll()
+  }
 }
