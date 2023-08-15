@@ -5,7 +5,6 @@ plugins {
   alias(libs.plugins.kotlin.jvm)
   alias(libs.plugins.kotlin.serialization)
   alias(libs.plugins.ktor)
-  alias(libs.plugins.spring.boot)
 }
 
 dependencies {

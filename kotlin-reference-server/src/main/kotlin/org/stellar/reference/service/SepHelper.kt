@@ -28,7 +28,7 @@ class SepHelper(private val cfg: Config) {
     install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
   }
 
-  val baseUrl = cfg.sep24.anchorPlatformUrl
+  val baseUrl = cfg.anchorPlatformUrl
 
   val server = Server(cfg.sep24.horizonUrl)
 
@@ -156,9 +156,6 @@ class SepHelper(private val cfg: Config) {
       log.info { "Waiting for funds transfer" }
 
       val transaction = getTransaction(txId)
-
-      val currentStatus = transaction.status
-      log.info { "current status: currentStatus" }
 
       if (transaction.status == status) {
         log.info { "Funds transfer was successful" }

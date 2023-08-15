@@ -22,7 +22,6 @@ class H2Database(
         "jdbc:h2:mem:$dbName;DB_CLOSE_DELAY=-1;USER=$username;PASSWORD=$password"
       )
 
-    // Initialize database using SQL script
     val script = this::class.java.getResource(scriptPath)?.readText()
     val statement: Statement = connection.createStatement()
     statement.execute(script)

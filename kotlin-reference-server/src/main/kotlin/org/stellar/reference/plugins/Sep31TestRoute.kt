@@ -19,11 +19,7 @@ import org.stellar.reference.service.sep31.ReceiveService
 
 private val log = KotlinLogging.logger {}
 
-fun Route.testSep31(
-  customerService: CustomerService,
-  receiveService: ReceiveService,
-  jwtKey: String
-) {
+fun Route.testSep31(customerService: CustomerService, receiveService: ReceiveService) {
 
   route("/invalidate_clabe/{id}") {
     get {
@@ -46,15 +42,12 @@ fun Route.testSep31(
     }
   }
 
-  // Starts processing of SEP-31 transaction receive flow
   route("/sep31/transactions/{transactionId}/process") {
     post {
       try {
         val transactionId =
           call.parameters["transactionId"]
             ?: throw ClientException("Missing transactionId parameter")
-
-        log.info("Starting /sep31/submit for transaction $transactionId")
 
         // Run receive processing asynchronously
         CoroutineScope(Job()).launch { receiveService.processReceive(transactionId) }

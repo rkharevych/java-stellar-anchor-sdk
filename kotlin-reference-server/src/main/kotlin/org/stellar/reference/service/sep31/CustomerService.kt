@@ -1,7 +1,6 @@
 package org.stellar.reference.service.sep31
 
 import java.util.*
-import mu.KotlinLogging
 import org.stellar.reference.ClientException
 import org.stellar.reference.NotFoundException
 import org.stellar.reference.data.*
@@ -10,8 +9,6 @@ import org.stellar.reference.data.Status.ACCEPTED
 import org.stellar.reference.data.Status.NEEDS_INFO
 import org.stellar.reference.model.Customer
 import org.stellar.reference.repo.CustomerRepo
-
-private val log = KotlinLogging.logger {}
 
 class CustomerService(private val customerRepo: CustomerRepo) {
 
@@ -33,7 +30,6 @@ class CustomerService(private val customerRepo: CustomerRepo) {
         return createNewCustomerResponse(request.type)
       }
     }
-    log.info { "Getting $maybeCustomer" }
     return createExistingCustomerResponse(maybeCustomer, request.type)
   }
 

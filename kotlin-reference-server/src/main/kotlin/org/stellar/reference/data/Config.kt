@@ -1,25 +1,22 @@
 package org.stellar.reference.data
 
+import org.stellar.anchor.util.StringHelper.isNotEmpty
 import org.stellar.sdk.KeyPair
 
 data class LocationConfig(val ktReferenceServerConfig: String)
 
 data class Config(
-  val sep24: Sep24,
-  val sep31: Sep31,
-)
-
-data class Sep24(
   val port: Int,
   val enableTest: Boolean,
   val anchorPlatformUrl: String,
-  val horizonUrl: String,
-  val secret: String,
-  val interactiveJwtKey: String,
   val custodyEnabled: Boolean,
-  val rpcActionsEnabled: Boolean
-) {
-  val keyPair: KeyPair? = if (custodyEnabled) null else KeyPair.fromSecretSeed(secret)
+  val rpcActionsEnabled: Boolean,
+  val sep24: Sep24,
+  val sep31: Sep31
+)
+
+data class Sep24(val horizonUrl: String, val secret: String, val interactiveJwtKey: String) {
+  val keyPair: KeyPair? = if (isNotEmpty(secret)) KeyPair.fromSecretSeed(secret) else null
 }
 
 data class Sep31(

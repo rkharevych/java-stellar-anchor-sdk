@@ -85,7 +85,6 @@ public class TransactionHelper {
         .externalTransactionId(txn.getExternalTransactionId())
         .customers(txn.getCustomers())
         .creator(txn.getCreator())
-        .memo(txn.getStellarMemo())
         .build();
   }
 

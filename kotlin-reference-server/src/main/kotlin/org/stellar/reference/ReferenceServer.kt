@@ -37,7 +37,7 @@ fun startServer(envMap: Map<String, String>?, wait: Boolean) {
 
   // start server
   referenceKotlinSever =
-    embeddedServer(Netty, port = cfg.sep24.port) {
+    embeddedServer(Netty, port = cfg.port) {
         install(ContentNegotiation) { json() }
         configureRouting(cfg)
         install(CORS) {
@@ -92,9 +92,9 @@ fun Application.configureRouting(cfg: Config) {
     sep31(feeService, uniqueAddressService, customerService, rateService)
     event(eventService)
 
-    if (cfg.sep24.enableTest) {
+    if (cfg.enableTest) {
       testSep24(helper, depositService, withdrawalService, cfg.sep24.interactiveJwtKey)
-      testSep31(customerService, receiveService, cfg.sep24.interactiveJwtKey)
+      testSep31(customerService, receiveService)
     }
   }
 }
