@@ -8,6 +8,7 @@ import org.stellar.reference.data.*
 import org.stellar.reference.data.Sep31Type.SEP31_RECEIVER
 import org.stellar.reference.data.Status.ACCEPTED
 import org.stellar.reference.data.Status.NEEDS_INFO
+import org.stellar.reference.model.Customer
 import org.stellar.reference.repo.CustomerRepo
 
 private val log = KotlinLogging.logger {}

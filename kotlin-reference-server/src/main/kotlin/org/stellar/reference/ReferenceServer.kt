@@ -20,6 +20,7 @@ import org.stellar.reference.service.SepHelper
 import org.stellar.reference.service.sep24.DepositService
 import org.stellar.reference.service.sep24.WithdrawalService
 import org.stellar.reference.service.sep31.*
+import org.stellar.reference.util.H2Database
 
 val log = KotlinLogging.logger {}
 lateinit var referenceKotlinSever: NettyApplicationEngine
@@ -78,8 +79,9 @@ fun Application.configureRouting(cfg: Config) {
     val depositService = DepositService(cfg)
     val withdrawalService = WithdrawalService(cfg)
     val eventService = EventService()
-    val customerRepo = CustomerRepo()
-    val quoteRepo = QuoteRepo()
+    val database = H2Database()
+    val customerRepo = CustomerRepo(database)
+    val quoteRepo = QuoteRepo(database)
     val feeService = FeeService(customerRepo)
     val uniqueAddressService = UniqueAddressService(cfg)
     val customerService = CustomerService(customerRepo)

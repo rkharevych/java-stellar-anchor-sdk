@@ -165,21 +165,6 @@ data class StellarTransaction(
 @Serializable data class StellarPayment(val id: String, val amount: Amount)
 
 @Serializable
-data class Customer(
-  var id: String?,
-  @SerialName("stellar_account") var stellarAccount: String?,
-  var memo: String?,
-  @SerialName("memo_type") var memoType: String?,
-  @SerialName("first_name") var firstName: String?,
-  @SerialName("last_name") var lastName: String?,
-  var email: String?,
-  @SerialName("bank_account_number") var bankAccountNumber: String?,
-  @SerialName("bank_account_type") var bankAccountType: String?,
-  @SerialName("bank_routing_number") var bankRoutingNumber: String?,
-  @SerialName("clabe_number") var clabeNumber: String?
-)
-
-@Serializable
 data class GetFeeRequest(
   @SerialName("send_asset") val sendAsset: String? = null,
   @SerialName("receive_asset") val receiveAsset: String? = null,
@@ -371,54 +356,6 @@ data class RateFee(
 
 @Serializable
 data class RateFeeDetail(val name: String, val description: String, val amount: String?)
-
-@Serializable
-data class Quote(
-  val id: String,
-  var price: String?,
-  var totalPrice: String?,
-  @Contextual var expiresAt: Instant?,
-  @Contextual val createdAt: Instant,
-  val sellAsset: String?,
-  var sellAmount: String?,
-  val sellDeliveryMethod: String?,
-  val buyAsset: String?,
-  var buyAmount: String?,
-  val buyDeliveryMethod: String?,
-  val countryCode: String?,
-
-  // used to store the stellar account
-  val clientId: String?,
-  val transactionId: String?,
-  var fee: RateFee?
-) {
-
-  companion object {
-    fun of(request: GetRateRequest): Quote {
-      return Quote(
-        UUID.randomUUID().toString(),
-        null,
-        null,
-        null,
-        Instant.now(),
-        request.sellAsset,
-        request.sellAmount,
-        request.sellDeliveryMethod,
-        request.buyAsset,
-        request.buyAmount,
-        request.buyDeliveryMethod,
-        request.countryCode,
-        request.clientId,
-        null,
-        null
-      )
-    }
-  }
-
-  fun toGetRateResponse(): GetRateResponse {
-    return GetRateResponse(Rate(id, price, sellAmount, buyAmount, expiresAt?.toString(), fee))
-  }
-}
 
 enum class Sep31Type(private val type: String) {
   SEP31_SENDER("sep31-sender"),

@@ -14,6 +14,7 @@ import org.stellar.reference.NotFoundException
 import org.stellar.reference.data.*
 import org.stellar.reference.data.RateType.FIRM
 import org.stellar.reference.data.RateType.INDICATIVE
+import org.stellar.reference.model.Quote
 import org.stellar.reference.repo.QuoteRepo
 
 class RateService(private val quoteRepo: QuoteRepo) {
