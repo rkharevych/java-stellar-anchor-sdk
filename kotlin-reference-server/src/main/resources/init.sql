@@ -32,5 +32,6 @@ CREATE TABLE quote
     country_code VARCHAR(255),
     client_id VARCHAR(255),
     transaction_id VARCHAR(255),
-    fee VARCHAR(255)
+    fee VARCHAR(255),
+    CONSTRAINT pk_quote PRIMARY KEY (id)
 )
