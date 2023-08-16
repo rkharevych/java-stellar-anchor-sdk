@@ -26,8 +26,8 @@ import org.stellar.anchor.api.platform.PlatformTransactionData.Kind.WITHDRAWAL
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_31
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_38
-import org.stellar.anchor.api.rpc.action.AmountAssetRequest
-import org.stellar.anchor.api.rpc.action.NotifyRefundSentRequest
+import org.stellar.anchor.api.rpc.method.AmountAssetRequest
+import org.stellar.anchor.api.rpc.method.NotifyRefundSentRequest
 import org.stellar.anchor.api.sep.SepTransactionStatus.*
 import org.stellar.anchor.api.shared.Amount
 import org.stellar.anchor.api.shared.Customers
@@ -100,7 +100,7 @@ class NotifyRefundSentHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_refund_sent] is not supported. Status[pending_anchor], kind[null], protocol[38], funds received[false]",
+      "RPC method[notify_refund_sent] is not supported. Status[pending_anchor], kind[null], protocol[38], funds received[false]",
       ex.message
     )
 
@@ -122,7 +122,7 @@ class NotifyRefundSentHandlerTest {
 
     var ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_refund_sent] is not supported. Status[incomplete], kind[deposit], protocol[24], funds received[true]",
+      "RPC method[notify_refund_sent] is not supported. Status[incomplete], kind[deposit], protocol[24], funds received[true]",
       ex.message
     )
 
@@ -130,7 +130,7 @@ class NotifyRefundSentHandlerTest {
 
     ex = assertThrows { handler.handle(request) }
     assertEquals(
-      "Action[notify_refund_sent] is not supported. Status[incomplete], kind[withdrawal], protocol[24], funds received[true]",
+      "RPC method[notify_refund_sent] is not supported. Status[incomplete], kind[withdrawal], protocol[24], funds received[true]",
       ex.message
     )
 

@@ -21,7 +21,7 @@ import org.stellar.anchor.api.platform.PlatformTransactionData.Kind.DEPOSIT
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind.WITHDRAWAL
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_38
-import org.stellar.anchor.api.rpc.action.NotifyOffchainFundsAvailableRequest
+import org.stellar.anchor.api.rpc.method.NotifyOffchainFundsAvailableRequest
 import org.stellar.anchor.api.sep.SepTransactionStatus.*
 import org.stellar.anchor.api.shared.Amount
 import org.stellar.anchor.asset.AssetService
@@ -88,7 +88,7 @@ class NotifyOffchainFundsAvailableHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_offchain_funds_available] is not supported. Status[pending_anchor], kind[null], protocol[38], funds received[true]",
+      "RPC method[notify_offchain_funds_available] is not supported. Status[pending_anchor], kind[null], protocol[38], funds received[true]",
       ex.message
     )
 
@@ -110,7 +110,7 @@ class NotifyOffchainFundsAvailableHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_offchain_funds_available] is not supported. Status[pending_trust], kind[withdrawal], protocol[24], funds received[true]",
+      "RPC method[notify_offchain_funds_available] is not supported. Status[pending_trust], kind[withdrawal], protocol[24], funds received[true]",
       ex.message
     )
 
@@ -132,7 +132,7 @@ class NotifyOffchainFundsAvailableHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_offchain_funds_available] is not supported. Status[pending_anchor], kind[deposit], protocol[24], funds received[true]",
+      "RPC method[notify_offchain_funds_available] is not supported. Status[pending_anchor], kind[deposit], protocol[24], funds received[true]",
       ex.message
     )
 
@@ -153,7 +153,7 @@ class NotifyOffchainFundsAvailableHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_offchain_funds_available] is not supported. Status[pending_anchor], kind[withdrawal], protocol[24], funds received[false]",
+      "RPC method[notify_offchain_funds_available] is not supported. Status[pending_anchor], kind[withdrawal], protocol[24], funds received[false]",
       ex.message
     )
 

@@ -2,7 +2,7 @@ package org.stellar.anchor.platform.action;
 
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Kind.WITHDRAWAL;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24;
-import static org.stellar.anchor.api.rpc.action.ActionMethod.REQUEST_ONCHAIN_FUNDS;
+import static org.stellar.anchor.api.rpc.method.RpcMethod.REQUEST_ONCHAIN_FUNDS;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.INCOMPLETE;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_USR_TRANSFER_START;
@@ -19,9 +19,9 @@ import org.stellar.anchor.api.exception.rpc.InvalidParamsException;
 import org.stellar.anchor.api.exception.rpc.InvalidRequestException;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep;
-import org.stellar.anchor.api.rpc.action.ActionMethod;
-import org.stellar.anchor.api.rpc.action.AmountAssetRequest;
-import org.stellar.anchor.api.rpc.action.RequestOnchainFundsRequest;
+import org.stellar.anchor.api.rpc.method.AmountAssetRequest;
+import org.stellar.anchor.api.rpc.method.RequestOnchainFundsRequest;
+import org.stellar.anchor.api.rpc.method.RpcMethod;
 import org.stellar.anchor.api.sep.SepTransactionStatus;
 import org.stellar.anchor.api.shared.SepDepositInfo;
 import org.stellar.anchor.asset.AssetService;
@@ -39,7 +39,7 @@ import org.stellar.anchor.sep31.Sep31TransactionStore;
 import org.stellar.anchor.util.CustodyUtils;
 import org.stellar.sdk.Memo;
 
-public class RequestOnchainFundsHandler extends ActionHandler<RequestOnchainFundsRequest> {
+public class RequestOnchainFundsHandler extends RpcMethodHandler<RequestOnchainFundsRequest> {
 
   private final CustodyService custodyService;
   private final CustodyConfig custodyConfig;
@@ -144,7 +144,7 @@ public class RequestOnchainFundsHandler extends ActionHandler<RequestOnchainFund
   }
 
   @Override
-  public ActionMethod getActionType() {
+  public RpcMethod getRpcMethod() {
     return REQUEST_ONCHAIN_FUNDS;
   }
 
@@ -170,7 +170,7 @@ public class RequestOnchainFundsHandler extends ActionHandler<RequestOnchainFund
   }
 
   @Override
-  protected void updateTransactionWithAction(
+  protected void updateTransactionWithRpcMethod(
       JdbcSepTransaction txn, RequestOnchainFundsRequest request) throws AnchorException {
     if (request.getAmountIn() != null) {
       txn.setAmountIn(request.getAmountIn().getAmount());

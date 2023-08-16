@@ -1,7 +1,7 @@
 package org.stellar.anchor.platform.action;
 
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Kind.RECEIVE;
-import static org.stellar.anchor.api.rpc.action.ActionMethod.NOTIFY_REFUND_SENT;
+import static org.stellar.anchor.api.rpc.method.RpcMethod.NOTIFY_REFUND_SENT;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_EXTERNAL;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_RECEIVER;
@@ -20,9 +20,9 @@ import org.stellar.anchor.api.exception.rpc.InvalidParamsException;
 import org.stellar.anchor.api.exception.rpc.InvalidRequestException;
 import org.stellar.anchor.api.platform.PlatformTransactionData;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind;
-import org.stellar.anchor.api.rpc.action.ActionMethod;
-import org.stellar.anchor.api.rpc.action.AmountAssetRequest;
-import org.stellar.anchor.api.rpc.action.NotifyRefundSentRequest;
+import org.stellar.anchor.api.rpc.method.AmountAssetRequest;
+import org.stellar.anchor.api.rpc.method.NotifyRefundSentRequest;
+import org.stellar.anchor.api.rpc.method.RpcMethod;
 import org.stellar.anchor.api.sep.AssetInfo;
 import org.stellar.anchor.api.sep.SepTransactionStatus;
 import org.stellar.anchor.asset.AssetService;
@@ -43,7 +43,7 @@ import org.stellar.anchor.sep31.RefundPayment;
 import org.stellar.anchor.sep31.Sep31Refunds;
 import org.stellar.anchor.sep31.Sep31TransactionStore;
 
-public class NotifyRefundSentHandler extends ActionHandler<NotifyRefundSentRequest> {
+public class NotifyRefundSentHandler extends RpcMethodHandler<NotifyRefundSentRequest> {
 
   public NotifyRefundSentHandler(
       Sep24TransactionStore txn24Store,
@@ -86,7 +86,7 @@ public class NotifyRefundSentHandler extends ActionHandler<NotifyRefundSentReque
             throw new InvalidRequestException(
                 String.format(
                     "Multiple refunds aren't supported for kind[%s], protocol[%s] and action[%s]",
-                    RECEIVE, txn.getProtocol(), getActionType()));
+                    RECEIVE, txn.getProtocol(), getRpcMethod()));
           }
         }
     }
@@ -120,7 +120,7 @@ public class NotifyRefundSentHandler extends ActionHandler<NotifyRefundSentReque
   }
 
   @Override
-  public ActionMethod getActionType() {
+  public RpcMethod getRpcMethod() {
     return NOTIFY_REFUND_SENT;
   }
 
@@ -186,8 +186,8 @@ public class NotifyRefundSentHandler extends ActionHandler<NotifyRefundSentReque
       default:
         throw new InvalidRequestException(
             String.format(
-                "Action[%s] is not supported for protocol[%s]",
-                getActionType(), txn.getProtocol()));
+                "RPC method[%s] is not supported for protocol[%s]",
+                getRpcMethod(), txn.getProtocol()));
     }
 
     BigDecimal amountIn = decimal(txn.getAmountIn(), assetInfo);
@@ -231,7 +231,7 @@ public class NotifyRefundSentHandler extends ActionHandler<NotifyRefundSentReque
   }
 
   @Override
-  protected void updateTransactionWithAction(
+  protected void updateTransactionWithRpcMethod(
       JdbcSepTransaction txn, NotifyRefundSentRequest request) {
     AssetInfo assetInfo = assetService.getAsset(getAssetCode(txn.getAmountInAsset()));
     NotifyRefundSentRequest.Refund refund = request.getRefund();

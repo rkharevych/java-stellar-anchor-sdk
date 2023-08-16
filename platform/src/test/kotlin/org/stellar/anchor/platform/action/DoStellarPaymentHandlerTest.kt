@@ -20,7 +20,7 @@ import org.stellar.anchor.api.platform.GetTransactionResponse
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind.DEPOSIT
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_38
-import org.stellar.anchor.api.rpc.action.DoStellarPaymentRequest
+import org.stellar.anchor.api.rpc.method.DoStellarPaymentRequest
 import org.stellar.anchor.api.sep.SepTransactionStatus.*
 import org.stellar.anchor.api.shared.Amount
 import org.stellar.anchor.asset.AssetService
@@ -107,7 +107,7 @@ class DoStellarPaymentHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[do_stellar_payment] is not supported. Status[pending_anchor], kind[null], protocol[38], funds received[true]",
+      "RPC method[do_stellar_payment] is not supported. Status[pending_anchor], kind[null], protocol[38], funds received[true]",
       ex.message
     )
 
@@ -130,7 +130,7 @@ class DoStellarPaymentHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[do_stellar_payment] is not supported. Status[pending_trust], kind[deposit], protocol[24], funds received[true]",
+      "RPC method[do_stellar_payment] is not supported. Status[pending_trust], kind[deposit], protocol[24], funds received[true]",
       ex.message
     )
 
@@ -152,7 +152,7 @@ class DoStellarPaymentHandlerTest {
     every { custodyConfig.isCustodyIntegrationEnabled } returns false
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
-    assertEquals("Action[do_stellar_payment] requires disabled custody integration", ex.message)
+    assertEquals("RPC method[do_stellar_payment] requires disabled custody integration", ex.message)
 
     verify(exactly = 0) { txn24Store.save(any()) }
     verify(exactly = 0) { txn31Store.save(any()) }
@@ -172,7 +172,7 @@ class DoStellarPaymentHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[do_stellar_payment] is not supported. Status[pending_anchor], kind[deposit], protocol[24], funds received[false]",
+      "RPC method[do_stellar_payment] is not supported. Status[pending_anchor], kind[deposit], protocol[24], funds received[false]",
       ex.message
     )
 

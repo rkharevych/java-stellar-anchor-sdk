@@ -2,7 +2,7 @@ package org.stellar.anchor.platform.action;
 
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Kind.DEPOSIT;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24;
-import static org.stellar.anchor.api.rpc.action.ActionMethod.NOTIFY_OFFCHAIN_FUNDS_SENT;
+import static org.stellar.anchor.api.rpc.method.RpcMethod.NOTIFY_OFFCHAIN_FUNDS_SENT;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.COMPLETED;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_EXTERNAL;
@@ -16,8 +16,8 @@ import java.util.Set;
 import org.stellar.anchor.api.exception.rpc.InvalidRequestException;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep;
-import org.stellar.anchor.api.rpc.action.ActionMethod;
-import org.stellar.anchor.api.rpc.action.NotifyOffchainFundsSentRequest;
+import org.stellar.anchor.api.rpc.method.NotifyOffchainFundsSentRequest;
+import org.stellar.anchor.api.rpc.method.RpcMethod;
 import org.stellar.anchor.api.sep.SepTransactionStatus;
 import org.stellar.anchor.asset.AssetService;
 import org.stellar.anchor.event.EventService;
@@ -27,7 +27,8 @@ import org.stellar.anchor.platform.validator.RequestValidator;
 import org.stellar.anchor.sep24.Sep24TransactionStore;
 import org.stellar.anchor.sep31.Sep31TransactionStore;
 
-public class NotifyOffchainFundsSentHandler extends ActionHandler<NotifyOffchainFundsSentRequest> {
+public class NotifyOffchainFundsSentHandler
+    extends RpcMethodHandler<NotifyOffchainFundsSentRequest> {
 
   public NotifyOffchainFundsSentHandler(
       Sep24TransactionStore txn24Store,
@@ -45,7 +46,7 @@ public class NotifyOffchainFundsSentHandler extends ActionHandler<NotifyOffchain
   }
 
   @Override
-  public ActionMethod getActionType() {
+  public RpcMethod getRpcMethod() {
     return NOTIFY_OFFCHAIN_FUNDS_SENT;
   }
 
@@ -65,15 +66,15 @@ public class NotifyOffchainFundsSentHandler extends ActionHandler<NotifyOffchain
             throw new InvalidRequestException(
                 String.format(
                     "Kind[%s] is not supported for protocol[%s] and action[%s]",
-                    txn24.getKind(), txn24.getProtocol(), getActionType()));
+                    txn24.getKind(), txn24.getProtocol(), getRpcMethod()));
         }
       case SEP_31:
         return COMPLETED;
       default:
         throw new InvalidRequestException(
             String.format(
-                "Action[%s] is not supported for protocol[%s]",
-                getActionType(), txn.getProtocol()));
+                "RPC method[%s] is not supported for protocol[%s]",
+                getRpcMethod(), txn.getProtocol()));
     }
   }
 
@@ -105,7 +106,7 @@ public class NotifyOffchainFundsSentHandler extends ActionHandler<NotifyOffchain
   }
 
   @Override
-  protected void updateTransactionWithAction(
+  protected void updateTransactionWithRpcMethod(
       JdbcSepTransaction txn, NotifyOffchainFundsSentRequest request) {
     if (request.getExternalTransactionId() != null) {
       txn.setExternalTransactionId(request.getExternalTransactionId());

@@ -12,9 +12,9 @@ import org.stellar.anchor.api.custody.CreateCustodyTransactionRequest
 import org.stellar.anchor.api.exception.SepException
 import org.stellar.anchor.api.exception.SepNotFoundException
 import org.stellar.anchor.api.rpc.RpcRequest
-import org.stellar.anchor.api.rpc.action.ActionMethod
-import org.stellar.anchor.api.rpc.action.NotifyOffchainFundsReceivedRequest
-import org.stellar.anchor.api.rpc.action.RequestOffchainFundsRequest
+import org.stellar.anchor.api.rpc.method.NotifyOffchainFundsReceivedRequest
+import org.stellar.anchor.api.rpc.method.RequestOffchainFundsRequest
+import org.stellar.anchor.api.rpc.method.RpcMethod
 import org.stellar.anchor.api.sep.SepTransactionStatus
 import org.stellar.anchor.apiclient.PlatformApiClient
 import org.stellar.anchor.auth.AuthHelper
@@ -100,12 +100,12 @@ class CustodyApiTests(val config: TestConfig, val toml: Sep1Helper.TomlContent, 
     requestOffchainFundsParams.transactionId = txId
     var rpcRequest =
       RpcRequest.builder()
-        .method(ActionMethod.REQUEST_OFFCHAIN_FUNDS.toString())
+        .method(RpcMethod.REQUEST_OFFCHAIN_FUNDS.toString())
         .jsonrpc(JSON_RPC_VERSION)
         .params(requestOffchainFundsParams)
         .id(1)
         .build()
-    platformApiClient.callRpcAction(listOf(rpcRequest))
+    platformApiClient.callRpcRequest(listOf(rpcRequest))
 
     var txResponse = platformApiClient.getTransaction(txId)
     Assertions.assertEquals(SepTransactionStatus.PENDING_USR_TRANSFER_START, txResponse.status)
@@ -116,11 +116,11 @@ class CustodyApiTests(val config: TestConfig, val toml: Sep1Helper.TomlContent, 
     rpcRequest =
       RpcRequest.builder()
         .id(2)
-        .method(ActionMethod.NOTIFY_OFFCHAIN_FUNDS_RECEIVED.toString())
+        .method(RpcMethod.NOTIFY_OFFCHAIN_FUNDS_RECEIVED.toString())
         .jsonrpc(JSON_RPC_VERSION)
         .params(notifyOffchainFundsReceivedParams)
         .build()
-    platformApiClient.callRpcAction(listOf(rpcRequest))
+    platformApiClient.callRpcRequest(listOf(rpcRequest))
 
     txResponse = platformApiClient.getTransaction(txId)
     Assertions.assertEquals(SepTransactionStatus.PENDING_ANCHOR, txResponse.status)

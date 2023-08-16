@@ -7,9 +7,9 @@ import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
 import org.skyscreamer.jsonassert.comparator.CustomComparator
 import org.stellar.anchor.api.rpc.RpcRequest
-import org.stellar.anchor.api.rpc.action.ActionMethod
-import org.stellar.anchor.api.rpc.action.NotifyOffchainFundsReceivedRequest
-import org.stellar.anchor.api.rpc.action.RequestOffchainFundsRequest
+import org.stellar.anchor.api.rpc.method.NotifyOffchainFundsReceivedRequest
+import org.stellar.anchor.api.rpc.method.RequestOffchainFundsRequest
+import org.stellar.anchor.api.rpc.method.RpcMethod
 import org.stellar.anchor.api.sep.SepTransactionStatus
 import org.stellar.anchor.apiclient.PlatformApiClient
 import org.stellar.anchor.auth.AuthHelper
@@ -32,11 +32,11 @@ class PlatformApiTests(config: TestConfig, toml: TomlContent, jwt: String) {
 
   fun testAll() {
     println("Performing Platform API tests...")
-    `send single rpc action`()
-    `send batch of rpc actions`()
+    `send single rpc request`()
+    `send batch of rpc requests`()
   }
 
-  private fun `send single rpc action`() {
+  private fun `send single rpc request`() {
     val depositRequest = gson.fromJson(DEPOSIT_REQUEST, HashMap::class.java)
     val depositResponse = sep24Client.deposit(depositRequest as HashMap<String, String>)
     val txId = depositResponse.id
@@ -46,12 +46,12 @@ class PlatformApiTests(config: TestConfig, toml: TomlContent, jwt: String) {
     requestOffchainFundsParams.transactionId = txId
     val rpcRequest =
       RpcRequest.builder()
-        .method(ActionMethod.REQUEST_OFFCHAIN_FUNDS.toString())
+        .method(RpcMethod.REQUEST_OFFCHAIN_FUNDS.toString())
         .jsonrpc(JSON_RPC_VERSION)
         .params(requestOffchainFundsParams)
         .id(1)
         .build()
-    val response = platformApiClient.callRpcAction(listOf(rpcRequest))
+    val response = platformApiClient.callRpcRequest(listOf(rpcRequest))
     assertEquals(HttpStatus.SC_OK, response.code)
     JSONAssert.assertEquals(
       EXPECTED_RPC_RESPONSE.replace(TX_ID, txId).trimIndent(),
@@ -67,7 +67,7 @@ class PlatformApiTests(config: TestConfig, toml: TomlContent, jwt: String) {
     assertEquals(SepTransactionStatus.PENDING_USR_TRANSFER_START, txResponse.status)
   }
 
-  private fun `send batch of rpc actions`() {
+  private fun `send batch of rpc requests`() {
     val depositRequest = gson.fromJson(DEPOSIT_REQUEST, HashMap::class.java)
     val depositResponse = sep24Client.deposit(depositRequest as HashMap<String, String>)
     val txId = depositResponse.id
@@ -81,18 +81,18 @@ class PlatformApiTests(config: TestConfig, toml: TomlContent, jwt: String) {
     val rpcRequest1 =
       RpcRequest.builder()
         .id(1)
-        .method(ActionMethod.REQUEST_OFFCHAIN_FUNDS.toString())
+        .method(RpcMethod.REQUEST_OFFCHAIN_FUNDS.toString())
         .jsonrpc(JSON_RPC_VERSION)
         .params(requestOffchainFundsParams)
         .build()
     val rpcRequest2 =
       RpcRequest.builder()
         .id(2)
-        .method(ActionMethod.NOTIFY_OFFCHAIN_FUNDS_RECEIVED.toString())
+        .method(RpcMethod.NOTIFY_OFFCHAIN_FUNDS_RECEIVED.toString())
         .jsonrpc(JSON_RPC_VERSION)
         .params(notifyOffchainFundsReceivedParams)
         .build()
-    val response = platformApiClient.callRpcAction(listOf(rpcRequest1, rpcRequest2))
+    val response = platformApiClient.callRpcRequest(listOf(rpcRequest1, rpcRequest2))
     assertEquals(HttpStatus.SC_OK, response.code)
 
     JSONAssert.assertEquals(

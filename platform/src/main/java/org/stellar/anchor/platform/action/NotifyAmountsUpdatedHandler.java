@@ -3,7 +3,7 @@ package org.stellar.anchor.platform.action;
 import static java.util.Collections.emptySet;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Kind.WITHDRAWAL;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24;
-import static org.stellar.anchor.api.rpc.action.ActionMethod.NOTIFY_AMOUNTS_UPDATED;
+import static org.stellar.anchor.api.rpc.method.RpcMethod.NOTIFY_AMOUNTS_UPDATED;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR;
 
 import java.util.Set;
@@ -12,9 +12,9 @@ import org.stellar.anchor.api.exception.rpc.InvalidParamsException;
 import org.stellar.anchor.api.exception.rpc.InvalidRequestException;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep;
-import org.stellar.anchor.api.rpc.action.ActionMethod;
-import org.stellar.anchor.api.rpc.action.AmountAssetRequest;
-import org.stellar.anchor.api.rpc.action.NotifyAmountsUpdatedRequest;
+import org.stellar.anchor.api.rpc.method.AmountAssetRequest;
+import org.stellar.anchor.api.rpc.method.NotifyAmountsUpdatedRequest;
+import org.stellar.anchor.api.rpc.method.RpcMethod;
 import org.stellar.anchor.api.sep.SepTransactionStatus;
 import org.stellar.anchor.asset.AssetService;
 import org.stellar.anchor.event.EventService;
@@ -25,7 +25,7 @@ import org.stellar.anchor.platform.validator.RequestValidator;
 import org.stellar.anchor.sep24.Sep24TransactionStore;
 import org.stellar.anchor.sep31.Sep31TransactionStore;
 
-public class NotifyAmountsUpdatedHandler extends ActionHandler<NotifyAmountsUpdatedRequest> {
+public class NotifyAmountsUpdatedHandler extends RpcMethodHandler<NotifyAmountsUpdatedRequest> {
 
   public NotifyAmountsUpdatedHandler(
       Sep24TransactionStore txn24Store,
@@ -65,7 +65,7 @@ public class NotifyAmountsUpdatedHandler extends ActionHandler<NotifyAmountsUpda
   }
 
   @Override
-  public ActionMethod getActionType() {
+  public RpcMethod getRpcMethod() {
     return NOTIFY_AMOUNTS_UPDATED;
   }
 
@@ -89,7 +89,7 @@ public class NotifyAmountsUpdatedHandler extends ActionHandler<NotifyAmountsUpda
   }
 
   @Override
-  protected void updateTransactionWithAction(
+  protected void updateTransactionWithRpcMethod(
       JdbcSepTransaction txn, NotifyAmountsUpdatedRequest request) throws InvalidParamsException {
     txn.setAmountOut(request.getAmountOut().getAmount());
     txn.setAmountFee(request.getAmountFee().getAmount());

@@ -10,7 +10,7 @@ data class Config(
   val enableTest: Boolean,
   val anchorPlatformUrl: String,
   val custodyEnabled: Boolean,
-  val rpcActionsEnabled: Boolean,
+  val rpcEnabled: Boolean,
   val sep24: Sep24,
   val sep31: Sep31
 )

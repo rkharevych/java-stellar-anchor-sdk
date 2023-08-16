@@ -3,7 +3,7 @@ package org.stellar.anchor.platform.action;
 import static java.util.Collections.emptySet;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Kind.DEPOSIT;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24;
-import static org.stellar.anchor.api.rpc.action.ActionMethod.DO_STELLAR_PAYMENT;
+import static org.stellar.anchor.api.rpc.method.RpcMethod.DO_STELLAR_PAYMENT;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_STELLAR;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_TRUST;
@@ -16,8 +16,8 @@ import org.stellar.anchor.api.exception.rpc.InvalidParamsException;
 import org.stellar.anchor.api.exception.rpc.InvalidRequestException;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep;
-import org.stellar.anchor.api.rpc.action.ActionMethod;
-import org.stellar.anchor.api.rpc.action.DoStellarPaymentRequest;
+import org.stellar.anchor.api.rpc.method.DoStellarPaymentRequest;
+import org.stellar.anchor.api.rpc.method.RpcMethod;
 import org.stellar.anchor.api.sep.SepTransactionStatus;
 import org.stellar.anchor.asset.AssetService;
 import org.stellar.anchor.config.CustodyConfig;
@@ -32,7 +32,7 @@ import org.stellar.anchor.platform.validator.RequestValidator;
 import org.stellar.anchor.sep24.Sep24TransactionStore;
 import org.stellar.anchor.sep31.Sep31TransactionStore;
 
-public class DoStellarPaymentHandler extends ActionHandler<DoStellarPaymentRequest> {
+public class DoStellarPaymentHandler extends RpcMethodHandler<DoStellarPaymentRequest> {
 
   private final CustodyService custodyService;
   private final CustodyConfig custodyConfig;
@@ -69,12 +69,12 @@ public class DoStellarPaymentHandler extends ActionHandler<DoStellarPaymentReque
 
     if (!custodyConfig.isCustodyIntegrationEnabled()) {
       throw new InvalidRequestException(
-          String.format("Action[%s] requires disabled custody integration", getActionType()));
+          String.format("RPC method[%s] requires disabled custody integration", getRpcMethod()));
     }
   }
 
   @Override
-  public ActionMethod getActionType() {
+  public RpcMethod getRpcMethod() {
     return DO_STELLAR_PAYMENT;
   }
 
@@ -103,7 +103,7 @@ public class DoStellarPaymentHandler extends ActionHandler<DoStellarPaymentReque
   }
 
   @Override
-  protected void updateTransactionWithAction(
+  protected void updateTransactionWithRpcMethod(
       JdbcSepTransaction txn, DoStellarPaymentRequest request) throws AnchorException {
     JdbcSep24Transaction txn24 = (JdbcSep24Transaction) txn;
     if (horizon.isTrustlineConfigured(txn24.getToAccount(), txn24.getAmountOutAsset())) {

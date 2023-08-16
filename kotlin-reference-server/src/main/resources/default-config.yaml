@@ -6,8 +6,8 @@ anchorPlatformUrl: "http://localhost:8085"
 enableTest: true
 # Indicates, that custody integration is enabled
 custodyEnabled: false
-# Indicates, that RPC actions should be used instead of PATCH /transactions endpoint
-rpcActionsEnabled: true
+# Indicates, that RPC requests should be used instead of PATCH /transactions endpoint
+rpcEnabled: true
 sep24:
   #  URL for horizon server
   horizonUrl: "https://horizon-testnet.stellar.org"

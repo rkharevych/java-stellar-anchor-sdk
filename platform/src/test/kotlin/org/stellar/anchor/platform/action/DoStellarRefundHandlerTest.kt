@@ -24,8 +24,8 @@ import org.stellar.anchor.api.platform.PlatformTransactionData.Kind.WITHDRAWAL
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_31
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_38
-import org.stellar.anchor.api.rpc.action.AmountAssetRequest
-import org.stellar.anchor.api.rpc.action.DoStellarRefundRequest
+import org.stellar.anchor.api.rpc.method.AmountAssetRequest
+import org.stellar.anchor.api.rpc.method.DoStellarRefundRequest
 import org.stellar.anchor.api.sep.SepTransactionStatus
 import org.stellar.anchor.api.sep.SepTransactionStatus.INCOMPLETE
 import org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR
@@ -115,7 +115,7 @@ class DoStellarRefundHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[do_stellar_refund] is not supported. Status[pending_anchor], kind[null], protocol[38], funds received[false]",
+      "RPC method[do_stellar_refund] is not supported. Status[pending_anchor], kind[null], protocol[38], funds received[false]",
       ex.message
     )
 
@@ -136,7 +136,7 @@ class DoStellarRefundHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[do_stellar_refund] is not supported. Status[incomplete], kind[deposit], protocol[24], funds received[false]",
+      "RPC method[do_stellar_refund] is not supported. Status[incomplete], kind[deposit], protocol[24], funds received[false]",
       ex.message
     )
 
@@ -157,7 +157,7 @@ class DoStellarRefundHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[do_stellar_refund] is not supported. Status[incomplete], kind[withdrawal], protocol[24], funds received[false]",
+      "RPC method[do_stellar_refund] is not supported. Status[incomplete], kind[withdrawal], protocol[24], funds received[false]",
       ex.message
     )
 
@@ -204,7 +204,7 @@ class DoStellarRefundHandlerTest {
     every { txn24Store.save(capture(sep24TxnCapture)) } returns null
 
     val ex = assertThrows<InvalidParamsException> { handler.handle(request) }
-    assertEquals("Action[do_stellar_refund] requires enabled custody integration", ex.message)
+    assertEquals("RPC method[do_stellar_refund] requires enabled custody integration", ex.message)
 
     verify(exactly = 0) { txn24Store.save(any()) }
     verify(exactly = 0) { txn31Store.save(any()) }

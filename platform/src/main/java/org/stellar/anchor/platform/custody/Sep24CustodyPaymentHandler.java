@@ -46,7 +46,7 @@ public class Sep24CustodyPaymentHandler extends CustodyPaymentHandler {
 
     if (FAILED == CustodyTransactionStatus.from(txn.getStatus())) {
       platformApiClient.notifyTransactionError(
-          txn.getId(), rpcConfig.getActions().getCustomMessages().getCustodyTransactionFailed());
+          txn.getId(), rpcConfig.getCustomMessages().getCustodyTransactionFailed());
     } else {
       switch (PaymentType.from(txn.getType())) {
         case PAYMENT:
@@ -54,7 +54,7 @@ public class Sep24CustodyPaymentHandler extends CustodyPaymentHandler {
               txn.getSepTxId(),
               payment.getTransactionHash(),
               payment.getAmount(),
-              rpcConfig.getActions().getCustomMessages().getIncomingPaymentReceived());
+              rpcConfig.getCustomMessages().getIncomingPaymentReceived());
 
           Metrics.counter(
                   AnchorMetrics.PAYMENT_RECEIVED.toString(), "asset", payment.getAssetName())
@@ -90,12 +90,12 @@ public class Sep24CustodyPaymentHandler extends CustodyPaymentHandler {
 
     if (FAILED == CustodyTransactionStatus.from(txn.getStatus())) {
       platformApiClient.notifyTransactionError(
-          txn.getId(), rpcConfig.getActions().getCustomMessages().getCustodyTransactionFailed());
+          txn.getId(), rpcConfig.getCustomMessages().getCustodyTransactionFailed());
     } else {
       platformApiClient.notifyOnchainFundsSent(
           txn.getSepTxId(),
           payment.getTransactionHash(),
-          rpcConfig.getActions().getCustomMessages().getOutgoingPaymentSent());
+          rpcConfig.getCustomMessages().getOutgoingPaymentSent());
 
       Metrics.counter(AnchorMetrics.PAYMENT_SENT.toString(), "asset", payment.getAssetName())
           .increment(Double.parseDouble(payment.getAmount()));

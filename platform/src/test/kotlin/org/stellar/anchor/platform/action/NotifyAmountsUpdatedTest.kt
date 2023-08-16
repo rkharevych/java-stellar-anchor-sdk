@@ -22,8 +22,8 @@ import org.stellar.anchor.api.platform.PlatformTransactionData.Kind.DEPOSIT
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind.WITHDRAWAL
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_38
-import org.stellar.anchor.api.rpc.action.AmountRequest
-import org.stellar.anchor.api.rpc.action.NotifyAmountsUpdatedRequest
+import org.stellar.anchor.api.rpc.method.AmountRequest
+import org.stellar.anchor.api.rpc.method.NotifyAmountsUpdatedRequest
 import org.stellar.anchor.api.sep.SepTransactionStatus.INCOMPLETE
 import org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR
 import org.stellar.anchor.api.shared.Amount
@@ -96,7 +96,7 @@ class NotifyAmountsUpdatedTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_amounts_updated] is not supported. Status[pending_anchor], kind[null], protocol[38], funds received[true]",
+      "RPC method[notify_amounts_updated] is not supported. Status[pending_anchor], kind[null], protocol[38], funds received[true]",
       ex.message
     )
 
@@ -118,7 +118,7 @@ class NotifyAmountsUpdatedTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_amounts_updated] is not supported. Status[incomplete], kind[withdrawal], protocol[24], funds received[true]",
+      "RPC method[notify_amounts_updated] is not supported. Status[incomplete], kind[withdrawal], protocol[24], funds received[true]",
       ex.message
     )
 
@@ -140,7 +140,7 @@ class NotifyAmountsUpdatedTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_amounts_updated] is not supported. Status[pending_anchor], kind[deposit], protocol[24], funds received[true]",
+      "RPC method[notify_amounts_updated] is not supported. Status[pending_anchor], kind[deposit], protocol[24], funds received[true]",
       ex.message
     )
 
@@ -161,7 +161,7 @@ class NotifyAmountsUpdatedTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_amounts_updated] is not supported. Status[pending_anchor], kind[withdrawal], protocol[24], funds received[false]",
+      "RPC method[notify_amounts_updated] is not supported. Status[pending_anchor], kind[withdrawal], protocol[24], funds received[false]",
       ex.message
     )
 

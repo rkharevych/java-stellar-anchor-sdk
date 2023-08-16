@@ -3,7 +3,7 @@ package org.stellar.anchor.platform.action;
 import static java.util.Collections.emptySet;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Kind.DEPOSIT;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24;
-import static org.stellar.anchor.api.rpc.action.ActionMethod.NOTIFY_TRUST_SET;
+import static org.stellar.anchor.api.rpc.method.RpcMethod.NOTIFY_TRUST_SET;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_STELLAR;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_TRUST;
@@ -15,8 +15,8 @@ import org.stellar.anchor.api.exception.rpc.InvalidParamsException;
 import org.stellar.anchor.api.exception.rpc.InvalidRequestException;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep;
-import org.stellar.anchor.api.rpc.action.ActionMethod;
-import org.stellar.anchor.api.rpc.action.NotifyTrustSetRequest;
+import org.stellar.anchor.api.rpc.method.NotifyTrustSetRequest;
+import org.stellar.anchor.api.rpc.method.RpcMethod;
 import org.stellar.anchor.api.sep.SepTransactionStatus;
 import org.stellar.anchor.asset.AssetService;
 import org.stellar.anchor.custody.CustodyService;
@@ -28,7 +28,7 @@ import org.stellar.anchor.platform.validator.RequestValidator;
 import org.stellar.anchor.sep24.Sep24TransactionStore;
 import org.stellar.anchor.sep31.Sep31TransactionStore;
 
-public class NotifyTrustSetHandler extends ActionHandler<NotifyTrustSetRequest> {
+public class NotifyTrustSetHandler extends RpcMethodHandler<NotifyTrustSetRequest> {
 
   private final PropertyCustodyConfig custodyConfig;
   private final CustodyService custodyService;
@@ -59,7 +59,7 @@ public class NotifyTrustSetHandler extends ActionHandler<NotifyTrustSetRequest> 
   }
 
   @Override
-  public ActionMethod getActionType() {
+  public RpcMethod getRpcMethod() {
     return NOTIFY_TRUST_SET;
   }
 
@@ -85,8 +85,8 @@ public class NotifyTrustSetHandler extends ActionHandler<NotifyTrustSetRequest> 
   }
 
   @Override
-  protected void updateTransactionWithAction(JdbcSepTransaction txn, NotifyTrustSetRequest request)
-      throws AnchorException {
+  protected void updateTransactionWithRpcMethod(
+      JdbcSepTransaction txn, NotifyTrustSetRequest request) throws AnchorException {
     if (custodyConfig.isCustodyIntegrationEnabled() && request.isSuccess()) {
       custodyService.createTransactionPayment(txn.getId(), null);
     }

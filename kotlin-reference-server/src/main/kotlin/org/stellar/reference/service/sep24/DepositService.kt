@@ -70,8 +70,8 @@ class DepositService(private val cfg: Config) {
     val fee = calculateFee(amount)
     val stellarAsset = "stellar:$asset"
 
-    if (cfg.rpcActionsEnabled) {
-      sepHelper.rpcAction(
+    if (cfg.rpcEnabled) {
+      sepHelper.rpcRequest(
         "request_offchain_funds",
         RequestOffchainFundsRequest(
           transactionId = transactionId,
@@ -97,8 +97,8 @@ class DepositService(private val cfg: Config) {
   }
 
   private suspend fun notifyTransactionProcessed(transactionId: String) {
-    if (cfg.rpcActionsEnabled) {
-      sepHelper.rpcAction(
+    if (cfg.rpcEnabled) {
+      sepHelper.rpcRequest(
         "notify_offchain_funds_received",
         NotifyOffchainFundsReceivedRequest(
           transactionId = transactionId,
@@ -120,8 +120,8 @@ class DepositService(private val cfg: Config) {
   }
 
   private suspend fun sendCustodyStellarTransaction(transactionId: String) {
-    if (cfg.rpcActionsEnabled) {
-      sepHelper.rpcAction(
+    if (cfg.rpcEnabled) {
+      sepHelper.rpcRequest(
         "do_stellar_payment",
         DoStellarPaymentRequest(transactionId = transactionId)
       )
@@ -131,7 +131,7 @@ class DepositService(private val cfg: Config) {
   }
 
   private suspend fun finalizeCustodyStellarTransaction(transactionId: String) {
-    if (!cfg.rpcActionsEnabled) {
+    if (!cfg.rpcEnabled) {
       sepHelper.patchTransaction(
         PatchTransactionTransaction(transactionId, "completed", message = "completed")
       )
@@ -144,8 +144,8 @@ class DepositService(private val cfg: Config) {
     asset: String,
     amount: BigDecimal
   ) {
-    if (cfg.rpcActionsEnabled) {
-      sepHelper.rpcAction(
+    if (cfg.rpcEnabled) {
+      sepHelper.rpcRequest(
         "notify_onchain_funds_sent",
         NotifyOnchainFundsSentRequest(
           transactionId = transactionId,
@@ -187,8 +187,8 @@ class DepositService(private val cfg: Config) {
   }
 
   private suspend fun failTransaction(transactionId: String, message: String?) {
-    if (cfg.rpcActionsEnabled) {
-      sepHelper.rpcAction(
+    if (cfg.rpcEnabled) {
+      sepHelper.rpcRequest(
         "notify_transaction_error",
         NotifyTransactionErrorRequest(transactionId = transactionId, message = message)
       )

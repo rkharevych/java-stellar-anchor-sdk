@@ -3,7 +3,7 @@ package org.stellar.anchor.platform.action;
 import static java.util.Collections.emptySet;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Kind.WITHDRAWAL;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24;
-import static org.stellar.anchor.api.rpc.action.ActionMethod.NOTIFY_OFFCHAIN_FUNDS_AVAILABLE;
+import static org.stellar.anchor.api.rpc.method.RpcMethod.NOTIFY_OFFCHAIN_FUNDS_AVAILABLE;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_USR_TRANSFER_COMPLETE;
 
@@ -11,8 +11,8 @@ import java.util.Set;
 import org.stellar.anchor.api.exception.rpc.InvalidRequestException;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep;
-import org.stellar.anchor.api.rpc.action.ActionMethod;
-import org.stellar.anchor.api.rpc.action.NotifyOffchainFundsAvailableRequest;
+import org.stellar.anchor.api.rpc.method.NotifyOffchainFundsAvailableRequest;
+import org.stellar.anchor.api.rpc.method.RpcMethod;
 import org.stellar.anchor.api.sep.SepTransactionStatus;
 import org.stellar.anchor.asset.AssetService;
 import org.stellar.anchor.event.EventService;
@@ -23,7 +23,7 @@ import org.stellar.anchor.sep24.Sep24TransactionStore;
 import org.stellar.anchor.sep31.Sep31TransactionStore;
 
 public class NotifyOffchainFundsAvailableHandler
-    extends ActionHandler<NotifyOffchainFundsAvailableRequest> {
+    extends RpcMethodHandler<NotifyOffchainFundsAvailableRequest> {
 
   public NotifyOffchainFundsAvailableHandler(
       Sep24TransactionStore txn24Store,
@@ -41,7 +41,7 @@ public class NotifyOffchainFundsAvailableHandler
   }
 
   @Override
-  public ActionMethod getActionType() {
+  public RpcMethod getRpcMethod() {
     return NOTIFY_OFFCHAIN_FUNDS_AVAILABLE;
   }
 
@@ -66,7 +66,7 @@ public class NotifyOffchainFundsAvailableHandler
   }
 
   @Override
-  protected void updateTransactionWithAction(
+  protected void updateTransactionWithRpcMethod(
       JdbcSepTransaction txn, NotifyOffchainFundsAvailableRequest request) {
     if (request.getExternalTransactionId() != null) {
       txn.setExternalTransactionId(request.getExternalTransactionId());

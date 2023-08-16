@@ -4,14 +4,14 @@ import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toSet;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_31;
-import static org.stellar.anchor.api.rpc.action.ActionMethod.NOTIFY_TRANSACTION_EXPIRED;
+import static org.stellar.anchor.api.rpc.method.RpcMethod.NOTIFY_TRANSACTION_EXPIRED;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.EXPIRED;
 
 import java.util.Arrays;
 import java.util.Set;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep;
-import org.stellar.anchor.api.rpc.action.ActionMethod;
-import org.stellar.anchor.api.rpc.action.NotifyTransactionExpiredRequest;
+import org.stellar.anchor.api.rpc.method.NotifyTransactionExpiredRequest;
+import org.stellar.anchor.api.rpc.method.RpcMethod;
 import org.stellar.anchor.api.sep.SepTransactionStatus;
 import org.stellar.anchor.asset.AssetService;
 import org.stellar.anchor.event.EventService;
@@ -22,7 +22,7 @@ import org.stellar.anchor.sep24.Sep24TransactionStore;
 import org.stellar.anchor.sep31.Sep31TransactionStore;
 
 public class NotifyTransactionExpiredHandler
-    extends ActionHandler<NotifyTransactionExpiredRequest> {
+    extends RpcMethodHandler<NotifyTransactionExpiredRequest> {
 
   private final JdbcTransactionPendingTrustRepo transactionPendingTrustRepo;
 
@@ -44,7 +44,7 @@ public class NotifyTransactionExpiredHandler
   }
 
   @Override
-  public ActionMethod getActionType() {
+  public RpcMethod getRpcMethod() {
     return NOTIFY_TRANSACTION_EXPIRED;
   }
 
@@ -67,7 +67,7 @@ public class NotifyTransactionExpiredHandler
   }
 
   @Override
-  protected void updateTransactionWithAction(
+  protected void updateTransactionWithRpcMethod(
       JdbcSepTransaction txn, NotifyTransactionExpiredRequest request) {
     if (transactionPendingTrustRepo.existsById(txn.getId())) {
       transactionPendingTrustRepo.deleteById(txn.getId());

@@ -33,11 +33,11 @@ open class AbstractIntegrationTest(private val config: TestConfig) {
   lateinit var custodyApiTests: CustodyApiTests
   lateinit var eventProcessingServerTests: EventProcessingServerTests
   lateinit var sep24E2eTests: Sep24End2EndTest
-  lateinit var sep24ActionsE2eTests: Sep24ActionsEnd2EndTests
+  lateinit var sep24ActionsE2eTests: Sep24RpcEnd2EndTests
   lateinit var sep24CustodyE2eTests: Sep24CustodyEnd2EndTests
-  lateinit var sep24CustodyActionsE2eTests: Sep24CustodyActionsEnd2EndTests
-  lateinit var sep31ActionsE2eTests: Sep31ActionsEnd2EndTests
-  lateinit var sep31CustodyActionsE2eTests: Sep31CustodyActionsEnd2EndTests
+  lateinit var sep24CustodyActionsE2eTests: Sep24CustodyRpcEnd2EndTests
+  lateinit var sep31ActionsE2eTests: Sep31RpcEnd2EndTests
+  lateinit var sep31CustodyActionsE2eTests: Sep31CustodyRpcEnd2EndTests
 
   fun setUp(envMap: Map<String, String>) {
     envMap.forEach { (key, value) -> config.env[key] = value }
@@ -72,10 +72,10 @@ open class AbstractIntegrationTest(private val config: TestConfig) {
     custodyApiTests = CustodyApiTests(config, toml, jwt)
     sep24E2eTests = Sep24End2EndTest(config, jwt)
     sep24CustodyE2eTests = Sep24CustodyEnd2EndTests(config, jwt)
-    sep24ActionsE2eTests = Sep24ActionsEnd2EndTests(config, jwt)
-    sep24CustodyActionsE2eTests = Sep24CustodyActionsEnd2EndTests(config, jwt)
-    sep31ActionsE2eTests = Sep31ActionsEnd2EndTests(config, toml, jwt)
-    sep31CustodyActionsE2eTests = Sep31CustodyActionsEnd2EndTests(config, toml, jwt)
+    sep24ActionsE2eTests = Sep24RpcEnd2EndTests(config, jwt)
+    sep24CustodyActionsE2eTests = Sep24CustodyRpcEnd2EndTests(config, jwt)
+    sep31ActionsE2eTests = Sep31RpcEnd2EndTests(config, toml, jwt)
+    sep31CustodyActionsE2eTests = Sep31CustodyRpcEnd2EndTests(config, toml, jwt)
     eventProcessingServerTests = EventProcessingServerTests(config, toml, jwt)
   }
 }

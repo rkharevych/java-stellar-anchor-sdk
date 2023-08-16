@@ -4,7 +4,7 @@ import static java.util.Collections.emptySet;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Kind.RECEIVE;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Kind.WITHDRAWAL;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_31;
-import static org.stellar.anchor.api.rpc.action.ActionMethod.DO_STELLAR_REFUND;
+import static org.stellar.anchor.api.rpc.method.RpcMethod.DO_STELLAR_REFUND;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_RECEIVER;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_STELLAR;
@@ -20,9 +20,9 @@ import org.stellar.anchor.api.exception.rpc.InvalidParamsException;
 import org.stellar.anchor.api.exception.rpc.InvalidRequestException;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep;
-import org.stellar.anchor.api.rpc.action.ActionMethod;
-import org.stellar.anchor.api.rpc.action.AmountAssetRequest;
-import org.stellar.anchor.api.rpc.action.DoStellarRefundRequest;
+import org.stellar.anchor.api.rpc.method.AmountAssetRequest;
+import org.stellar.anchor.api.rpc.method.DoStellarRefundRequest;
+import org.stellar.anchor.api.rpc.method.RpcMethod;
 import org.stellar.anchor.api.sep.AssetInfo;
 import org.stellar.anchor.api.sep.SepTransactionStatus;
 import org.stellar.anchor.asset.AssetService;
@@ -39,7 +39,7 @@ import org.stellar.anchor.sep24.Sep24TransactionStore;
 import org.stellar.anchor.sep31.Sep31Refunds;
 import org.stellar.anchor.sep31.Sep31TransactionStore;
 
-public class DoStellarRefundHandler extends ActionHandler<DoStellarRefundRequest> {
+public class DoStellarRefundHandler extends RpcMethodHandler<DoStellarRefundRequest> {
 
   private final CustodyService custodyService;
   private final CustodyConfig custodyConfig;
@@ -70,7 +70,7 @@ public class DoStellarRefundHandler extends ActionHandler<DoStellarRefundRequest
 
     if (!custodyConfig.isCustodyIntegrationEnabled()) {
       throw new InvalidParamsException(
-          String.format("Action[%s] requires enabled custody integration", getActionType()));
+          String.format("RPC method[%s] requires enabled custody integration", getRpcMethod()));
     }
 
     AssetValidationUtils.validateAsset(
@@ -100,7 +100,7 @@ public class DoStellarRefundHandler extends ActionHandler<DoStellarRefundRequest
   }
 
   @Override
-  public ActionMethod getActionType() {
+  public RpcMethod getRpcMethod() {
     return DO_STELLAR_REFUND;
   }
 
@@ -132,14 +132,14 @@ public class DoStellarRefundHandler extends ActionHandler<DoStellarRefundRequest
           throw new InvalidRequestException(
               String.format(
                   "Multiple refunds aren't supported for kind[%s], protocol[%s] and action[%s]",
-                  RECEIVE, txn.getProtocol(), getActionType()));
+                  RECEIVE, txn.getProtocol(), getRpcMethod()));
         }
         break;
       default:
         throw new InvalidRequestException(
             String.format(
-                "Action[%s] is not supported for protocol[%s]",
-                getActionType(), txn.getProtocol()));
+                "RPC method[%s] is not supported for protocol[%s]",
+                getRpcMethod(), txn.getProtocol()));
     }
 
     BigDecimal amountIn = decimal(txn.getAmountIn(), assetInfo);
@@ -170,8 +170,8 @@ public class DoStellarRefundHandler extends ActionHandler<DoStellarRefundRequest
   }
 
   @Override
-  protected void updateTransactionWithAction(JdbcSepTransaction txn, DoStellarRefundRequest request)
-      throws AnchorException {
+  protected void updateTransactionWithRpcMethod(
+      JdbcSepTransaction txn, DoStellarRefundRequest request) throws AnchorException {
     switch (Sep.from(txn.getProtocol())) {
       case SEP_24:
         JdbcSep24Transaction txn24 = (JdbcSep24Transaction) txn;

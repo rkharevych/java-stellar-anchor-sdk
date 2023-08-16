@@ -22,9 +22,9 @@ import org.stellar.anchor.api.platform.PlatformTransactionData.Kind.DEPOSIT
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind.WITHDRAWAL
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_38
-import org.stellar.anchor.api.rpc.action.AmountAssetRequest
-import org.stellar.anchor.api.rpc.action.AmountRequest
-import org.stellar.anchor.api.rpc.action.RequestOnchainFundsRequest
+import org.stellar.anchor.api.rpc.method.AmountAssetRequest
+import org.stellar.anchor.api.rpc.method.AmountRequest
+import org.stellar.anchor.api.rpc.method.RequestOnchainFundsRequest
 import org.stellar.anchor.api.sep.SepTransactionStatus.*
 import org.stellar.anchor.api.shared.Amount
 import org.stellar.anchor.api.shared.SepDepositInfo
@@ -123,7 +123,7 @@ class RequestOnchainFundsHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[request_onchain_funds] is not supported. Status[incomplete], kind[null], protocol[38], funds received[false]",
+      "RPC method[request_onchain_funds] is not supported. Status[incomplete], kind[null], protocol[38], funds received[false]",
       ex.message
     )
 
@@ -144,7 +144,7 @@ class RequestOnchainFundsHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[request_onchain_funds] is not supported. Status[pending_trust], kind[withdrawal], protocol[24], funds received[false]",
+      "RPC method[request_onchain_funds] is not supported. Status[pending_trust], kind[withdrawal], protocol[24], funds received[false]",
       ex.message
     )
 
@@ -166,7 +166,7 @@ class RequestOnchainFundsHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[request_onchain_funds] is not supported. Status[pending_anchor], kind[withdrawal], protocol[24], funds received[true]",
+      "RPC method[request_onchain_funds] is not supported. Status[pending_anchor], kind[withdrawal], protocol[24], funds received[true]",
       ex.message
     )
 
@@ -187,7 +187,7 @@ class RequestOnchainFundsHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[request_onchain_funds] is not supported. Status[incomplete], kind[deposit], protocol[24], funds received[false]",
+      "RPC method[request_onchain_funds] is not supported. Status[incomplete], kind[deposit], protocol[24], funds received[false]",
       ex.message
     )
 

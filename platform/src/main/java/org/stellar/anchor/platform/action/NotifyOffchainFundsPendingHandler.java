@@ -1,7 +1,7 @@
 package org.stellar.anchor.platform.action;
 
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Kind.WITHDRAWAL;
-import static org.stellar.anchor.api.rpc.action.ActionMethod.NOTIFY_OFFCHAIN_FUNDS_PENDING;
+import static org.stellar.anchor.api.rpc.method.RpcMethod.NOTIFY_OFFCHAIN_FUNDS_PENDING;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_EXTERNAL;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_RECEIVER;
@@ -11,8 +11,8 @@ import java.util.Set;
 import org.stellar.anchor.api.exception.rpc.InvalidRequestException;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep;
-import org.stellar.anchor.api.rpc.action.ActionMethod;
-import org.stellar.anchor.api.rpc.action.NotifyOffchainFundsPendingRequest;
+import org.stellar.anchor.api.rpc.method.NotifyOffchainFundsPendingRequest;
+import org.stellar.anchor.api.rpc.method.RpcMethod;
 import org.stellar.anchor.api.sep.SepTransactionStatus;
 import org.stellar.anchor.asset.AssetService;
 import org.stellar.anchor.event.EventService;
@@ -23,7 +23,7 @@ import org.stellar.anchor.sep24.Sep24TransactionStore;
 import org.stellar.anchor.sep31.Sep31TransactionStore;
 
 public class NotifyOffchainFundsPendingHandler
-    extends ActionHandler<NotifyOffchainFundsPendingRequest> {
+    extends RpcMethodHandler<NotifyOffchainFundsPendingRequest> {
 
   public NotifyOffchainFundsPendingHandler(
       Sep24TransactionStore txn24Store,
@@ -41,7 +41,7 @@ public class NotifyOffchainFundsPendingHandler
   }
 
   @Override
-  public ActionMethod getActionType() {
+  public RpcMethod getRpcMethod() {
     return NOTIFY_OFFCHAIN_FUNDS_PENDING;
   }
 
@@ -71,7 +71,7 @@ public class NotifyOffchainFundsPendingHandler
   }
 
   @Override
-  protected void updateTransactionWithAction(
+  protected void updateTransactionWithRpcMethod(
       JdbcSepTransaction txn, NotifyOffchainFundsPendingRequest request) {
     if (request.getExternalTransactionId() != null) {
       txn.setExternalTransactionId(request.getExternalTransactionId());

@@ -19,7 +19,7 @@ import org.stellar.anchor.api.platform.GetTransactionResponse
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind.RECEIVE
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_31
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_38
-import org.stellar.anchor.api.rpc.action.NotifyCustomerInfoUpdatedRequest
+import org.stellar.anchor.api.rpc.method.NotifyCustomerInfoUpdatedRequest
 import org.stellar.anchor.api.sep.SepTransactionStatus.*
 import org.stellar.anchor.api.shared.Amount
 import org.stellar.anchor.api.shared.Customers
@@ -85,7 +85,7 @@ class NotifyCustomerInfoUpdatedHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_customer_info_updated] is not supported. Status[pending_customer_info_update], kind[null], protocol[38], funds received[false]",
+      "RPC method[notify_customer_info_updated] is not supported. Status[pending_customer_info_update], kind[null], protocol[38], funds received[false]",
       ex.message
     )
 
@@ -105,7 +105,7 @@ class NotifyCustomerInfoUpdatedHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_customer_info_updated] is not supported. Status[incomplete], kind[receive], protocol[31], funds received[false]",
+      "RPC method[notify_customer_info_updated] is not supported. Status[incomplete], kind[receive], protocol[31], funds received[false]",
       ex.message
     )
 

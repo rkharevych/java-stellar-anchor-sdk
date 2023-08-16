@@ -3,7 +3,7 @@ package org.stellar.anchor.platform.action;
 import static java.util.Collections.emptySet;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_31;
-import static org.stellar.anchor.api.rpc.action.ActionMethod.NOTIFY_TRANSACTION_RECOVERY;
+import static org.stellar.anchor.api.rpc.method.RpcMethod.NOTIFY_TRANSACTION_RECOVERY;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.ERROR;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.EXPIRED;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR;
@@ -13,8 +13,8 @@ import java.util.Set;
 import org.stellar.anchor.api.exception.rpc.InvalidParamsException;
 import org.stellar.anchor.api.exception.rpc.InvalidRequestException;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep;
-import org.stellar.anchor.api.rpc.action.ActionMethod;
-import org.stellar.anchor.api.rpc.action.NotifyTransactionRecoveryRequest;
+import org.stellar.anchor.api.rpc.method.NotifyTransactionRecoveryRequest;
+import org.stellar.anchor.api.rpc.method.RpcMethod;
 import org.stellar.anchor.api.sep.SepTransactionStatus;
 import org.stellar.anchor.asset.AssetService;
 import org.stellar.anchor.event.EventService;
@@ -24,7 +24,7 @@ import org.stellar.anchor.sep24.Sep24TransactionStore;
 import org.stellar.anchor.sep31.Sep31TransactionStore;
 
 public class NotifyTransactionRecoveryHandler
-    extends ActionHandler<NotifyTransactionRecoveryRequest> {
+    extends RpcMethodHandler<NotifyTransactionRecoveryRequest> {
 
   public NotifyTransactionRecoveryHandler(
       Sep24TransactionStore txn24Store,
@@ -42,7 +42,7 @@ public class NotifyTransactionRecoveryHandler
   }
 
   @Override
-  public ActionMethod getActionType() {
+  public RpcMethod getRpcMethod() {
     return NOTIFY_TRANSACTION_RECOVERY;
   }
 
@@ -58,8 +58,8 @@ public class NotifyTransactionRecoveryHandler
       default:
         throw new InvalidRequestException(
             String.format(
-                "Action[%s] is not supported for protocol[%s]",
-                getActionType(), txn.getProtocol()));
+                "RPC method[%s] is not supported for protocol[%s]",
+                getRpcMethod(), txn.getProtocol()));
     }
   }
 
@@ -74,7 +74,7 @@ public class NotifyTransactionRecoveryHandler
   }
 
   @Override
-  protected void updateTransactionWithAction(
+  protected void updateTransactionWithRpcMethod(
       JdbcSepTransaction txn, NotifyTransactionRecoveryRequest request)
       throws InvalidParamsException {}
 }

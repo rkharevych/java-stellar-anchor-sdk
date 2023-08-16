@@ -54,7 +54,7 @@ class SepHelper(private val cfg: Config) {
     }
   }
 
-  internal suspend fun rpcAction(method: String, params: RpcActionParamsRequest) {
+  internal suspend fun rpcRequest(method: String, params: RpcMethodParamsRequest) {
     val resp =
       client.post(baseUrl) {
         contentType(ContentType.Application.Json)
@@ -68,7 +68,7 @@ class SepHelper(private val cfg: Config) {
       resp.status != HttpStatusCode.OK ||
         gson.fromJson<List<RpcResponse>>(respBody, rpcResponseType)[0].error != null
     ) {
-      log.error { "Unexpected error on rpc action. Response body: $respBody" }
+      log.error { "Unexpected error on rpc request. Response body: $respBody" }
       throw Exception(respBody)
     }
   }

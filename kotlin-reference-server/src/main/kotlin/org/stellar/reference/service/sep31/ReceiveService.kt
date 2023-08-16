@@ -36,7 +36,7 @@ class ReceiveService(cfg: Config) {
   }
 
   private suspend fun sendExternal(transactionId: String) {
-    sepHelper.rpcAction(
+    sepHelper.rpcRequest(
       "notify_offchain_funds_sent",
       NotifyOffchainFundsSentRequest(
         transactionId = transactionId,
@@ -46,7 +46,7 @@ class ReceiveService(cfg: Config) {
   }
 
   private suspend fun failTransaction(transactionId: String, message: String?) {
-    sepHelper.rpcAction(
+    sepHelper.rpcRequest(
       "notify_transaction_error",
       NotifyTransactionErrorRequest(transactionId = transactionId, message = message)
     )

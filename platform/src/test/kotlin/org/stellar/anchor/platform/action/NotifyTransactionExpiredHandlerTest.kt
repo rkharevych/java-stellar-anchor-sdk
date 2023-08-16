@@ -21,7 +21,7 @@ import org.stellar.anchor.api.platform.PlatformTransactionData
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind.DEPOSIT
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_38
-import org.stellar.anchor.api.rpc.action.NotifyTransactionExpiredRequest
+import org.stellar.anchor.api.rpc.method.NotifyTransactionExpiredRequest
 import org.stellar.anchor.api.sep.SepTransactionStatus.*
 import org.stellar.anchor.api.shared.Amount
 import org.stellar.anchor.api.shared.Customers
@@ -94,7 +94,7 @@ class NotifyTransactionExpiredHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_transaction_expired] is not supported. Status[error], kind[null], protocol[38], funds received[false]",
+      "RPC method[notify_transaction_expired] is not supported. Status[error], kind[null], protocol[38], funds received[false]",
       ex.message
     )
 
@@ -114,7 +114,7 @@ class NotifyTransactionExpiredHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_transaction_expired] is not supported. Status[expired], kind[null], protocol[24], funds received[false]",
+      "RPC method[notify_transaction_expired] is not supported. Status[expired], kind[null], protocol[24], funds received[false]",
       ex.message
     )
 
@@ -134,7 +134,7 @@ class NotifyTransactionExpiredHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_transaction_expired] is not supported. Status[completed], kind[null], protocol[24], funds received[false]",
+      "RPC method[notify_transaction_expired] is not supported. Status[completed], kind[null], protocol[24], funds received[false]",
       ex.message
     )
 
@@ -173,7 +173,7 @@ class NotifyTransactionExpiredHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_transaction_expired] is not supported. Status[pending_anchor], kind[null], protocol[24], funds received[true]",
+      "RPC method[notify_transaction_expired] is not supported. Status[pending_anchor], kind[null], protocol[24], funds received[true]",
       ex.message
     )
 

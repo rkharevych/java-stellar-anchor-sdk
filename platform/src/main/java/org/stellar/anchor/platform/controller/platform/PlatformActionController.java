@@ -10,21 +10,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.stellar.anchor.api.rpc.RpcRequest;
 import org.stellar.anchor.api.rpc.RpcResponse;
-import org.stellar.anchor.platform.service.ActionService;
+import org.stellar.anchor.platform.service.RpcService;
 
 @RestController
 public class PlatformActionController {
 
-  private final ActionService actionService;
+  private final RpcService rpcService;
 
-  public PlatformActionController(ActionService actionService) {
-    this.actionService = actionService;
+  public PlatformActionController(RpcService rpcService) {
+    this.rpcService = rpcService;
   }
 
   @CrossOrigin(origins = "*")
   @RequestMapping(method = {RequestMethod.POST})
   @ResponseStatus(value = HttpStatus.OK)
   public List<RpcResponse> handleAction(@RequestBody List<RpcRequest> rpcCalls) {
-    return actionService.handleRpcCalls(rpcCalls);
+    return rpcService.handle(rpcCalls);
   }
 }

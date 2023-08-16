@@ -8,7 +8,6 @@ import org.stellar.anchor.config.CustodyConfig;
 import org.stellar.anchor.custody.CustodyService;
 import org.stellar.anchor.event.EventService;
 import org.stellar.anchor.horizon.Horizon;
-import org.stellar.anchor.platform.action.ActionHandler;
 import org.stellar.anchor.platform.action.DoStellarPaymentHandler;
 import org.stellar.anchor.platform.action.DoStellarRefundHandler;
 import org.stellar.anchor.platform.action.NotifyAmountsUpdatedHandler;
@@ -30,9 +29,10 @@ import org.stellar.anchor.platform.action.RequestCustomerInfoUpdateHandler;
 import org.stellar.anchor.platform.action.RequestOffchainFundsHandler;
 import org.stellar.anchor.platform.action.RequestOnchainFundsHandler;
 import org.stellar.anchor.platform.action.RequestTrustHandler;
+import org.stellar.anchor.platform.action.RpcMethodHandler;
 import org.stellar.anchor.platform.config.PropertyCustodyConfig;
 import org.stellar.anchor.platform.data.JdbcTransactionPendingTrustRepo;
-import org.stellar.anchor.platform.service.ActionService;
+import org.stellar.anchor.platform.service.RpcService;
 import org.stellar.anchor.platform.validator.RequestValidator;
 import org.stellar.anchor.sep24.Sep24DepositInfoGenerator;
 import org.stellar.anchor.sep24.Sep24TransactionStore;
@@ -42,8 +42,8 @@ import org.stellar.anchor.sep31.Sep31TransactionStore;
 public class ActionBeans {
 
   @Bean
-  ActionService actionService(List<ActionHandler<?>> actionHandlers) {
-    return new ActionService(actionHandlers);
+  RpcService actionService(List<RpcMethodHandler<?>> rpcMethodHandlers) {
+    return new RpcService(rpcMethodHandlers);
   }
 
   @Bean

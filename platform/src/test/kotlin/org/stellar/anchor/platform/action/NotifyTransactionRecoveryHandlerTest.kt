@@ -22,7 +22,7 @@ import org.stellar.anchor.api.platform.PlatformTransactionData.Kind.DEPOSIT
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_31
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_38
-import org.stellar.anchor.api.rpc.action.NotifyTransactionRecoveryRequest
+import org.stellar.anchor.api.rpc.method.NotifyTransactionRecoveryRequest
 import org.stellar.anchor.api.sep.SepTransactionStatus.ERROR
 import org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR
 import org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_RECEIVER
@@ -93,7 +93,7 @@ class NotifyTransactionRecoveryHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_transaction_recovery] is not supported. Status[error], kind[null], protocol[38], funds received[true]",
+      "RPC method[notify_transaction_recovery] is not supported. Status[error], kind[null], protocol[38], funds received[true]",
       ex.message
     )
 
@@ -114,7 +114,7 @@ class NotifyTransactionRecoveryHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_transaction_recovery] is not supported. Status[pending_anchor], kind[null], protocol[24], funds received[true]",
+      "RPC method[notify_transaction_recovery] is not supported. Status[pending_anchor], kind[null], protocol[24], funds received[true]",
       ex.message
     )
 
@@ -134,7 +134,7 @@ class NotifyTransactionRecoveryHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_transaction_recovery] is not supported. Status[error], kind[null], protocol[24], funds received[false]",
+      "RPC method[notify_transaction_recovery] is not supported. Status[error], kind[null], protocol[24], funds received[false]",
       ex.message
     )
 

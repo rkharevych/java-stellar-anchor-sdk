@@ -3,7 +3,7 @@ package org.stellar.anchor.platform.action;
 import static java.util.Collections.emptySet;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Kind.DEPOSIT;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24;
-import static org.stellar.anchor.api.rpc.action.ActionMethod.REQUEST_TRUST;
+import static org.stellar.anchor.api.rpc.method.RpcMethod.REQUEST_TRUST;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_TRUST;
 
@@ -13,8 +13,8 @@ import org.stellar.anchor.api.exception.rpc.InvalidParamsException;
 import org.stellar.anchor.api.exception.rpc.InvalidRequestException;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep;
-import org.stellar.anchor.api.rpc.action.ActionMethod;
-import org.stellar.anchor.api.rpc.action.RequestTrustRequest;
+import org.stellar.anchor.api.rpc.method.RequestTrustRequest;
+import org.stellar.anchor.api.rpc.method.RpcMethod;
 import org.stellar.anchor.api.sep.SepTransactionStatus;
 import org.stellar.anchor.asset.AssetService;
 import org.stellar.anchor.config.CustodyConfig;
@@ -25,7 +25,7 @@ import org.stellar.anchor.platform.validator.RequestValidator;
 import org.stellar.anchor.sep24.Sep24TransactionStore;
 import org.stellar.anchor.sep31.Sep31TransactionStore;
 
-public class RequestTrustHandler extends ActionHandler<RequestTrustRequest> {
+public class RequestTrustHandler extends RpcMethodHandler<RequestTrustRequest> {
 
   private final CustodyConfig custodyConfig;
 
@@ -53,12 +53,12 @@ public class RequestTrustHandler extends ActionHandler<RequestTrustRequest> {
 
     if (custodyConfig.isCustodyIntegrationEnabled()) {
       throw new InvalidRequestException(
-          String.format("Action[%s] requires disabled custody integration", getActionType()));
+          String.format("RPC method[%s] requires disabled custody integration", getRpcMethod()));
     }
   }
 
   @Override
-  public ActionMethod getActionType() {
+  public RpcMethod getRpcMethod() {
     return REQUEST_TRUST;
   }
 
@@ -82,5 +82,6 @@ public class RequestTrustHandler extends ActionHandler<RequestTrustRequest> {
   }
 
   @Override
-  protected void updateTransactionWithAction(JdbcSepTransaction txn, RequestTrustRequest request) {}
+  protected void updateTransactionWithRpcMethod(
+      JdbcSepTransaction txn, RequestTrustRequest request) {}
 }

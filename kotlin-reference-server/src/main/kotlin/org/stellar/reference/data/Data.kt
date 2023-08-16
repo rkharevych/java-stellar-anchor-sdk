@@ -57,11 +57,11 @@ data class RpcRequest(
   val id: String,
   val jsonrpc: String,
   val method: String,
-  val params: RpcActionParamsRequest
+  val params: RpcMethodParamsRequest
 )
 
 @Serializable
-sealed class RpcActionParamsRequest {
+sealed class RpcMethodParamsRequest {
   @SerialName("transaction_id") abstract val transactionId: String
   abstract val message: String?
 }
@@ -74,7 +74,7 @@ data class RequestOffchainFundsRequest(
   @SerialName("amount_out") val amountOut: AmountAssetRequest,
   @SerialName("amount_fee") val amountFee: AmountAssetRequest,
   @SerialName("amount_expected") val amountExpected: AmountRequest? = null
-) : RpcActionParamsRequest()
+) : RpcMethodParamsRequest()
 
 @Serializable
 data class RequestOnchainFundsRequest(
@@ -84,14 +84,14 @@ data class RequestOnchainFundsRequest(
   @SerialName("amount_out") val amountOut: AmountAssetRequest,
   @SerialName("amount_fee") val amountFee: AmountAssetRequest,
   @SerialName("amount_expected") val amountExpected: AmountRequest? = null
-) : RpcActionParamsRequest()
+) : RpcMethodParamsRequest()
 
 @Serializable
 data class NotifyOnchainFundsSentRequest(
   @SerialName("transaction_id") override val transactionId: String,
   override val message: String? = null,
   @SerialName("stellar_transaction_id") val stellarTransactionId: String? = null
-) : RpcActionParamsRequest()
+) : RpcMethodParamsRequest()
 
 @Serializable
 data class NotifyOffchainFundsReceivedRequest(
@@ -102,7 +102,7 @@ data class NotifyOffchainFundsReceivedRequest(
   @SerialName("amount_in") val amountIn: AmountAssetRequest? = null,
   @SerialName("amount_out") val amountOut: AmountAssetRequest? = null,
   @SerialName("amount_fee") val amountFee: AmountAssetRequest? = null
-) : RpcActionParamsRequest()
+) : RpcMethodParamsRequest()
 
 @Serializable
 data class NotifyOffchainFundsSentRequest(
@@ -110,19 +110,19 @@ data class NotifyOffchainFundsSentRequest(
   override val message: String,
   @SerialName("funds_sent_at") val fundsReceivedAt: String? = null,
   @SerialName("external_transaction_id") val externalTransactionId: String? = null
-) : RpcActionParamsRequest()
+) : RpcMethodParamsRequest()
 
 @Serializable
 data class DoStellarPaymentRequest(
   @SerialName("transaction_id") override val transactionId: String,
   override val message: String? = null,
-) : RpcActionParamsRequest()
+) : RpcMethodParamsRequest()
 
 @Serializable
 data class NotifyTransactionErrorRequest(
   @SerialName("transaction_id") override val transactionId: String,
   override val message: String? = null,
-) : RpcActionParamsRequest()
+) : RpcMethodParamsRequest()
 
 @Serializable data class AmountAssetRequest(val asset: String, val amount: String)
 

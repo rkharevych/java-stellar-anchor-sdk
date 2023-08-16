@@ -3,7 +3,7 @@ package org.stellar.anchor.platform.action;
 import static java.util.Collections.emptySet;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Kind.DEPOSIT;
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24;
-import static org.stellar.anchor.api.rpc.action.ActionMethod.NOTIFY_REFUND_PENDING;
+import static org.stellar.anchor.api.rpc.method.RpcMethod.NOTIFY_REFUND_PENDING;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_EXTERNAL;
 import static org.stellar.anchor.util.AssetHelper.getAssetCode;
@@ -18,9 +18,9 @@ import org.stellar.anchor.api.exception.rpc.InvalidParamsException;
 import org.stellar.anchor.api.exception.rpc.InvalidRequestException;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep;
-import org.stellar.anchor.api.rpc.action.ActionMethod;
-import org.stellar.anchor.api.rpc.action.AmountAssetRequest;
-import org.stellar.anchor.api.rpc.action.NotifyRefundPendingRequest;
+import org.stellar.anchor.api.rpc.method.AmountAssetRequest;
+import org.stellar.anchor.api.rpc.method.NotifyRefundPendingRequest;
+import org.stellar.anchor.api.rpc.method.RpcMethod;
 import org.stellar.anchor.api.sep.AssetInfo;
 import org.stellar.anchor.api.sep.SepTransactionStatus;
 import org.stellar.anchor.asset.AssetService;
@@ -36,7 +36,7 @@ import org.stellar.anchor.sep24.Sep24Refunds;
 import org.stellar.anchor.sep24.Sep24TransactionStore;
 import org.stellar.anchor.sep31.Sep31TransactionStore;
 
-public class NotifyRefundPendingHandler extends ActionHandler<NotifyRefundPendingRequest> {
+public class NotifyRefundPendingHandler extends RpcMethodHandler<NotifyRefundPendingRequest> {
 
   public NotifyRefundPendingHandler(
       Sep24TransactionStore txn24Store,
@@ -85,7 +85,7 @@ public class NotifyRefundPendingHandler extends ActionHandler<NotifyRefundPendin
   }
 
   @Override
-  public ActionMethod getActionType() {
+  public RpcMethod getRpcMethod() {
     return NOTIFY_REFUND_PENDING;
   }
 
@@ -126,7 +126,7 @@ public class NotifyRefundPendingHandler extends ActionHandler<NotifyRefundPendin
   }
 
   @Override
-  protected void updateTransactionWithAction(
+  protected void updateTransactionWithRpcMethod(
       JdbcSepTransaction txn, NotifyRefundPendingRequest request) {
     JdbcSep24Transaction txn24 = (JdbcSep24Transaction) txn;
 

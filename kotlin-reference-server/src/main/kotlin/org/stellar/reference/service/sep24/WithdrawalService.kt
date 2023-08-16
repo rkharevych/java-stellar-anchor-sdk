@@ -57,8 +57,8 @@ class WithdrawalService(private val cfg: Config) {
     val fee = calculateFee(amount)
     val stellarAsset = "stellar:$asset"
 
-    if (cfg.rpcActionsEnabled) {
-      sepHelper.rpcAction(
+    if (cfg.rpcEnabled) {
+      sepHelper.rpcRequest(
         "request_onchain_funds",
         RequestOnchainFundsRequest(
           transactionId = transactionId,
@@ -87,8 +87,8 @@ class WithdrawalService(private val cfg: Config) {
   }
 
   private suspend fun sendExternal(transactionId: String) {
-    if (cfg.rpcActionsEnabled) {
-      sepHelper.rpcAction(
+    if (cfg.rpcEnabled) {
+      sepHelper.rpcRequest(
         "notify_offchain_funds_sent",
         NotifyOffchainFundsSentRequest(
           transactionId = transactionId,
@@ -109,7 +109,7 @@ class WithdrawalService(private val cfg: Config) {
   }
 
   private suspend fun finalize(transactionId: String) {
-    if (!cfg.rpcActionsEnabled) {
+    if (!cfg.rpcEnabled) {
       sepHelper.patchTransaction(
         PatchTransactionTransaction(transactionId, "completed", message = "completed")
       )
@@ -117,8 +117,8 @@ class WithdrawalService(private val cfg: Config) {
   }
 
   private suspend fun failTransaction(transactionId: String, message: String?) {
-    if (cfg.rpcActionsEnabled) {
-      sepHelper.rpcAction(
+    if (cfg.rpcEnabled) {
+      sepHelper.rpcRequest(
         "notify_transaction_error",
         NotifyTransactionErrorRequest(transactionId = transactionId, message = message)
       )

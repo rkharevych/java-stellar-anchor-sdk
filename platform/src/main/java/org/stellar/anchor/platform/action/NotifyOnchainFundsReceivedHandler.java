@@ -1,7 +1,7 @@
 package org.stellar.anchor.platform.action;
 
 import static org.stellar.anchor.api.platform.PlatformTransactionData.Kind.WITHDRAWAL;
-import static org.stellar.anchor.api.rpc.action.ActionMethod.NOTIFY_ONCHAIN_FUNDS_RECEIVED;
+import static org.stellar.anchor.api.rpc.method.RpcMethod.NOTIFY_ONCHAIN_FUNDS_RECEIVED;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_ANCHOR;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_RECEIVER;
 import static org.stellar.anchor.api.sep.SepTransactionStatus.PENDING_SENDER;
@@ -20,9 +20,9 @@ import org.stellar.anchor.api.exception.rpc.InvalidParamsException;
 import org.stellar.anchor.api.exception.rpc.InvalidRequestException;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind;
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep;
-import org.stellar.anchor.api.rpc.action.ActionMethod;
-import org.stellar.anchor.api.rpc.action.AmountAssetRequest;
-import org.stellar.anchor.api.rpc.action.NotifyOnchainFundsReceivedRequest;
+import org.stellar.anchor.api.rpc.method.AmountAssetRequest;
+import org.stellar.anchor.api.rpc.method.NotifyOnchainFundsReceivedRequest;
+import org.stellar.anchor.api.rpc.method.RpcMethod;
 import org.stellar.anchor.api.sep.SepTransactionStatus;
 import org.stellar.anchor.asset.AssetService;
 import org.stellar.anchor.event.EventService;
@@ -36,7 +36,7 @@ import org.stellar.anchor.sep31.Sep31TransactionStore;
 import org.stellar.sdk.responses.operations.OperationResponse;
 
 public class NotifyOnchainFundsReceivedHandler
-    extends ActionHandler<NotifyOnchainFundsReceivedRequest> {
+    extends RpcMethodHandler<NotifyOnchainFundsReceivedRequest> {
 
   private final Horizon horizon;
 
@@ -106,7 +106,7 @@ public class NotifyOnchainFundsReceivedHandler
   }
 
   @Override
-  public ActionMethod getActionType() {
+  public RpcMethod getRpcMethod() {
     return NOTIFY_ONCHAIN_FUNDS_RECEIVED;
   }
 
@@ -122,8 +122,8 @@ public class NotifyOnchainFundsReceivedHandler
       default:
         throw new InvalidRequestException(
             String.format(
-                "Action[%s] is not supported for protocol[%s]",
-                getActionType(), txn.getProtocol()));
+                "RPC method[%s] is not supported for protocol[%s]",
+                getRpcMethod(), txn.getProtocol()));
     }
   }
 
@@ -144,7 +144,7 @@ public class NotifyOnchainFundsReceivedHandler
   }
 
   @Override
-  protected void updateTransactionWithAction(
+  protected void updateTransactionWithRpcMethod(
       JdbcSepTransaction txn, NotifyOnchainFundsReceivedRequest request) throws AnchorException {
     String stellarTxnId = request.getStellarTransactionId();
     try {

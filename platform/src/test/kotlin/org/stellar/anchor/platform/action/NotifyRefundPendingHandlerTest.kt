@@ -22,8 +22,8 @@ import org.stellar.anchor.api.platform.PlatformTransactionData.Kind.DEPOSIT
 import org.stellar.anchor.api.platform.PlatformTransactionData.Kind.WITHDRAWAL
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_24
 import org.stellar.anchor.api.platform.PlatformTransactionData.Sep.SEP_38
-import org.stellar.anchor.api.rpc.action.AmountAssetRequest
-import org.stellar.anchor.api.rpc.action.NotifyRefundPendingRequest
+import org.stellar.anchor.api.rpc.method.AmountAssetRequest
+import org.stellar.anchor.api.rpc.method.NotifyRefundPendingRequest
 import org.stellar.anchor.api.sep.SepTransactionStatus.*
 import org.stellar.anchor.api.shared.Amount
 import org.stellar.anchor.api.shared.RefundPayment
@@ -96,7 +96,7 @@ class NotifyRefundPendingHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_refund_pending] is not supported. Status[pending_anchor], kind[null], protocol[38], funds received[false]",
+      "RPC method[notify_refund_pending] is not supported. Status[pending_anchor], kind[null], protocol[38], funds received[false]",
       ex.message
     )
 
@@ -118,7 +118,7 @@ class NotifyRefundPendingHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_refund_pending] is not supported. Status[pending_anchor], kind[withdrawal], protocol[24], funds received[true]",
+      "RPC method[notify_refund_pending] is not supported. Status[pending_anchor], kind[withdrawal], protocol[24], funds received[true]",
       ex.message
     )
 
@@ -139,7 +139,7 @@ class NotifyRefundPendingHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Action[notify_refund_pending] is not supported. Status[incomplete], kind[deposit], protocol[24], funds received[false]",
+      "RPC method[notify_refund_pending] is not supported. Status[incomplete], kind[deposit], protocol[24], funds received[false]",
       ex.message
     )
 
