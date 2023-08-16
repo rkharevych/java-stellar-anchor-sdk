@@ -104,7 +104,7 @@ class CallbackApiTests(val config: TestConfig, val toml: Sep1Helper.TomlContent,
       }
     }"""
         .trimMargin()
-    JSONAssert.assertEquals(wantBody, org.stellar.anchor.platform.gson.toJson(result), true)
+    JSONAssert.assertEquals(wantBody, gson.toJson(result), true)
   }
 
   private fun testRate_firm() {
@@ -166,7 +166,7 @@ class CallbackApiTests(val config: TestConfig, val toml: Sep1Helper.TomlContent,
       }
     }"""
         .trimMargin()
-    JSONAssert.assertEquals(wantBody, org.stellar.anchor.platform.gson.toJson(gotQuote), true)
+    JSONAssert.assertEquals(wantBody, gson.toJson(gotQuote), true)
   }
 
   private fun testGetFee() {
@@ -194,7 +194,7 @@ class CallbackApiTests(val config: TestConfig, val toml: Sep1Helper.TomlContent,
 
     Assertions.assertNotNull(result)
     JSONAssert.assertEquals(
-      org.stellar.anchor.platform.gson.toJson(result),
+      gson.toJson(result),
       """{
           "fee": {
             "asset": "USDC",

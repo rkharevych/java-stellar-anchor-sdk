@@ -1,14 +1,15 @@
-package org.stellar.reference.sep24
+package org.stellar.reference.service.sep24
 
 import java.math.BigDecimal
 import java.math.RoundingMode
 import mu.KotlinLogging
 import org.stellar.reference.data.*
+import org.stellar.reference.service.SepHelper
 
 private val log = KotlinLogging.logger {}
 
 class WithdrawalService(private val cfg: Config) {
-  private val sep24 = Sep24Helper(cfg)
+  private val sepHelper = SepHelper(cfg)
 
   suspend fun processWithdrawal(
     transactionId: String,
@@ -16,22 +17,22 @@ class WithdrawalService(private val cfg: Config) {
     asset: String,
   ) {
     try {
-      var transaction = sep24.getTransaction(transactionId)
+      var transaction = sepHelper.getTransaction(transactionId)
       log.info { "Transaction found $transaction" }
 
       // 2. Wait for user to submit a stellar transfer
       initiateTransfer(transactionId, amount, asset)
 
-      transaction = sep24.getTransaction(transactionId)
+      transaction = sepHelper.getTransaction(transactionId)
       log.info { "Transaction status changed: $transaction" }
 
       // 3. Wait for stellar transaction
-      sep24.waitStellarTransaction(transactionId, "pending_anchor")
+      sepHelper.waitStellarTransaction(transactionId, "pending_anchor")
 
-      transaction = sep24.getTransaction(transactionId)
+      transaction = sepHelper.getTransaction(transactionId)
       log.info { "Transaction status changed: $transaction" }
 
-      sep24.validateTransaction(transaction)
+      sepHelper.validateTransaction(transaction)
 
       // 4. Send external funds
       sendExternal(transactionId)
@@ -56,8 +57,8 @@ class WithdrawalService(private val cfg: Config) {
     val fee = calculateFee(amount)
     val stellarAsset = "stellar:$asset"
 
-    if (cfg.sep24.rpcActionsEnabled) {
-      sep24.rpcAction(
+    if (cfg.rpcActionsEnabled) {
+      sepHelper.rpcAction(
         "request_onchain_funds",
         RequestOnchainFundsRequest(
           transactionId = transactionId,
@@ -72,7 +73,7 @@ class WithdrawalService(private val cfg: Config) {
         )
       )
     } else {
-      sep24.patchTransaction(
+      sepHelper.patchTransaction(
         PatchTransactionTransaction(
           transactionId,
           status = "pending_user_transfer_start",
@@ -86,8 +87,8 @@ class WithdrawalService(private val cfg: Config) {
   }
 
   private suspend fun sendExternal(transactionId: String) {
-    if (cfg.sep24.rpcActionsEnabled) {
-      sep24.rpcAction(
+    if (cfg.rpcActionsEnabled) {
+      sepHelper.rpcAction(
         "notify_offchain_funds_sent",
         NotifyOffchainFundsSentRequest(
           transactionId = transactionId,
@@ -95,7 +96,7 @@ class WithdrawalService(private val cfg: Config) {
         )
       )
     } else {
-      sep24.patchTransaction(
+      sepHelper.patchTransaction(
         PatchTransactionTransaction(
           transactionId,
           "pending_external",
@@ -108,21 +109,21 @@ class WithdrawalService(private val cfg: Config) {
   }
 
   private suspend fun finalize(transactionId: String) {
-    if (!cfg.sep24.rpcActionsEnabled) {
-      sep24.patchTransaction(
+    if (!cfg.rpcActionsEnabled) {
+      sepHelper.patchTransaction(
         PatchTransactionTransaction(transactionId, "completed", message = "completed")
       )
     }
   }
 
   private suspend fun failTransaction(transactionId: String, message: String?) {
-    if (cfg.sep24.rpcActionsEnabled) {
-      sep24.rpcAction(
+    if (cfg.rpcActionsEnabled) {
+      sepHelper.rpcAction(
         "notify_transaction_error",
         NotifyTransactionErrorRequest(transactionId = transactionId, message = message)
       )
     } else {
-      sep24.patchTransaction(transactionId, "error", message)
+      sepHelper.patchTransaction(transactionId, "error", message)
     }
   }
 

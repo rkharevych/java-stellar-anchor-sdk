@@ -16,11 +16,13 @@ dependencies {
   implementation(libs.java.stellar.sdk)
   implementation(libs.jjwt)
   implementation(libs.javax.jaxb.api)
+  implementation(libs.h2database)
 
   implementation(libs.slf4j.log4j12)
   implementation(libs.kotlin.logging)
 
   implementation(project(mapOf("path" to ":api-schema")))
+  implementation(project(":core"))
 }
 
 tasks {

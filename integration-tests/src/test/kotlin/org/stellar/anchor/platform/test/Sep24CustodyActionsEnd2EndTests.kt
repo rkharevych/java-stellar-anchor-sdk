@@ -112,10 +112,10 @@ class Sep24CustodyActionsEnd2EndTests(config: TestConfig, val jwt: String) {
         expectedEvent.transaction.id = actualEvent.transaction.id
         expectedEvent.transaction.startedAt = actualEvent.transaction.startedAt
         expectedEvent.transaction.updatedAt = actualEvent.transaction.updatedAt
+        expectedEvent.transaction.completedAt = actualEvent.transaction.completedAt
         expectedEvent.transaction.stellarTransactions = actualEvent.transaction.stellarTransactions
         expectedEvent.transaction.memo = actualEvent.transaction.memo
-        expectedEvent.transaction.amountExpected.asset = asset.id
-        expectedEvent.transaction.completedAt = actualEvent.transaction.completedAt
+        expectedEvent.transaction.destinationAccount = actualEvent.transaction.destinationAccount
         actualEvent.transaction.amountIn?.let {
           expectedEvent.transaction.amountIn.amount = actualEvent.transaction.amountIn.amount
           //          expectedEvent.transaction.amountIn.asset = asset.sep38
@@ -138,8 +138,6 @@ class Sep24CustodyActionsEnd2EndTests(config: TestConfig, val jwt: String) {
           expectedEvent.transaction.amountExpected.asset =
             actualEvent.transaction.amountExpected.asset
         }
-
-        expectedEvent.transaction.destinationAccount = actualEvent.transaction.destinationAccount
       }
     }
     JSONAssert.assertEquals(json(expectedEvents), gson.toJson(actualEvents), true)

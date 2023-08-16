@@ -76,8 +76,7 @@ public class PaymentOperationToEventListener implements PaymentListener {
     // Find a transaction matching the memo, assumes transactions are unique to account+memo
     JdbcSep31Transaction sep31Txn = null;
     try {
-      sep31Txn =
-          sep31TransactionStore.findByStellarAccountIdAndMemo(payment.getSourceAccount(), memo);
+      sep31Txn = sep31TransactionStore.findByStellarAccountIdAndMemo(payment.getTo(), memo);
     } catch (Exception ex) {
       errorEx(ex);
     }
