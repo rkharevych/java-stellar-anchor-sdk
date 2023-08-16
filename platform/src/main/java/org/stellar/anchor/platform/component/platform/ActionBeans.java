@@ -31,6 +31,7 @@ import org.stellar.anchor.platform.action.RequestOnchainFundsHandler;
 import org.stellar.anchor.platform.action.RequestTrustHandler;
 import org.stellar.anchor.platform.action.RpcMethodHandler;
 import org.stellar.anchor.platform.config.PropertyCustodyConfig;
+import org.stellar.anchor.platform.config.RpcConfig;
 import org.stellar.anchor.platform.data.JdbcTransactionPendingTrustRepo;
 import org.stellar.anchor.platform.service.RpcService;
 import org.stellar.anchor.platform.validator.RequestValidator;
@@ -42,8 +43,8 @@ import org.stellar.anchor.sep31.Sep31TransactionStore;
 public class ActionBeans {
 
   @Bean
-  RpcService actionService(List<RpcMethodHandler<?>> rpcMethodHandlers) {
-    return new RpcService(rpcMethodHandlers);
+  RpcService rpcService(List<RpcMethodHandler<?>> rpcMethodHandlers, RpcConfig rpcConfig) {
+    return new RpcService(rpcMethodHandlers, rpcConfig);
   }
 
   @Bean

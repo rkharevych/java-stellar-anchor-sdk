@@ -1101,7 +1101,7 @@ class NotifyRefundSentHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Multiple refunds aren't supported for kind[RECEIVE], protocol[31] and action[notify_refund_sent]",
+      "Multiple refunds aren't supported for kind[RECEIVE], protocol[31] and RPC method[notify_refund_sent]",
       ex.message
     )
 

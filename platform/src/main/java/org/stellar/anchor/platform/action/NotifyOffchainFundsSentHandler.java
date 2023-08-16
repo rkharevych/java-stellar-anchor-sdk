@@ -65,7 +65,7 @@ public class NotifyOffchainFundsSentHandler
           default:
             throw new InvalidRequestException(
                 String.format(
-                    "Kind[%s] is not supported for protocol[%s] and action[%s]",
+                    "Kind[%s] is not supported for protocol[%s] and RPC method[%s]",
                     txn24.getKind(), txn24.getProtocol(), getRpcMethod()));
         }
       case SEP_31:

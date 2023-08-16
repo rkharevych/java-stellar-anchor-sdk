@@ -226,7 +226,7 @@ class PaymentOperationToEventListenerTest {
     val amountCapture = slot<String>()
     val messageCapture = slot<String>()
 
-    every { rpcConfig.actions.customMessages.incomingPaymentReceived } returns "payment received"
+    every { rpcConfig.customMessages.incomingPaymentReceived } returns "payment received"
     every {
       platformApiClient.notifyOnchainFundsReceived(
         capture(txnIdCapture),
@@ -319,7 +319,7 @@ class PaymentOperationToEventListenerTest {
     val amountCapture = slot<String>()
     val messageCapture = slot<String>()
 
-    every { rpcConfig.actions.customMessages.incomingPaymentReceived } returns "payment received"
+    every { rpcConfig.customMessages.incomingPaymentReceived } returns "payment received"
     every {
       platformApiClient.notifyOnchainFundsReceived(
         capture(txnIdCapture),
@@ -407,7 +407,7 @@ class PaymentOperationToEventListenerTest {
     val amountCapture = slot<String>()
     val messageCapture = slot<String>()
 
-    every { rpcConfig.actions.customMessages.incomingPaymentReceived } returns "payment received"
+    every { rpcConfig.customMessages.incomingPaymentReceived } returns "payment received"
     every {
       platformApiClient.notifyOnchainFundsReceived(
         capture(txnIdCapture),

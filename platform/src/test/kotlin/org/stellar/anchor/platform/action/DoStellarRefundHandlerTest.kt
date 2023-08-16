@@ -653,7 +653,7 @@ class DoStellarRefundHandlerTest {
 
     val ex = assertThrows<InvalidRequestException> { handler.handle(request) }
     assertEquals(
-      "Multiple refunds aren't supported for kind[RECEIVE], protocol[31] and action[do_stellar_refund]",
+      "Multiple refunds aren't supported for kind[RECEIVE], protocol[31] and RPC method[do_stellar_refund]",
       ex.message
     )
 

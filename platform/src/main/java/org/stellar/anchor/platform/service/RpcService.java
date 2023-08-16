@@ -3,6 +3,7 @@ package org.stellar.anchor.platform.service;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
+import static org.stellar.anchor.platform.utils.RpcUtil.getRpcBatchLimitErrorResponse;
 import static org.stellar.anchor.platform.utils.RpcUtil.getRpcErrorResponse;
 import static org.stellar.anchor.platform.utils.RpcUtil.getRpcSuccessResponse;
 import static org.stellar.anchor.platform.utils.RpcUtil.validateRpcRequest;
@@ -20,17 +21,24 @@ import org.stellar.anchor.api.rpc.RpcRequest;
 import org.stellar.anchor.api.rpc.RpcResponse;
 import org.stellar.anchor.api.rpc.method.RpcMethod;
 import org.stellar.anchor.platform.action.RpcMethodHandler;
+import org.stellar.anchor.platform.config.RpcConfig;
 
 public class RpcService {
 
-  private final Map<RpcMethod, RpcMethodHandler<?>> actionHandlerMap;
+  private final Map<RpcMethod, RpcMethodHandler<?>> rpcMethodHandlerMap;
+  private final RpcConfig rpcConfig;
 
-  public RpcService(List<RpcMethodHandler<?>> rpcMethodHandlers) {
-    this.actionHandlerMap =
+  public RpcService(List<RpcMethodHandler<?>> rpcMethodHandlers, RpcConfig rpcConfig) {
+    this.rpcMethodHandlerMap =
         rpcMethodHandlers.stream().collect(toMap(RpcMethodHandler::getRpcMethod, identity()));
+    this.rpcConfig = rpcConfig;
   }
 
   public List<RpcResponse> handle(List<RpcRequest> rpcCalls) {
+    if (rpcCalls.size() > rpcConfig.getBatchSizeLimit()) {
+      return List.of(getRpcBatchLimitErrorResponse(rpcConfig.getBatchSizeLimit()));
+    }
+
     return rpcCalls.stream()
         .map(
             rc -> {
@@ -41,7 +49,7 @@ public class RpcService {
               } catch (RpcException ex) {
                 errorEx(
                     String.format(
-                        "An RPC error occurred while processing an RPC call with action[%s] and id[%s]",
+                        "An RPC error occurred while processing an RPC request with method[%s] and id[%s]",
                         rc.getMethod(), rpcId),
                     ex);
                 return getRpcErrorResponse(rc, ex);
@@ -50,7 +58,7 @@ public class RpcService {
               } catch (Exception ex) {
                 errorEx(
                     String.format(
-                        "An internal error occurred while processing an RPC call with action[%s] and id[%s]",
+                        "An internal error occurred while processing an RPC call with method[%s] and id[%s]",
                         rc.getMethod(), rpcId),
                     ex);
                 return getRpcErrorResponse(rc, new InternalErrorException(ex.getMessage()));
@@ -62,7 +70,7 @@ public class RpcService {
   private Object processRpcCall(RpcRequest rpcCall) throws AnchorException {
     debugF("Started processing of RPC call with method [{}]", rpcCall.getMethod());
     RpcMethodHandler<?> rpcMethodHandler =
-        actionHandlerMap.get(RpcMethod.from(rpcCall.getMethod()));
+        rpcMethodHandlerMap.get(RpcMethod.from(rpcCall.getMethod()));
     if (rpcMethodHandler == null) {
       throw new MethodNotFoundException(
           String.format("RPC method[%s] handler is not found", rpcCall.getMethod()));

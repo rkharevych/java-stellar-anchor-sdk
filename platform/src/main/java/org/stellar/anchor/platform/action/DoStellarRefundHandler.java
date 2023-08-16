@@ -131,7 +131,7 @@ public class DoStellarRefundHandler extends RpcMethodHandler<DoStellarRefundRequ
         } else {
           throw new InvalidRequestException(
               String.format(
-                  "Multiple refunds aren't supported for kind[%s], protocol[%s] and action[%s]",
+                  "Multiple refunds aren't supported for kind[%s], protocol[%s] and RPC method[%s]",
                   RECEIVE, txn.getProtocol(), getRpcMethod()));
         }
         break;
