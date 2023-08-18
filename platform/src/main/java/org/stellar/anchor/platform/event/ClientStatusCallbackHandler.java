@@ -1,6 +1,6 @@
 package org.stellar.anchor.platform.event;
 
-import static org.stellar.anchor.util.Log.*;
+import static org.stellar.anchor.util.Log.debugF;
 import static org.stellar.anchor.util.NetUtil.getDomainFromURL;
 import static org.stellar.anchor.util.OkHttpUtil.buildJsonRequestBody;
 import static org.stellar.anchor.util.StringHelper.json;
@@ -37,7 +37,7 @@ public class ClientStatusCallbackHandler extends EventHandler {
     KeyPair signer = KeyPair.fromSecretSeed(new PropertySecretConfig().getSep10SigningSeed());
     Request request = buildSignedCallbackRequest(signer, event);
     httpClient.newCall(request).execute();
-    infoF(
+    debugF(
         "Sending event: {} to client status api: {}", json(event), clientConfig.getCallbackUrl());
   }
 
