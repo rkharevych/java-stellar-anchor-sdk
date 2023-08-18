@@ -17,6 +17,7 @@ fun Route.event(eventService: EventService) {
   route("/event") {
     // The `POST /event` endpoint of the CallbackAPI to receive an event.
     post {
+      print("Received event in Kotlin")
       val receivedEventJson = call.receive<String>()
       val receivedEvent = gson.fromJson(receivedEventJson, SendEventRequest::class.java)
       eventService.processEvent(receivedEvent)
