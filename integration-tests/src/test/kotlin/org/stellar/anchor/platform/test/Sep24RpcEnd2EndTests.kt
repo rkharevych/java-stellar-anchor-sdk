@@ -199,6 +199,8 @@ class Sep24RpcEnd2EndTests(config: TestConfig, val jwt: String) {
     var retries = 5
     while (retries > 0) {
       val events = anchorReferenceServerClient.getEvents(txnId)
+      info("Events size: " + events.size)
+      info("Events size: " + events)
       if (events.size == count) {
         return events
       }
