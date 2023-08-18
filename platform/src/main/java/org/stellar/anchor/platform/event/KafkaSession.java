@@ -1,6 +1,7 @@
 package org.stellar.anchor.platform.event;
 
 import static org.apache.kafka.clients.producer.ProducerConfig.*;
+import static org.stellar.anchor.util.Log.info;
 import static org.stellar.anchor.util.StringHelper.isEmpty;
 
 import io.micrometer.core.instrument.Metrics;
@@ -42,6 +43,7 @@ public class KafkaSession implements EventService.Session {
 
   @Override
   public void publish(AnchorEvent event) throws AnchorException {
+    info("Sending Kafka");
     try {
       if (producer == null) {
         producer = createProducer();
