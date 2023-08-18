@@ -148,7 +148,7 @@ public class EventProcessorManager {
         while (!Thread.currentThread().isInterrupted() && !stopped) {
           ReadResponse readResponse = queueSession.read();
           List<AnchorEvent> events = readResponse.getEvents();
-          info("Received {} events from queue", events.size());
+          debugF("Received {} events from queue", events.size());
           events.forEach(
               event -> {
                 // TODO: Implement retry mechanism here
