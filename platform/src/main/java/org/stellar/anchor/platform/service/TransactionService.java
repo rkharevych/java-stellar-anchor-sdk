@@ -196,7 +196,7 @@ public class TransactionService {
     JdbcSepTransaction txn = findTransaction(patch.getTransaction().getId());
     if (txn == null)
       throw new BadRequestException(
-          String.format("transaction(id=%s) not found", patch.getTransaction().getId()));
+          String.format("transaction(id=%s) not found 1", patch.getTransaction().getId()));
 
     String lastStatus = txn.getStatus();
     updateSepTransaction(patch.getTransaction(), txn);
