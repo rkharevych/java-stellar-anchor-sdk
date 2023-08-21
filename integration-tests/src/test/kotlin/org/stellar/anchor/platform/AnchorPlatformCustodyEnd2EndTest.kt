@@ -23,7 +23,7 @@ class AnchorPlatformCustodyEnd2EndTest :
   }
 
   @Test
-  @Order(2)
+  @Order(1)
   fun runSep24Test() {
     singleton.sep24CustodyE2eTests.testAll()
   }

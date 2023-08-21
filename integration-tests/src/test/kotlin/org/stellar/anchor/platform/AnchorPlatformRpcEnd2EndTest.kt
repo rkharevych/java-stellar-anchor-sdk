@@ -23,7 +23,7 @@ class AnchorPlatformRpcEnd2EndTest :
   }
 
   @Test
-  @Order(5)
+  @Order(1)
   fun runSep24Test() {
     singleton.sep24RpcE2eTests.testAll()
   }

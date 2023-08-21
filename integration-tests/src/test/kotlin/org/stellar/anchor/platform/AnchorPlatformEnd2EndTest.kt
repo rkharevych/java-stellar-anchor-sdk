@@ -22,7 +22,7 @@ class AnchorPlatformEnd2EndTest : AbstractIntegrationTest(TestConfig(testProfile
   }
 
   @Test
-  @Order(10)
+  @Order(1)
   fun runSep24Test() {
     singleton.sep24E2eTests.testAll()
   }
