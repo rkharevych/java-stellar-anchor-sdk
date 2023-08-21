@@ -3,11 +3,11 @@ package org.stellar.anchor.platform
 import org.junit.jupiter.api.*
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-class AnchorPlatformWithApiEnd2EndTest :
+class AnchorPlatformActionsEnd2EndTest :
   AbstractIntegrationTest(TestConfig(testProfileName = "sep24-rpc")) {
 
   companion object {
-    private val singleton = AnchorPlatformWithApiEnd2EndTest()
+    private val singleton = AnchorPlatformActionsEnd2EndTest()
 
     @BeforeAll
     @JvmStatic
