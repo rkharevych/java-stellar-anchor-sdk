@@ -19,11 +19,11 @@
       </ENTRIES>
     </extension>
     <option name="PACKAGE_NAME" value="org.stellar.anchor.platform" />
-    <option name="MAIN_CLASS_NAME" value="org.stellar.anchor.platform.AnchorPlatformCustodyActionsEnd2EndTest" />
+    <option name="MAIN_CLASS_NAME" value="org.stellar.anchor.platform.AnchorPlatformCustodyRpcEnd2EndTest" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="class" />
     <envs>
-      <env name="TEST_PROFILE_NAME" value="sep24-custody-actions" />
+      <env name="TEST_PROFILE_NAME" value="sep24-custody-rpc" />
       <env name="run_all_servers" value="false" />
       <env name="run_docker" value="false" />
       <env name="CUSTODY_TYPE" value="fireblocks" />
