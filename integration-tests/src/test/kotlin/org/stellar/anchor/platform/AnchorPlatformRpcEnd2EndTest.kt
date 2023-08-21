@@ -4,7 +4,7 @@ import org.junit.jupiter.api.*
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class AnchorPlatformRpcEnd2EndTest :
-  AbstractIntegrationTest(TestConfig(testProfileName = "sep24-rpc")) {
+  AbstractIntegrationTest(TestConfig(testProfileName = "sep24-actions")) {
 
   companion object {
     private val singleton = AnchorPlatformRpcEnd2EndTest()
