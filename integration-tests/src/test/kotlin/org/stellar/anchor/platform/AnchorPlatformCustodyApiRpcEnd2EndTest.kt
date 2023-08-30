@@ -28,4 +28,10 @@ class AnchorPlatformCustodyApiRpcEnd2EndTest :
   fun runSep24Test() {
     singleton.sep24CustodyRpcE2eTests.testAll()
   }
+
+  @Test
+  @Order(11)
+  fun runSep31Test() {
+    singleton.sep31CustodyRpcE2eTests.testAll()
+  }
 }

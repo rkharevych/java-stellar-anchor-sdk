@@ -279,7 +279,8 @@ class Sep24RpcEnd2EndTests(config: TestConfig, val jwt: String) {
   ): List<Sep24GetTransactionResponse>? {
     var retries = 5
     while (retries > 0) {
-      val callbacks = walletServerClient.getCallbackHistory(txnId)
+      val callbacks =
+        walletServerClient.getCallbackHistory(txnId, Sep24GetTransactionResponse::class.java)
       if (callbacks.size == count) {
         return callbacks
       }

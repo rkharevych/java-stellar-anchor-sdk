@@ -155,6 +155,7 @@ class Sep24CustodyEnd2EndTests(config: TestConfig, val jwt: String) {
         expectedEvent.transaction.completedAt = actualEvent.transaction.completedAt
         expectedEvent.transaction.stellarTransactions = actualEvent.transaction.stellarTransactions
         expectedEvent.transaction.memo = actualEvent.transaction.memo
+        expectedEvent.transaction.destinationAccount = actualEvent.transaction.destinationAccount
         actualEvent.transaction.amountIn?.let {
           expectedEvent.transaction.amountIn.amount = actualEvent.transaction.amountIn.amount
           expectedEvent.transaction.amountIn.asset = asset.sep38
@@ -273,7 +274,8 @@ class Sep24CustodyEnd2EndTests(config: TestConfig, val jwt: String) {
   ): List<Sep24GetTransactionResponse>? {
     var retries = 5
     while (retries > 0) {
-      val callbacks = walletServerClient.getCallbackHistory(txnId)
+      val callbacks =
+        walletServerClient.getCallbackHistory(txnId, Sep24GetTransactionResponse::class.java)
       if (callbacks.size == count) {
         return callbacks
       }
