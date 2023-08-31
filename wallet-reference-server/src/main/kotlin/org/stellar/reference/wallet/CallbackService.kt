@@ -19,7 +19,7 @@ class CallbackService {
     if (txnId != null) {
       // filter events with txnId
       return receivedCallbacks.filter {
-        it.getAsJsonObject("transaction").get("id").asString == txnId
+        it.getAsJsonObject("transaction")?.get("id")?.asString == txnId
       }
     }
     // return all events

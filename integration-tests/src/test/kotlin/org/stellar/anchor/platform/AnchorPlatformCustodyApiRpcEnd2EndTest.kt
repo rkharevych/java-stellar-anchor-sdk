@@ -23,7 +23,7 @@ class AnchorPlatformCustodyApiRpcEnd2EndTest :
     }
   }
 
-  //  @Test
+  @Test
   @Order(1)
   fun runSep24Test() {
     singleton.sep24CustodyRpcE2eTests.testAll()
