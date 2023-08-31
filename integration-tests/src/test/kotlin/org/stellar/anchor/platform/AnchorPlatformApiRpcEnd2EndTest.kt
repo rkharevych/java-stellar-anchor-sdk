@@ -12,7 +12,7 @@ class AnchorPlatformApiRpcEnd2EndTest :
     @BeforeAll
     @JvmStatic
     fun construct() {
-      println("Running AnchorPlatformActionsEnd2EndTest")
+      println("Running AnchorPlatformApiRpcEnd2EndTest")
       singleton.setUp(mapOf())
     }
 
