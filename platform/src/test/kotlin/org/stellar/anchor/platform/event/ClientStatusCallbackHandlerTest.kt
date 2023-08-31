@@ -45,6 +45,7 @@ class ClientStatusCallbackHandlerTest {
     clientConfig.callbackUrl = "https://callback.circle.com/api/v1/anchor/callback"
 
     sep24TransactionStore = mockk<Sep24TransactionStore>()
+    sep31TransactionStore = mockk<Sep31TransactionStore>()
     every { sep24TransactionStore.findByTransactionId(any()) } returns null
     mockkStatic(Sep24Helper::class)
     every { fromTxn(any(), any(), any()) } returns mockk<TransactionResponse>()
