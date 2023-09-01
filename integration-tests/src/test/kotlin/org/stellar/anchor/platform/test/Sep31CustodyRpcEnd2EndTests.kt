@@ -193,16 +193,16 @@ class Sep31CustodyRpcEnd2EndTests(
 
       // TODO: Investigate why sometimes there are duplicates and different amount of callbacks
       // Check the callbacks sent to the wallet reference server are recorded correctly
-      //      val actualCallbacks = waitForWalletServerCallbacks(postTxResponse.id, 3)
-      //      actualCallbacks?.let {
-      //        assertEquals(3, it.size)
-      //        val expectedCallbacks: List<Sep31GetTransactionResponse> =
-      //          gson.fromJson(
-      //            expectedReceiveCallbacksJson,
-      //            object : TypeToken<List<Sep31GetTransactionResponse>>() {}.type
-      //          )
-      //        compareAndAssertCallbacks(asset, expectedCallbacks, actualCallbacks)
-      //      }
+      val actualCallbacks = waitForWalletServerCallbacks(postTxResponse.id, 3)
+      actualCallbacks?.let {
+        assertEquals(3, it.size)
+        val expectedCallbacks: List<Sep31GetTransactionResponse> =
+          gson.fromJson(
+            expectedReceiveCallbacksJson,
+            object : TypeToken<List<Sep31GetTransactionResponse>>() {}.type
+          )
+        compareAndAssertCallbacks(asset, expectedCallbacks, actualCallbacks)
+      }
     }
 
   private suspend fun waitForWalletServerCallbacks(
