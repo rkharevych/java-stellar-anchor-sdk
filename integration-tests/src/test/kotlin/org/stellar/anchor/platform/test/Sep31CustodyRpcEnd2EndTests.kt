@@ -191,7 +191,6 @@ class Sep31CustodyRpcEnd2EndTests(
         gson.fromJson(expectedReceiveEventJson, object : TypeToken<List<AnchorEvent>>() {}.type)
       compareAndAssertEvents(asset, expectedEvents, actualEvents!!)
 
-      // TODO: Investigate why sometimes there are duplicates and different amount of callbacks
       // Check the callbacks sent to the wallet reference server are recorded correctly
       val actualCallbacks = waitForWalletServerCallbacks(postTxResponse.id, 3)
       actualCallbacks?.let {

@@ -185,7 +185,6 @@ class Sep31RpcEnd2EndTests(config: TestConfig, val toml: Sep1Helper.TomlContent,
         gson.fromJson(expectedReceiveEventJson, object : TypeToken<List<AnchorEvent>>() {}.type)
       compareAndAssertEvents(asset, expectedEvents, actualEvents!!)
 
-      // TODO: Investigate why sometimes there are duplicates and different amount of callbacks
       // Check the callbacks sent to the wallet reference server are recorded correctly
       val actualCallbacks = waitForWalletServerCallbacks(postTxResponse.id, 3)
       actualCallbacks?.let {

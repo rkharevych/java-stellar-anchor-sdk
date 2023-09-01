@@ -108,7 +108,6 @@ class Sep24CustodyRpcEnd2EndTests(config: TestConfig, val jwt: String) {
         gson.fromJson(expectedDepositEventsJson, object : TypeToken<List<AnchorEvent>>() {}.type)
       compareAndAssertEvents(asset, expectedEvents, actualEvents!!)
 
-      // TODO: Investigate why sometimes there are duplicates and different amount of callbacks
       // Check the callbacks sent to the wallet reference server are recorded correctly
       val actualCallbacks = waitForWalletServerCallbacks(response.id, 5)
       actualCallbacks?.let {
@@ -262,7 +261,6 @@ class Sep24CustodyRpcEnd2EndTests(config: TestConfig, val jwt: String) {
       compareAndAssertEvents(asset, expectedEvents, actualEvents)
     }
 
-    // TODO: Investigate why sometimes there are duplicates and different amount of callbacks
     // Check the callbacks sent to the wallet reference server are recorded correctly
     val actualCallbacks = waitForWalletServerCallbacks(withdrawTxn.id, 4)
     actualCallbacks?.let {
