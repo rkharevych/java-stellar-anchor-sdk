@@ -287,7 +287,7 @@ public class TransactionService {
         eventSession.publish(
             AnchorEvent.builder()
                 .id(UUID.randomUUID().toString())
-                .sep("24")
+                .sep("31")
                 .type(TRANSACTION_STATUS_CHANGED)
                 .transaction(TransactionHelper.toGetTransactionResponse(sep31Txn))
                 .build());
