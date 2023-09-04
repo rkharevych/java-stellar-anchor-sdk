@@ -10,12 +10,15 @@ class CallbackService {
   private val receivedCallbacks: MutableList<JsonObject> = mutableListOf()
 
   fun processCallback(receivedCallback: JsonObject) {
+    log.info("RECEIVED CALLBACK: " + receivedCallback)
     receivedCallbacks.add(receivedCallback)
   }
 
   // Get all events. This is for testing purpose.
   // If txnId is not null, the events are filtered.
   fun getCallbacks(txnId: String?): List<JsonObject> {
+    log.info("GET CALLBACKS: Size" + receivedCallbacks.size)
+    log.info("GET CALLBACKS!: Items" + receivedCallbacks)
     if (txnId != null) {
       // filter events with txnId
       return receivedCallbacks.filter {
