@@ -2,6 +2,7 @@ package org.stellar.anchor.platform.event;
 
 import static org.stellar.anchor.sep24.Sep24Helper.fromTxn;
 import static org.stellar.anchor.util.Log.debugF;
+import static org.stellar.anchor.util.Log.infoF;
 import static org.stellar.anchor.util.NetUtil.getDomainFromURL;
 import static org.stellar.anchor.util.OkHttpUtil.buildJsonRequestBody;
 import static org.stellar.anchor.util.StringHelper.json;
@@ -66,9 +67,11 @@ public class ClientStatusCallbackHandler extends EventHandler {
       KeyPair signer = KeyPair.fromSecretSeed(secretConfig.getSep10SigningSeed());
       Request request = buildHttpRequest(signer, event);
       Response response = httpClient.newCall(request).execute();
-      debugF(
+      infoF(
           "Sending event: {} to client status api: {}", json(event), clientConfig.getCallbackUrl());
       if (response.code() < 200 || response.code() >= 400) {
+        infoF(
+                "Failed to send event: {} error: {}", response.code(), response.body().string());
         return false;
       }
     }
