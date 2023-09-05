@@ -206,12 +206,6 @@ public class EventProcessorManager {
           Metrics.counter(EVENT_RECEIVED, QUEUE, toMetricTag(eventQueue.name()))
               .increment(events.size());
           debugF("Received {} events from queue", events.size());
-          if (!events.isEmpty()) {
-            debugF(
-                    "!!!!! Processor {} received event status {}",
-                    name,
-                    events.get(0).getTransaction().getStatus().getStatus());
-          }
           for (AnchorEvent event : events) {
             handleEvent(event);
             if (currentThread().isInterrupted()) break;
