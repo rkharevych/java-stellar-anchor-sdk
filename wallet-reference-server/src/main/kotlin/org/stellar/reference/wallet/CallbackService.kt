@@ -90,12 +90,14 @@ class CallbackService {
       }
 
       val payloadToVerify = "${timestampLong}.${domain}.${body}"
+      log.info("!!!timestampLong $timestampLong")
+      log.info("!!!domain $domain")
+      log.info("!!!body $body")
       if (signer == null) {
         log.info("!!!signer null")
         return false
       }
 
-      log.info("!!!signer $signer")
       if (!signer.verify(payloadToVerify.toByteArray(), signature)) {
         return false
       }

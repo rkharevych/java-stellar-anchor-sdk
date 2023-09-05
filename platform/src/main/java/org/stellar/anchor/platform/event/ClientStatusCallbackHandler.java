@@ -79,6 +79,7 @@ public class ClientStatusCallbackHandler extends EventHandler {
   @SneakyThrows
   Request buildHttpRequest(KeyPair signer, AnchorEvent event) {
     String payload = getPayload(event);
+    infoF("!!!!!!domain: {}, callback: {}", clientConfig.getDomain(), clientConfig.getCallbackUrl());
     return buildHttpRequest(signer, payload, clientConfig.getCallbackUrl());
   }
 
