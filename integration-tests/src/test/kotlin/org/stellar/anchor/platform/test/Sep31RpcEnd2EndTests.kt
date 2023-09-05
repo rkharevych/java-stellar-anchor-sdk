@@ -106,10 +106,11 @@ class Sep31RpcEnd2EndTests(config: TestConfig, val toml: Sep1Helper.TomlContent,
           amountIn = actualCallback.transaction.amountIn
           amountInAsset?.let { amountInAsset = asset.sep38 }
           amountOut = actualCallback.transaction.amountOut
-          amountOutAsset?.let { amountOutAsset = asset.sep38 }
+          amountOutAsset?.let { amountOutAsset = actualCallback.transaction.amountOutAsset }
           amountFee = actualCallback.transaction.amountFee
           amountFeeAsset?.let { amountFeeAsset = asset.sep38 }
           stellarTransactionId = actualCallback.transaction.stellarTransactionId
+          stellarMemo?.let { stellarMemo = actualCallback.transaction.stellarMemo }
         }
       }
     }
@@ -180,7 +181,7 @@ class Sep31RpcEnd2EndTests(config: TestConfig, val toml: Sep1Helper.TomlContent,
       // Check the callbacks sent to the wallet reference server are recorded correctly
       val actualCallbacks = waitForWalletServerCallbacks(postTxResponse.id, 3)
       actualCallbacks?.let {
-        assertEquals(3, it.size)
+        assertEquals(2, it.size)
         val expectedCallbacks: List<Sep31GetTransactionResponse> =
           gson.fromJson(
             expectedReceiveCallbacksJson,
@@ -201,6 +202,7 @@ class Sep31RpcEnd2EndTests(config: TestConfig, val toml: Sep1Helper.TomlContent,
         walletServerClient
           .getCallbackHistory(txnId, Sep31GetTransactionResponse::class.java)
           .distinct()
+      info(callbacks)
       if (callbacks.size == count) {
         return callbacks
       }
@@ -454,6 +456,40 @@ class Sep31RpcEnd2EndTests(config: TestConfig, val toml: Sep1Helper.TomlContent,
   private val expectedReceiveCallbacksJson =
     """
 [
+  {
+    "transaction": {
+      "id": "9aaf6396-3b63-4fa9-9854-2cad5ec518ca",
+      "status": "pending_sender",
+      "amount_in": "5",
+      "amount_in_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
+      "amount_out": "3.8095",
+      "amount_out_asset": "iso4217:USD",
+      "amount_fee": "1.00",
+      "amount_fee_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
+      "stellar_account_id": "GBN4NNCDGJO4XW4KQU3CBIESUJWFVBUZPOKUZHT7W7WRB7CWOA7BXVQF",
+      "stellar_memo": "OWFhZjYzOTYtM2I2My00ZmE5LTk4NTQtMmNhZDVlYzU=",
+      "stellar_memo_type": "hash",
+      "started_at": "2023-09-05T13:28:22.989054Z"
+    }
+  },
+  {
+    "transaction": {
+      "id": "9aaf6396-3b63-4fa9-9854-2cad5ec518ca",
+      "status": "pending_receiver",
+      "amount_in": "5.0000000",
+      "amount_in_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
+      "amount_out": "3.8095",
+      "amount_out_asset": "iso4217:USD",
+      "amount_fee": "1.00",
+      "amount_fee_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
+      "stellar_account_id": "GBN4NNCDGJO4XW4KQU3CBIESUJWFVBUZPOKUZHT7W7WRB7CWOA7BXVQF",
+      "stellar_memo": "OWFhZjYzOTYtM2I2My00ZmE5LTk4NTQtMmNhZDVlYzU=",
+      "stellar_memo_type": "hash",
+      "started_at": "2023-09-05T13:28:22.989054Z",
+      "stellar_transaction_id": "1848c1efd6782f6109197204692a09273005a5d2acb6035eec00adc4ee9b3bab",
+      "required_info_message": "Received an incoming payment"
+    }
+  }
 ]
   """
       .trimIndent()
