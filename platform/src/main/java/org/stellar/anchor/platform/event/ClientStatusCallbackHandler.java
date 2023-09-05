@@ -70,8 +70,7 @@ public class ClientStatusCallbackHandler extends EventHandler {
       infoF(
           "Sending event: {} to client status api: {}", json(event), clientConfig.getCallbackUrl());
       if (response.code() < 200 || response.code() >= 400) {
-        infoF(
-                "Failed to send event: {} to client status api. Code: {}", json(event), response.code());
+        infoF("Failed to send event. Code: {}", response.code());
         return false;
       }
     }
