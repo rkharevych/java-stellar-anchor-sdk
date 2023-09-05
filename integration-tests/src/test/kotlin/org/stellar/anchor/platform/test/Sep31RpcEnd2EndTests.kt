@@ -177,18 +177,17 @@ class Sep31RpcEnd2EndTests(config: TestConfig, val toml: Sep1Helper.TomlContent,
         gson.fromJson(expectedReceiveEventJson, object : TypeToken<List<AnchorEvent>>() {}.type)
       compareAndAssertEvents(asset, expectedEvents, actualEvents!!)
 
-      // TODO: Investigate why sometimes there are duplicates and different amount of callbacks
       // Check the callbacks sent to the wallet reference server are recorded correctly
-      //      val actualCallbacks = waitForWalletServerCallbacks(postTxResponse.id, 3)
-      //      actualCallbacks?.let {
-      //        assertEquals(3, it.size)
-      //        val expectedCallbacks: List<Sep31GetTransactionResponse> =
-      //          gson.fromJson(
-      //            expectedReceiveCallbacksJson,
-      //            object : TypeToken<List<Sep31GetTransactionResponse>>() {}.type
-      //          )
-      //        compareAndAssertCallbacks(asset, expectedCallbacks, actualCallbacks)
-      //      }
+      val actualCallbacks = waitForWalletServerCallbacks(postTxResponse.id, 3)
+      actualCallbacks?.let {
+        assertEquals(3, it.size)
+        val expectedCallbacks: List<Sep31GetTransactionResponse> =
+          gson.fromJson(
+            expectedReceiveCallbacksJson,
+            object : TypeToken<List<Sep31GetTransactionResponse>>() {}.type
+          )
+        compareAndAssertCallbacks(asset, expectedCallbacks, actualCallbacks)
+      }
     }
 
   private suspend fun waitForWalletServerCallbacks(
@@ -199,8 +198,9 @@ class Sep31RpcEnd2EndTests(config: TestConfig, val toml: Sep1Helper.TomlContent,
     var callbacks: List<Sep31GetTransactionResponse>? = null
     while (retries > 0) {
       callbacks =
-        walletServerClient.getCallbackHistory(txnId, Sep31GetTransactionResponse::class.java)
-      info(callbacks)
+        walletServerClient
+          .getCallbackHistory(txnId, Sep31GetTransactionResponse::class.java)
+          .distinct()
       if (callbacks.size == count) {
         return callbacks
       }

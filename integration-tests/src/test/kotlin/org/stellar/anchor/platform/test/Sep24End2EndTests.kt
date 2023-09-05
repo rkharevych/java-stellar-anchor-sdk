@@ -271,16 +271,19 @@ class Sep24End2EndTests(config: TestConfig, val jwt: String) {
     count: Int
   ): List<Sep24GetTransactionResponse>? {
     var retries = 5
+    var callbacks: List<Sep24GetTransactionResponse>? = null
     while (retries > 0) {
-      val callbacks =
-        walletServerClient.getCallbackHistory(txnId, Sep24GetTransactionResponse::class.java)
+      callbacks =
+        walletServerClient
+          .getCallbackHistory(txnId, Sep24GetTransactionResponse::class.java)
+          .distinct()
       if (callbacks.size == count) {
         return callbacks
       }
       delay(1.seconds)
       retries--
     }
-    return null
+    return callbacks
   }
 
   private suspend fun waitForBusinessServerEvents(txnId: String, count: Int): List<AnchorEvent>? {
