@@ -109,9 +109,9 @@ class Sep24RpcEnd2EndTests(config: TestConfig, val jwt: String) {
       compareAndAssertEvents(asset, expectedEvents, actualEvents!!)
 
       // Check the callbacks sent to the wallet reference server are recorded correctly
-      val actualCallbacks = waitForWalletServerCallbacks(response.id, 4)
+      val actualCallbacks = waitForWalletServerCallbacks(response.id, 6)
       actualCallbacks?.let {
-        assertEquals(3, it.size)
+        assertEquals(6, it.size)
         val expectedCallbacks: List<Sep24GetTransactionResponse> =
           gson.fromJson(
             expectedDepositCallbacksJson,
@@ -272,7 +272,7 @@ class Sep24RpcEnd2EndTests(config: TestConfig, val jwt: String) {
     txnId: String,
     count: Int
   ): List<Sep24GetTransactionResponse>? {
-    var retries = 5
+    var retries = 15
     var callbacks: List<Sep24GetTransactionResponse>? = null
     while (retries > 0) {
       callbacks =

@@ -111,6 +111,7 @@ class Sep31RpcEnd2EndTests(config: TestConfig, val toml: Sep1Helper.TomlContent,
           amountFeeAsset?.let { amountFeeAsset = asset.sep38 }
           stellarTransactionId = actualCallback.transaction.stellarTransactionId
           stellarMemo?.let { stellarMemo = actualCallback.transaction.stellarMemo }
+          completedAt?.let { completedAt = actualCallback.transaction.completedAt }
         }
       }
     }
@@ -195,7 +196,7 @@ class Sep31RpcEnd2EndTests(config: TestConfig, val toml: Sep1Helper.TomlContent,
     txnId: String,
     count: Int
   ): List<Sep31GetTransactionResponse>? {
-    var retries = 5
+    var retries = 15
     var callbacks: List<Sep31GetTransactionResponse>? = null
     while (retries > 0) {
       callbacks =
@@ -475,7 +476,7 @@ class Sep31RpcEnd2EndTests(config: TestConfig, val toml: Sep1Helper.TomlContent,
   {
     "transaction": {
       "id": "9aaf6396-3b63-4fa9-9854-2cad5ec518ca",
-      "status": "pending_receiver",
+      "status": "completed",
       "amount_in": "5.0000000",
       "amount_in_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
       "amount_out": "3.8095",
@@ -486,8 +487,9 @@ class Sep31RpcEnd2EndTests(config: TestConfig, val toml: Sep1Helper.TomlContent,
       "stellar_memo": "OWFhZjYzOTYtM2I2My00ZmE5LTk4NTQtMmNhZDVlYzU=",
       "stellar_memo_type": "hash",
       "started_at": "2023-09-05T13:28:22.989054Z",
+      "completed_at": "2023-09-05T13:28:22.989054Z",
       "stellar_transaction_id": "1848c1efd6782f6109197204692a09273005a5d2acb6035eec00adc4ee9b3bab",
-      "required_info_message": "Received an incoming payment"
+      "required_info_message": "external transfer sent"
     }
   }
 ]
