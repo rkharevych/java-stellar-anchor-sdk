@@ -755,17 +755,28 @@ class Sep24End2EndTests(config: TestConfig, val jwt: String) {
 [
   {
     "transaction": {
-      "id": "c18b771b-2278-4f23-977e-7e7f7d2a6964",
+      "id": "516cd16e-a48a-4d08-8a4b-91b389454128",
+      "kind": "deposit",
+      "status": "incomplete",
+      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=516cd16e-a48a-4d08-8a4b-91b389454128&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI1MTZjZDE2ZS1hNDhhLTRkMDgtOGE0Yi05MWIzODk0NTQxMjgiLCJleHAiOjE2OTM5MjY0NjMsInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.FsfVa2vaSKM9h6Am4bGHOlZYo_ybguofkueL7rBAZXQ",
+      "started_at": "2023-09-05T14:57:42.295408Z",
+      "refunded": false,
+      "to": "GDJLBYYKMCXNVVNABOE66NYXQGIA5AC5D223Z2KF6ZEYK4UBCA7FKLTG"
+    }
+  },
+  {
+    "transaction": {
+      "id": "516cd16e-a48a-4d08-8a4b-91b389454128",
       "kind": "deposit",
       "status": "pending_user_transfer_start",
-      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=c18b771b-2278-4f23-977e-7e7f7d2a6964&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjMThiNzcxYi0yMjc4LTRmMjMtOTc3ZS03ZTdmN2QyYTY5NjQiLCJleHAiOjE2OTM5MjEyMDAsInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e319.21Zlr7T5LvXC_a-ylHjFyK67BHFuOCcXN1t2Q6kSKhc",
+      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=516cd16e-a48a-4d08-8a4b-91b389454128&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI1MTZjZDE2ZS1hNDhhLTRkMDgtOGE0Yi05MWIzODk0NTQxMjgiLCJleHAiOjE2OTM5MjY0NjUsInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.PLTihtsIeeWLQDwBhrqrMx_fkZF7QhJ-asLfyJDVqv0",
       "amount_in": "1.1",
       "amount_in_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
       "amount_out": "1.0",
       "amount_out_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
       "amount_fee": "0.1",
       "amount_fee_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
-      "started_at": "2023-09-05T13:29:58.948133Z",
+      "started_at": "2023-09-05T14:57:42.295408Z",
       "message": "waiting on the user to transfer funds",
       "refunded": false,
       "to": "GDJLBYYKMCXNVVNABOE66NYXQGIA5AC5D223Z2KF6ZEYK4UBCA7FKLTG"
@@ -773,35 +784,17 @@ class Sep24End2EndTests(config: TestConfig, val jwt: String) {
   },
   {
     "transaction": {
-      "id": "c18b771b-2278-4f23-977e-7e7f7d2a6964",
-      "kind": "deposit",
-      "status": "pending_user_transfer_start",
-      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=c18b771b-2278-4f23-977e-7e7f7d2a6964&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjMThiNzcxYi0yMjc4LTRmMjMtOTc3ZS03ZTdmN2QyYTY5NjQiLCJleHAiOjE2OTM5MjEyMDEsInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.6_toIMTzL-otssLNXtPEfi0gpuJrUI9_LHWkOVYA9Ec",
-      "amount_in": "1.1",
-      "amount_in_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
-      "amount_out": "1.0",
-      "amount_out_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
-      "amount_fee": "0.1",
-      "amount_fee_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
-      "started_at": "2023-09-05T13:29:58.948133Z",
-      "message": "waiting on the user to transfer funds",
-      "refunded": false,
-      "to": "GDJLBYYKMCXNVVNABOE66NYXQGIA5AC5D223Z2KF6ZEYK4UBCA7FKLTG"
-    }
-  },
-  {
-    "transaction": {
-      "id": "c18b771b-2278-4f23-977e-7e7f7d2a6964",
+      "id": "516cd16e-a48a-4d08-8a4b-91b389454128",
       "kind": "deposit",
       "status": "pending_anchor",
-      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=c18b771b-2278-4f23-977e-7e7f7d2a6964&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjMThiNzcxYi0yMjc4LTRmMjMtOTc3ZS03ZTdmN2QyYTY5NjQiLCJleHAiOjE2OTM5MjEyMDIsInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.ho-60QQhdKcvwfaiA4vl5Ittsd0ULmLp7EuOtDIuMUw",
+      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=516cd16e-a48a-4d08-8a4b-91b389454128&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI1MTZjZDE2ZS1hNDhhLTRkMDgtOGE0Yi05MWIzODk0NTQxMjgiLCJleHAiOjE2OTM5MjY0NjYsInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.X31BwlGyRl8gTGfAex301kmRu9R7shkXFTa4iGYe2tc",
       "amount_in": "1.1",
       "amount_in_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
       "amount_out": "1.0",
       "amount_out_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
       "amount_fee": "0.1",
       "amount_fee_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
-      "started_at": "2023-09-05T13:29:58.948133Z",
+      "started_at": "2023-09-05T14:57:42.295408Z",
       "message": "funds received, transaction is being processed",
       "refunded": false,
       "to": "GDJLBYYKMCXNVVNABOE66NYXQGIA5AC5D223Z2KF6ZEYK4UBCA7FKLTG"
@@ -809,17 +802,17 @@ class Sep24End2EndTests(config: TestConfig, val jwt: String) {
   },
   {
     "transaction": {
-      "id": "c18b771b-2278-4f23-977e-7e7f7d2a6964",
+      "id": "516cd16e-a48a-4d08-8a4b-91b389454128",
       "kind": "deposit",
       "status": "pending_stellar",
-      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=c18b771b-2278-4f23-977e-7e7f7d2a6964&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjMThiNzcxYi0yMjc4LTRmMjMtOTc3ZS03ZTdmN2QyYTY5NjQiLCJleHAiOjE2OTM5MjEyMDMsInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.KO6k3p-jUuStrnGSh5v7w79UjUQ-V8xdLqTzPyMhtHw",
+      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=516cd16e-a48a-4d08-8a4b-91b389454128&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI1MTZjZDE2ZS1hNDhhLTRkMDgtOGE0Yi05MWIzODk0NTQxMjgiLCJleHAiOjE2OTM5MjY0NjcsInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.aAGuhQ7PfTO5S3IE19Hglo4lcDDtdtCnisXRNcNPIsE",
       "amount_in": "1.1",
       "amount_in_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
       "amount_out": "1.0",
       "amount_out_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
       "amount_fee": "0.1",
       "amount_fee_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
-      "started_at": "2023-09-05T13:29:58.948133Z",
+      "started_at": "2023-09-05T14:57:42.295408Z",
       "message": "funds received, transaction is being processed",
       "refunded": false,
       "to": "GDJLBYYKMCXNVVNABOE66NYXQGIA5AC5D223Z2KF6ZEYK4UBCA7FKLTG"
@@ -827,18 +820,18 @@ class Sep24End2EndTests(config: TestConfig, val jwt: String) {
   },
   {
     "transaction": {
-      "id": "c18b771b-2278-4f23-977e-7e7f7d2a6964",
+      "id": "516cd16e-a48a-4d08-8a4b-91b389454128",
       "kind": "deposit",
       "status": "completed",
-      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=c18b771b-2278-4f23-977e-7e7f7d2a6964&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjMThiNzcxYi0yMjc4LTRmMjMtOTc3ZS03ZTdmN2QyYTY5NjQiLCJleHAiOjE2OTM5MjEyMTMsInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.I1lxn2SwBdmvRHTHLNV9PEvi-5y1__xU-KF6MBD-hR8",
+      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=516cd16e-a48a-4d08-8a4b-91b389454128&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI1MTZjZDE2ZS1hNDhhLTRkMDgtOGE0Yi05MWIzODk0NTQxMjgiLCJleHAiOjE2OTM5MjY0NzAsInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.NhODZXe223QoOI1RT7rS-6u9ApG_6G9nKq3pX1DPH_M",
       "amount_in": "1.1",
       "amount_in_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
       "amount_out": "1.0",
       "amount_out_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
       "amount_fee": "0.1",
       "amount_fee_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
-      "started_at": "2023-09-05T13:29:58.948133Z",
-      "stellar_transaction_id": "aef3ed2d62e95ecacb1d0b0945ecc8d80b9c98a64f48011dfb2bfe2f734a8e58",
+      "started_at": "2023-09-05T14:57:42.295408Z",
+      "stellar_transaction_id": "2718b94160632c0dbd7d4d253d316b70ab8d76bfb48b89eba2e40ce9e4d03144",
       "message": "completed",
       "refunded": false,
       "to": "GDJLBYYKMCXNVVNABOE66NYXQGIA5AC5D223Z2KF6ZEYK4UBCA7FKLTG"

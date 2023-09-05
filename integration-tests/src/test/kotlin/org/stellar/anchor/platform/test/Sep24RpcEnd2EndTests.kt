@@ -111,7 +111,7 @@ class Sep24RpcEnd2EndTests(config: TestConfig, val jwt: String) {
       // Check the callbacks sent to the wallet reference server are recorded correctly
       val actualCallbacks = waitForWalletServerCallbacks(response.id, 6)
       actualCallbacks?.let {
-        assertEquals(6, it.size)
+        assertEquals(4, it.size)
         val expectedCallbacks: List<Sep24GetTransactionResponse> =
           gson.fromJson(
             expectedDepositCallbacksJson,
@@ -696,46 +696,57 @@ class Sep24RpcEnd2EndTests(config: TestConfig, val jwt: String) {
 [
   {
     "transaction": {
-      "id": "650fdd29-f6d6-4567-9440-cc6efeef3523",
+      "id": "301aa943-f78b-4bc3-979d-1a65ea7639f9",
       "kind": "deposit",
       "status": "incomplete",
-      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=650fdd29-f6d6-4567-9440-cc6efeef3523&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2NTBmZGQyOS1mNmQ2LTQ1NjctOTQ0MC1jYzZlZmVlZjM1MjMiLCJleHAiOjE2OTM5MjEwODgsInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.yEZnXlXc9YAIxLzb74bopmyzt_0pIcxQoh0jeoLALUg",
-      "started_at": "2023-09-05T13:28:05.864751Z",
+      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=301aa943-f78b-4bc3-979d-1a65ea7639f9&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzMDFhYTk0My1mNzhiLTRiYzMtOTc5ZC0xYTY1ZWE3NjM5ZjkiLCJleHAiOjE2OTM5MjYyOTMsInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.2GNyT6exlWARrwfoXEk_1j0LWp0q-f9fqFvxJQWhpqY",
+      "started_at": "2023-09-05T14:54:52.222949Z",
       "refunded": false,
       "to": "GDJLBYYKMCXNVVNABOE66NYXQGIA5AC5D223Z2KF6ZEYK4UBCA7FKLTG"
     }
   },
   {
     "transaction": {
-      "id": "650fdd29-f6d6-4567-9440-cc6efeef3523",
+      "id": "301aa943-f78b-4bc3-979d-1a65ea7639f9",
       "kind": "deposit",
-      "status": "pending_anchor",
-      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=650fdd29-f6d6-4567-9440-cc6efeef3523&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2NTBmZGQyOS1mNmQ2LTQ1NjctOTQ0MC1jYzZlZmVlZjM1MjMiLCJleHAiOjE2OTM5MjEwODksInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.MPVdgV81IuJELm_LAMErTKpqRP_u2zUuFS_hC-MBHI8",
-      "amount_in": "1.1",
-      "amount_in_asset": "iso4217:USD",
-      "amount_out": "1.0",
-      "amount_out_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
-      "amount_fee": "0.1",
-      "amount_fee_asset": "iso4217:USD",
-      "started_at": "2023-09-05T13:28:05.864751Z",
-      "message": "funds received, transaction is being processed",
+      "status": "incomplete",
+      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=301aa943-f78b-4bc3-979d-1a65ea7639f9&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzMDFhYTk0My1mNzhiLTRiYzMtOTc5ZC0xYTY1ZWE3NjM5ZjkiLCJleHAiOjE2OTM5MjYyOTUsInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.VqV53c-kAzTcjuUDMx-8KuC9oLAnUR6tIPgAEDDVYJA",
+      "started_at": "2023-09-05T14:54:52.222949Z",
       "refunded": false,
       "to": "GDJLBYYKMCXNVVNABOE66NYXQGIA5AC5D223Z2KF6ZEYK4UBCA7FKLTG"
     }
   },
   {
     "transaction": {
-      "id": "650fdd29-f6d6-4567-9440-cc6efeef3523",
+      "id": "301aa943-f78b-4bc3-979d-1a65ea7639f9",
       "kind": "deposit",
-      "status": "pending_anchor",
-      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=650fdd29-f6d6-4567-9440-cc6efeef3523&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2NTBmZGQyOS1mNmQ2LTQ1NjctOTQ0MC1jYzZlZmVlZjM1MjMiLCJleHAiOjE2OTM5MjEwOTUsInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.t_J0nzxnu60M99uZTVDPJP9va2NMx8mCKPlrFxdVrc8",
+      "status": "pending_user_transfer_start",
+      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=301aa943-f78b-4bc3-979d-1a65ea7639f9&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzMDFhYTk0My1mNzhiLTRiYzMtOTc5ZC0xYTY1ZWE3NjM5ZjkiLCJleHAiOjE2OTM5MjYyOTYsInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.fhJ0uHG6tbZvOybPT8dQEPPCK4USzT7AGsDBZFCU6UE",
       "amount_in": "1.1",
       "amount_in_asset": "iso4217:USD",
       "amount_out": "1.0",
       "amount_out_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
       "amount_fee": "0.1",
       "amount_fee_asset": "iso4217:USD",
-      "started_at": "2023-09-05T13:28:05.864751Z",
+      "started_at": "2023-09-05T14:54:52.222949Z",
+      "message": "waiting on the user to transfer funds",
+      "refunded": false,
+      "to": "GDJLBYYKMCXNVVNABOE66NYXQGIA5AC5D223Z2KF6ZEYK4UBCA7FKLTG"
+    }
+  },
+  {
+    "transaction": {
+      "id": "301aa943-f78b-4bc3-979d-1a65ea7639f9",
+      "kind": "deposit",
+      "status": "pending_anchor",
+      "more_info_url": "http://localhost:8091/sep24/transaction/more_info?transaction_id=301aa943-f78b-4bc3-979d-1a65ea7639f9&token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzMDFhYTk0My1mNzhiLTRiYzMtOTc5ZC0xYTY1ZWE3NjM5ZjkiLCJleHAiOjE2OTM5MjYyOTksInN1YiI6IkdESkxCWVlLTUNYTlZWTkFCT0U2Nk5ZWFFHSUE1QUM1RDIyM1oyS0Y2WkVZSzRVQkNBN0ZLTFRHIiwiZGF0YSI6e30sImNsaWVudF9uYW1lIjoicmVmZXJlbmNlQ3VzdG9kaWFsIn0.ZR2_ziDwW1IeuMUBQRhQfjVAzecZrCrcQUREc_tqlno",
+      "amount_in": "1.1",
+      "amount_in_asset": "iso4217:USD",
+      "amount_out": "1.0",
+      "amount_out_asset": "stellar:USDC:GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
+      "amount_fee": "0.1",
+      "amount_fee_asset": "iso4217:USD",
+      "started_at": "2023-09-05T14:54:52.222949Z",
       "message": "funds received, transaction is being processed",
       "refunded": false,
       "to": "GDJLBYYKMCXNVVNABOE66NYXQGIA5AC5D223Z2KF6ZEYK4UBCA7FKLTG"
