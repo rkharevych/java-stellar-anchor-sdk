@@ -17,6 +17,7 @@ fun Route.callback(config: Config, callbackEventService: CallbackService) {
   route("/callbacks") {
     // The `POST /callback` endpoint of the CallbackAPI to receive an event.
     post {
+      log.info("Received callback event.")
       // Extract TS from request header and verify the ts difference is within 1-2 minutes
       val header = call.request.headers["Signature"]
       val body = call.receive<String>()

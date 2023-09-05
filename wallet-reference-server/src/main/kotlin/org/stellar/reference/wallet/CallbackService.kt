@@ -10,7 +10,9 @@ class CallbackService {
   private val receivedCallbacks: MutableList<JsonObject> = mutableListOf()
 
   fun processCallback(receivedCallback: JsonObject) {
+    log.info("Before adding: " + receivedCallback)
     receivedCallbacks.add(receivedCallback)
+    log.info("After adding: " + receivedCallback)
   }
 
   // Get all events. This is for testing purpose.
