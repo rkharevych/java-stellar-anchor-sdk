@@ -57,6 +57,7 @@ class CallbackService {
       // t=timestamp
       val timestampTokens = tokens[0].trim().split("=")
       if (timestampTokens.size != 2 || timestampTokens[0] != "t") {
+        log.info("!!!timestampTokens missing")
         return false
       }
       val timestampLong = timestampTokens[1].trim().toLongOrNull() ?: return false
@@ -64,31 +65,37 @@ class CallbackService {
 
       if (Duration.between(timestamp, Instant.now()).toMinutes() > 2) {
         // timestamp is older than 2 minutes
+        log.info("!!!timestamp is older than 2 minutes")
         return false
       }
 
       // s=signature
       val sigTokens = tokens[1].trim().split("=", limit = 2)
       if (sigTokens.size != 2 || sigTokens[0] != "s") {
+        log.info("!!!signature missing")
         return false
       }
 
       val sigBase64 = sigTokens[1].trim()
       if (sigBase64.isEmpty()) {
+        log.info("!!!signature empty")
         return false
       }
 
       val signature = Base64.getDecoder().decode(sigBase64)
 
       if (body == null) {
+        log.info("!!!body empty")
         return false
       }
 
       val payloadToVerify = "${timestampLong}.${domain}.${body}"
       if (signer == null) {
+        log.info("!!!signer null")
         return false
       }
 
+      log.info("!!!signer $signer")
       if (!signer.verify(payloadToVerify.toByteArray(), signature)) {
         return false
       }

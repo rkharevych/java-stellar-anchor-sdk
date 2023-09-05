@@ -1,7 +1,6 @@
 package org.stellar.anchor.platform.event;
 
 import static org.stellar.anchor.sep24.Sep24Helper.fromTxn;
-import static org.stellar.anchor.util.Log.debugF;
 import static org.stellar.anchor.util.Log.infoF;
 import static org.stellar.anchor.util.NetUtil.getDomainFromURL;
 import static org.stellar.anchor.util.OkHttpUtil.buildJsonRequestBody;
@@ -70,8 +69,7 @@ public class ClientStatusCallbackHandler extends EventHandler {
       infoF(
           "Sending event: {} to client status api: {}", json(event), clientConfig.getCallbackUrl());
       if (response.code() < 200 || response.code() >= 400) {
-        infoF(
-                "Failed to send event: {} error: {}", response.code(), response.body().string());
+        infoF("Failed to send event: {} error: {}", response.code(), response.body().string());
         return false;
       }
     }
@@ -90,6 +88,9 @@ public class ClientStatusCallbackHandler extends EventHandler {
     String domain = getDomainFromURL(url);
     String currentTs = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
     String payloadToSign = currentTs + "." + domain + "." + payload;
+    infoF("!!!!!!signer: {} ", signer);
+    infoF("!!!!!!domain: {} currentTs: {}, payloadToSign: {}", domain, currentTs, payloadToSign);
+
     // Sign the payload using the Anchor private key
     // Base64 encode the signature
     String encodedSignature =

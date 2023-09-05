@@ -26,6 +26,7 @@ fun Route.callback(config: Config, callbackEventService: CallbackService) {
 
       if (!verifySignature(header, body, config.wallet.hostname, signer)) {
         call.response.status(HttpStatusCode.Forbidden)
+        log.info("!!!signature Validation failed")
         return@post
       }
 
