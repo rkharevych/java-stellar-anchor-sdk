@@ -120,6 +120,7 @@ class Sep31RpcEnd2EndTests(config: TestConfig, val toml: Sep1Helper.TomlContent,
 
   private fun `test typical receive end-to-end flow`(asset: StellarAssetId, amount: String) =
     runBlocking {
+      walletServerClient.clearCallbacks()
       val senderCustomerRequest =
         gson.fromJson(testCustomer1Json, Sep12PutCustomerRequest::class.java)
       val senderCustomer = sep12Client.putCustomer(senderCustomerRequest)
