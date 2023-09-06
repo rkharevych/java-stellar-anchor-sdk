@@ -11,7 +11,7 @@ class CallbackService {
 
   fun processCallback(receivedCallback: JsonObject) {
     log.info("Before adding: " + receivedCallbacks)
-    val res = receivedCallbacks.add(receivedCallbacks)
+    val res = receivedCallbacks.add(receivedCallback)
     log.info("After adding: " + receivedCallbacks)
     log.info("Added?: " + res)
   }
